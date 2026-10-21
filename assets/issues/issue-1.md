@@ -1,7 +1,7 @@
-# Issues
+# Issue [#1](https://github.com/thanhnguyen-agilityio/claude-training-practice/issues/1)
+## Title: Chatbot shows error in long conversations
+## Description:
 
-# [[#1](https://github.com/thanhnguyen-agilityio/claude-training-practice/issues/1)] Chatbot shows error in long conversations
-## Description
 **Issue**
 - When a conversation gets long, the chatbot sometimes fails and the user sees an error instead of an answer.
 - It does not happen every time, so it is hard to predict.

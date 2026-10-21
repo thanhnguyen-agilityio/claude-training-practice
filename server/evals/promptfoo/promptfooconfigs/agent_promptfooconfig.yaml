@@ -1,0 +1,19 @@
+# EVALUATION END-TO-END AGENT
+# ------------------------------------------
+# - Prompt: user query
+# - Provider: Agent Chain
+# ------------------------------------------
+prompts: '{{query}}'
+providers:
+# - file://../providers/agent_chain_gpt_3_5_turbo.py
+- file://../providers/agent_chain_gpt_4o_mini.py
+
+tests:
+- file://../tests/agent/not_relevant.yaml
+- file://../tests/agent/service.yaml
+- file://../tests/agent/product.yaml
+
+# ------------------------------------------
+# Run: `promptfoo eval -c agent_promptfooconfig.yaml`
+# Output: ./output/agent.json
+# ------------------------------------------

@@ -1,0 +1,17 @@
+[[pages]]
+path = "pages/agent.py"
+name = "eCommerce Agent"
+icon = "🛍️"
+url_path = "."
+
+[[pages]]
+path = "pages/about.py"
+name = "About Us"
+icon = "👋"
+url_path = "about"
+
+[[pages]]
+path = "pages/guide.py"
+name = "User Guide"
+icon = "📕"
+url_path = "guide"

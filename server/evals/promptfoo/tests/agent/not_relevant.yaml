@@ -1,0 +1,12 @@
+- vars:
+    case: Not relevant question
+    query: What is the weather in Hanoi?
+  assert:
+    - type: contains
+      value: "I'm sorry, I don't have that information right now. Can I assist you with something else?"
+- vars:
+    case: Not relevant question 2
+    query: Give me price of "Iphone 15"
+  assert:
+    - type: contains
+      value: "I'm sorry, I don't have that information right now. Can I assist you with something else?"

@@ -1,0 +1,55 @@
+- vars:
+    case: Ask price
+    query: How much is the product "Tencel Silk Shirt with Ruffled Detail"?
+  assert:
+    - type: answer-relevance
+      threshold: 0.8
+    - type: contains-all
+      value:
+      - 'Tencel Silk Shirt with Ruffled Detail'
+      - '47'
+- vars:
+    case: Retrieve product
+    query: Give me product "Serge Checkered Wide-Leg Pants"
+  assert:
+    - type: answer-relevance
+      threshold: 0.8
+    - type: contains-all
+      value:
+      - 'Serge Checkered Wide-Leg Pants'
+      - '56'
+- vars:
+    case: Check stock
+    query: Is "Sleeves Style Shirt" in stock?
+  assert:
+    - type: regex
+      value: "(Yes|No)"
+    - type: answer-relevance
+      threshold: 0.8
+    - type: contains-all
+      value:
+      - 'Yes'
+- vars:
+    case: Ask product
+    query: Do you have "Skort Design Shorts"?
+  assert:
+    - type: regex
+      value: "(Yes|No)"
+    - type: answer-relevance
+      threshold: 0.8
+    - type: contains-all
+      value:
+      - 'Skort Design Shorts'
+      - '474'
+- vars:
+    case: Compare products
+    query: Compare "Viviane Pleated Fitted Dress" and "Pauline Neckline Fitted Dress"
+  assert:
+    - type: answer-relevance
+      threshold: 0.8
+    - type: contains-all
+      value:
+      - 'Viviane Pleated Fitted Dress'
+      - '78'
+      - 'Pauline Neckline Fitted Dress'
+      - '108'

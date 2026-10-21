@@ -1,0 +1,109 @@
+policies:
+  - title: "List of policies"
+  - content: |
+      - Payments Policy
+      - Returns Policy
+      - Warranty Policy
+      - Shipping Policy
+      - Privacy Policy
+
+payment_policy:
+  title: "Payments Policy"
+  content: |
+    There are two payment methods when shopping online at IVY moda:
+    1. Cash on Delivery (COD): Customers will pay when receiving the goods, including the cost of the items and shipping fees to the delivery personnel.
+    2. Online Payment via OnePay using domestic ATM cards or international cards directly on the website.
+
+return_policy:
+  title: "Returns Policy"
+  content: |
+    1. RETURN PERIOD
+    Returns are accepted within 15 days from the date the customer receives the items.
+
+    2. RETURN LOCATIONS
+    Applicable at all IVY moda stores and the Online Warehouse system of IVY moda.
+
+    3. RETURN CONDITIONS
+    - The returned items must still have the original tags, barcodes, and be unused, with the original invoice attached (including products made of cotton/wool, cotton wool, and jeans).
+    - For returns without an invoice, please visit the store where the purchase was made for assistance.
+    - Returns are only allowed once according to the policy.
+    - The return value of the product is calculated based on the unit price on the invoice.
+    - IVY moda only issues "Deposit Receipts" to refund the excess after returns and the value of returned items; no cash refunds are allowed.
+    - If the error is due to the manufacturer, IVY moda will bear the full cost of shipping for the return and exchange.
+
+    4. EXCLUDED RETURN CASES
+    - Products in the fixed-price promotion or those with discounts above 50%.
+    - Items purchased more than 15 days ago.
+    - Tags or barcodes are no longer intact.
+    - Products that have been altered, used (dirty, torn, damaged, frayed, faded, have unpleasant odors, or chemical smells), or damaged by external forces after purchase, or missing/accessories/details are damaged.
+    - Products with the IVY Secret label, strapless tops, camisoles, accessories (bags, shoes, belts...), etc.
+
+warranty_policy:
+  title: "Warranty Policy"
+  content: |
+    When shopping at IVY moda, you will receive lifetime free warranty privileges!
+    However, this policy excludes special cases such as:
+    - Products with the IVY Secret or IVY Accessories label: underwear, camisoles, accessories (bags, shoes, belts...), cotton/wool, cotton wool products, jeans.
+    - The store only handles simple repairs like hemming or resizing. No repair of complex details that may alter the design or repair products with severe color fading, damage, or defects caused by user error.
+    - For leather products: Only genuine leather products are covered, and the warranty period is 06 months from the purchase date on the invoice.
+    - If you want to customize products, you will incur an additional cost for materials.
+    - Online customers can have their products repaired at any IVY moda showroom for warranty service.
+
+shipping_policy:
+  title: "Shipping Policy"
+  content: |
+    Free shipping is available on orders over 1 million VND.
+
+    Shipping cost payment methods:
+    - Pay directly to the delivery personnel.
+    - Bank transfer or online payment to IVY moda, including the cost of items and shipping. The shipping fee is based on the partner shipping rate.
+
+    Receiving goods policy:
+    - Only accept deliveries if the goods are intact, sealed.
+    - IVY moda does not support the joint inspection of goods. Therefore, to ensure transparency, please provide a video of the unboxing process for defective products/incorrect delivery or missing items and send it to the customer service email at cskhonline@ivy.com.vn for support.
+
+    Shipping method:
+    - The courier service is handled by EMS.
+
+    Estimated delivery time:
+    - The expected delivery time is within 7 days from the moment the customer receives the delivery notification message from IVY moda.
+
+    Note: Depending on the shipping partner's policy, in cases of special areas, islands, or regions with unavoidable factors such as weather or health issues, IVY moda will notify the customer of the expected delivery time via SMS or phone.
+
+    Order tracking:
+    - Customers can contact the hotline at 0246 662 3434, press 2 to check delivery progress.
+
+    In case an order is canceled due to delivery failure for external reasons, IVY moda will notify via SMS or contact by phone to assist with refunding paid orders.
+
+privacy_policy:
+  title: "Privacy Policy"
+  content: |
+    2.1 Purpose
+    When customers make transactions or register accounts on the website and application, they may be required to provide certain information necessary for the transaction and account registration ("Customer Information").
+
+    Customers are responsible for ensuring that the information provided is accurate and up-to-date. IVY moda is not responsible for resolving any disputes resulting from inaccurate or outdated information or fraudulent data.
+
+    2.2.2 Data retention and privacy:
+    Customer Information, as well as all communication between the customer and IVY moda, will be stored and protected by IVY moda’s system. Customer payment information is securely handled by IVY moda's payment partners according to international standards.
+
+    IVY moda implements appropriate technical and security measures to prevent unauthorized access to Customer Information. IVY moda regularly works with security experts to update its security systems to ensure the safety of Customer Information when accessing, registering, or using the website and application. Customer data is stored securely with firewalls, access control measures, and encryption.
+
+    Payment information is protected by IVY moda's payment partners according to international standards. IVY moda does not allow third parties to track or collect customer information on the website and application.
+
+    In the event of account closure, IVY moda retains Customer Information to prevent fraud, conduct investigations, or resolve inquiries.
+
+    Customers are strictly prohibited from using tools or programs to interfere with or alter the data structure of IVY moda's system or engage in any activities that may disrupt or damage IVY moda's system. If IVY moda detects fraudulent, deceptive, or illegal activities, IVY moda may share Customer Information with relevant authorities for legal action.
+
+    2.2.3 Using Customer Information:
+    IVY moda may use the customer data provided, including but not limited to, Customer Information to:
+    - Provide services or utilities based on the customer's preferences and habits when using the website or application.
+    - Send notifications or communications between the customer and IVY moda via the website and application.
+    - Detect and prevent fraudulent activities or account impersonation.
+    - Contact, assist, and resolve specific customer issues.
+
+    2.2.4 Sharing with third-party websites:
+    Customers are responsible for protecting their account information and must not provide any account-related details, including passwords, to third-party websites unless they are on the official IVY moda website or app.
+
+    IVY moda may disclose Customer Information to third parties under the following circumstances:
+    - Market research and analysis: IVY moda may use Customer Information for market research, summarizing, and analyzing general customer information for statistical purposes. Any personal details will be anonymized for such purposes.
+    - Sharing with third-party partners and agents: IVY moda may share Customer Information with partners, agents, or subcontractors for data analysis, marketing, or customer service support. IVY moda may also share customer information for anti-fraud purposes.

@@ -1,0 +1,198 @@
+
+prompts: '{{query}}'
+providers:
+- file://providers/retriever.py
+
+tests:
+- description: Test if the retriever can retrieve the FAQs documents
+  vars:
+    case: 1. Ask about free shipping.
+    query: Do you offer free shipping?
+    service_categories: faqs,policies
+  assert:
+    - type: contains-all
+      value:
+      - 'source:faqs.txt'
+      - 'service_category:faqs'
+      - '1 million VND'
+      - 'free shipping'
+
+- description: Test if the retriever can retrieve the information documents
+  vars:
+    case: 3. Ask about shop categories
+    query: Give me list categories
+    service_categories: ["faqs"]
+  assert:
+    - type: contains-all
+      value:
+      - 'source:faqs.txt'
+      - 'service_category:faqs'
+      - 'Shirts'
+      - 'T-Shirts'
+      - 'Sweaters'
+      - 'Coats'
+      - 'Jackets'
+      - 'Pants'
+      - 'Shorts'
+      - 'Dresses'
+
+- description: Test if the retriever can retrieve the policies documents
+  vars:
+    case: 4. Ask about payment policy
+    query: Give me payment policy
+    service_categories: [ "policies"]
+  assert:
+    - type: contains-all
+      value:
+      - 'source:policies.yaml'
+      - 'service_category:policies'
+      - 'Cash on Delivery (COD)'
+      - 'Online Payment via OnePay'
+
+- description: Test if the retriever can retrieve the returns policy documents
+  vars:
+    case: 5. Ask about returns policy
+    query: Give me returns policy
+    service_categories: [ "policies"]
+  assert:
+    - type: contains-all
+      value:
+      - 'source:policies.yaml'
+      - 'service_category:policies'
+      - '15 days'
+      - 'RETURN PERIOD'
+      - 'RETURN LOCATIONS'
+      - 'RETURN CONDITIONS'
+
+- description: Test if the retriever can retrieve the warranty policy documents
+  vars:
+    case: 6. Ask about warranty policy
+    query: Give me warranty policy
+    service_categories: [ "policies"]
+  assert:
+    - type: contains-all
+      value:
+      - 'source:policies.yaml'
+      - 'service_category:policies'
+      - 'lifetime free warranty privileges'
+      - 'excludes special cases'
+
+
+- description: Test if the retriever can retrieve the privacy policy documents
+  vars:
+    case: 8. Ask about privacy policy
+    query: Give me privacy policy
+    service_categories: [ "policies"]
+  assert:
+    - type: contains-all
+      value:
+      - 'source:policies.yaml'
+      - 'service_category:policies'
+      - 'Purpose'
+      - 'Responsibility'
+
+- description: Test if the retriever can retrieve the FAQs document
+  vars:
+    case: 9. Ask about FAQs
+    query: Where do I send products for warranty or repair?
+    service_categories: [ "faqs"]
+  assert:
+    - type: contains-all
+      value:
+      - 'source:faqs.txt'
+      - 'service_category:faqs'
+      - 'Lifetime free warranty for simple repairs'
+      - 'IVY Moda showroom'
+- description: Test if the retriever can retrieve the FAQs document
+  vars:
+    case: 10. Ask about how to cancel an order
+    query: How can I cancel my order?
+    service_categories: [ "faqs"]
+  assert:
+    - type: contains-all
+      value:
+      - 'source:faqs.txt'
+      - 'service_category:faqs'
+      - 'IVY Moda hotline'
+      - '02466623434 (extension 3)'
+      - '8:00 AM - 5:30 PM, Monday to Friday'
+- description: Test if the retriever can retrieve the FAQs document
+  vars:
+    case: 11. Ask about how to order a product
+    query: How can I order a product from IVY Moda?
+    service_categories: [ "faqs"]
+  assert:
+    - type: contains-all
+      value:
+      - 'source:faqs.txt'
+      - 'service_category:faqs'
+      - 'IVY moda website'
+      - 'Add to Cart'
+      - 'shipping details'
+      - 'payment method'
+      - 'Confirm your order'
+
+- description: Test if the retriever can retrieve the FAQs document
+  vars:
+    case: 12. Ask about how long it takes for IVY Moda to process a refund
+    query: How long does it take for IVY Moda to process a refund?
+    service_categories: [ "faqs"]
+  assert:
+    - type: contains-all
+      value:
+      - 'source:faqs.txt'
+      - 'service_category:faqs'
+      - '30 days'
+      - 'excluding Saturdays, Sundays, and public holidays'
+
+- description: Test if the retriever can retrieve the FAQs document
+  vars:
+    case: 13. Ask about payment methods
+    query: What payment methods does IVY Moda support?
+    service_categories: [ "faqs"]
+  assert:
+    - type: contains-all
+      value:
+      - 'source:faqs.txt'
+      - 'service_category:faqs'
+      - 'Credit card payment'
+      - 'ATM card payment'
+      - 'Momo payment'
+      - 'Cash on delivery'
+
+- description: Test if the retriever can retrieve the FAQs document
+  vars:
+    case: 14. Ask about how to track an order
+    query: How can I track my order?
+    service_categories: [ "faqs"]
+  assert:
+    - type: contains-all
+      value:
+      - 'source:faqs.txt'
+      - 'service_category:faqs'
+      - 'Order Management'
+
+- description: Test if the retriever can retrieve the FAQs document
+  vars:
+    case: 15. How to preserve the color of my clothing?
+    query: How should I preserve the color of my clothing?
+    service_categories: [ "faqs"]
+  assert:
+    - type: contains-all
+      value:
+      - 'source:faqs.txt'
+      - 'service_category:faqs'
+      - 'Wash immediately without soaking'
+
+- description: Test if the retriever can retrieve the FAQs document
+  vars:
+    case: 15. How to preserve the color of my clothing?
+    query: How should I preserve the color of my clothing?
+    service_categories: [ "faqs"]
+  assert:
+    - type: contains-all
+      value:
+      - 'source:faqs.txt'
+      - 'service_category:faqs'
+      - 'Wash immediately without soaking'
+      - 'Separate fabrics by color and type'

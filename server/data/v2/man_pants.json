@@ -1,0 +1,342 @@
+[
+  {
+    "uuid": "48728bb75cb9403a8057edc9464ca216",
+    "name": "Dark Navy Blue Jeans",
+    "description": "Dark navy blue jeans, Regular fit, ankle length, Denim material, deep blue color.",
+    "price": 23,
+    "colors": [
+      "stone grey"
+    ],
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL",
+      "XXL"
+    ],
+    "category": "pants",
+    "thumbnail": "https://pubcdn.ivymoda.com/files/product/thumab/1400/2025/01/16/3a1f837c4eab2c4d794389e761e41e68.jpg",
+    "url": "https://ivymoda.com/sanpham/quan-jeans-xanh-than-ms-25e4123-42141",
+    "quantity": 40
+  },
+  {
+    "uuid": "8cd4901de39e42fdb1cdb2fa3311c088",
+    "name": "Forge Pants - Straight Leg Tuysi Pants",
+    "description": "Men's long pants\n- Button fly waistband with belt loop\n- 4-pocket design\n- Solid pattern\n- Neutral, fashionable color\n- Straight fit\n- Tuysi material\n- Effective wrinkle resistance\n- Breathable, comfortable to wear\n- High color fastness\n- Easy to mix & match with various outfits",
+    "price": 25,
+    "colors": [
+      "beige striped"
+    ],
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL",
+      "XXL"
+    ],
+    "category": "pants",
+    "thumbnail": "https://pubcdn.ivymoda.com/files/product/thumab/1400/2024/10/04/167d827e009c455a41b03de64d8ff577.jpg",
+    "url": "https://ivymoda.com/sanpham/forge-pants-quan-dai-tuysi-ong-dung-ms-22e4349-41013",
+    "quantity": 78
+  },
+  {
+    "uuid": "cd4302d0345c4dbb99d72c678d6908df",
+    "name": "Regular Khaki Pants PKA",
+    "description": "Masculine and strong men's pants design - Western waistband with buttons and placket - Functional pockets - Comfortable Regular Fit style - Ankle-length pants - Solid color - Made from durable Khaki material - Structured form - Slight stretch and elasticity - Suitable for both outdoor activities and sports.",
+    "price": 23,
+    "colors": [
+      "salmon pink"
+    ],
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL",
+      "XXL"
+    ],
+    "category": "pants",
+    "thumbnail": "https://pubcdn.ivymoda.com/files/product/thumab/1400/2024/08/20/02bde32c371fb55d2a5a9b2432ca9b84.jpg",
+    "url": "https://ivymoda.com/sanpham/quan-dai-regular-khaki-pka-ms-22d4335-41063",
+    "quantity": 61
+  },
+  {
+    "uuid": "9ddffa1925b64eb0a23f6b035aaa213c",
+    "name": "Regular Khaki Drop Pants",
+    "description": "Modern basic Khaki pants - Ankle length - Button waistband with belt loops - 4 convenient pockets - Plain pattern - Regular fit - Sturdy Khaki material - Durable & wrinkle-resistant - Product maintains shape well even after multiple machine washes",
+    "price": 23,
+    "colors": [
+      "candy pink"
+    ],
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL",
+      "XXL"
+    ],
+    "category": "pants",
+    "thumbnail": "https://pubcdn.ivymoda.com/files/product/thumab/1400/2024/08/15/ab409d03d32c12a6d15466764a55e840.jpg",
+    "url": "https://ivymoda.com/sanpham/quan-dai-regular-khaki-drop-ms-22d4182-41014",
+    "quantity": 76
+  },
+  {
+    "uuid": "25e2402cd5ce4115a791bfc71d852778",
+    "name": "Regular Point Man Khaki Pants",
+    "description": "Modern Daily Khaki Pants - Ankle-length - Comfortable adjustable waistband - Button closure with zipper - 4 convenient pockets - Plain pattern - Regular fit - Sturdy Khaki material - Durable & wrinkle-resistant - Product maintains shape well even after multiple machine washes - Easy to maintain, long-lasting",
+    "price": 25,
+    "colors": [
+      "gray pink"
+    ],
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL",
+      "XXL"
+    ],
+    "category": "pants",
+    "thumbnail": "https://pubcdn.ivymoda.com/files/product/thumab/1400/2024/08/05/33d71f3c533716527aff8052933ab780.jpg",
+    "url": "https://ivymoda.com/sanpham/quan-khaki-regular-point-man-ms-22d4242-41073",
+    "quantity": 42
+  },
+  {
+    "uuid": "9111c09191ae4b818aa8a8e65c0875b5",
+    "name": "Regular Khaki Cargo Pants",
+    "description": "Modern utility pants, ankle-length, elastic waistband, adjustable belt, designed with 2 additional convenient cargo pockets, plain pattern, Regular fit, made of sturdy Khaki material that is durable & wrinkle-resistant, maintains shape well even after multiple machine washes, easy to maintain, long-lasting.",
+    "price": 25,
+    "colors": [
+      "chocolate brown"
+    ],
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL",
+      "XXL"
+    ],
+    "category": "pants",
+    "thumbnail": "https://pubcdn.ivymoda.com/files/product/thumab/1400/2024/06/03/84001b818e8d98ae7e19712e54940708.JPG",
+    "url": "https://ivymoda.com/sanpham/quan-regular-khaki-cargo-ms-22d4283-41016",
+    "quantity": 45
+  },
+  {
+    "uuid": "636e86618b3e48ad88134ded63e25ceb",
+    "name": "Smoke Gray Slim Fit Tuysi Pants",
+    "description": "Smoke Gray Slim Fit Tuysi Pants - Modern style, ankle-length, button waistband with belt loops, convenient 4-pocket design, smoke gray color, made from soft, durable and wrinkle-resistant Tuysi material, maintains good shape after multiple washes.",
+    "price": 27,
+    "colors": [
+      "beige"
+    ],
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL",
+      "XXL"
+    ],
+    "category": "pants",
+    "thumbnail": "https://pubcdn.ivymoda.com/files/product/thumab/1400/2024/06/01/d8b87de9af594af93c136e09cb50553e.jpg",
+    "url": "https://ivymoda.com/sanpham/quan-tuysi-slim-fit-ghi-khoi-ms-22e4259-41017",
+    "quantity": 29
+  },
+  {
+    "uuid": "81139eddfd1d494c85a34fedaf56f622",
+    "name": "Black Daily Slim Fit Tuysi Pants",
+    "description": "Black Daily Slim Fit Tuysi Pants - Modern style, ankle-length, button waistband with belt loops, convenient 4-pocket design, black color, Slim Fit style, soft Tuysi material that is durable and wrinkle-resistant, maintains shape well after multiple washes.",
+    "price": 27,
+    "colors": [
+      "navy blue"
+    ],
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL",
+      "XXL"
+    ],
+    "category": "pants",
+    "thumbnail": "https://pubcdn.ivymoda.com/files/product/thumab/1400/2024/06/05/dee5881fed36d63fc64c48e1529e1918.jpg",
+    "url": "https://ivymoda.com/sanpham/quan-tuysi-slim-fit-den-daily-ms-22e4259-41018",
+    "quantity": 15
+  },
+  {
+    "uuid": "cc72064f43ad4e9689357fa4a09ad820",
+    "name": "Basic Tuysi Regular Pants",
+    "description": "Men's basic pants - Button waistband with belt loops - 4-pocket design - Plain pattern - Neutral, fashionable colors - Regular fit - Tuysi material - Effective wrinkle resistance - Breathable, comfortable to wear - High color fastness - Easy to mix & match with various outfits",
+    "price": 25,
+    "colors": [
+      "white"
+    ],
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL",
+      "XXL"
+    ],
+    "category": "pants",
+    "thumbnail": "https://pubcdn.ivymoda.com/files/product/thumab/1400/2024/04/22/a2822e3085215cfc8c3d31c679136b45.JPG",
+    "url": "https://ivymoda.com/sanpham/quan-regular-tuysi-basic-ms-22d4179-39185",
+    "quantity": 53
+  },
+  {
+    "uuid": "c3e2658f802b4ce985956a0111e2d9ee",
+    "name": "Dapper Jeans - Regular fit Jeans",
+    "description": "Regular Fit jeans with comfortable fit, not too tight, increasing flexibility when moving. Deep navy blue color exudes masculinity, traditional pockets, sturdy stitching and contrast seams. 50% discount from 1,190,000₫ to 595,000₫.",
+    "price": 23,
+    "colors": [
+      "stone gray"
+    ],
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL",
+      "XXL"
+    ],
+    "category": "pants",
+    "thumbnail": "https://pubcdn.ivymoda.com/files/product/thumab/1400/2024/01/24/075baabaeb4ac4fc1747919a769e1abc.JPG",
+    "url": "https://ivymoda.com/sanpham/dapper-jeans-quan-jeans-regular-fit-ms-25e4109-41019",
+    "quantity": 98
+  },
+  {
+    "uuid": "657d5a6e568541cdaeda86eda9847ef6",
+    "name": "Regular Smart Jeans",
+    "description": "Basic jeans, ankle length, featuring contrasting stitching details, 4-pocket design, button closure with belt loops, YKK zipper, custom-made buttons, selected Denim material, free from dyes and harmful chemicals, highly durable, resistant to fading and discoloration, maintains good shape, easy to mix and match with various outfits.",
+    "price": 23,
+    "colors": [
+      "035"
+    ],
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL",
+      "XXL"
+    ],
+    "category": "pants",
+    "thumbnail": "https://pubcdn.ivymoda.com/files/product/thumab/1400/2024/08/20/5e533e0e92f6c0afc51e384dc18f7955.jpg",
+    "url": "https://ivymoda.com/sanpham/quan-jeans-regular-smart-ms-25e4110-41020",
+    "quantity": 46
+  },
+  {
+    "uuid": "f1707b03128e4091a1c599aa63d9094a",
+    "name": "Plain Slim Tuysi Pants",
+    "description": "Plain Slim Tuysi Pants - Featuring fashionable colors and a modern Slim fit, these pants are the most optimal choice for gentlemen. Plain pants, ankle-length, made of premium Tuysi blended fabric. The design can be easily mixed with different types of tops to create diverse youthful and dynamic styles.",
+    "price": 25,
+    "colors": [
+      "light beige"
+    ],
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL",
+      "XXL"
+    ],
+    "category": "pants",
+    "thumbnail": "https://pubcdn.ivymoda.com/files/product/thumab/1400/2023/08/11/62b56a8f9d36c826d8c6376c193ec8a0.webp",
+    "url": "https://ivymoda.com/sanpham/quan-tron-slim-tuysi-ms-22e3994-40385",
+    "quantity": 6
+  },
+  {
+    "uuid": "c28aa05fc73c4f4fa2d4fdc09c580638",
+    "name": "Regular Khaki Pants",
+    "description": "Designed with ankle-length and modern Regular fit, youthful and dynamic. Khaki material maintains good shape, comfortable to wear and suitable for summer weather.",
+    "price": 19,
+    "colors": [
+      "red"
+    ],
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL",
+      "XXL"
+    ],
+    "category": "pants",
+    "thumbnail": "https://pubcdn.ivymoda.com/files/product/thumab/1400/2023/07/05/ce25401d39df256d2b41356e13d1cee5.jpg",
+    "url": "https://ivymoda.com/sanpham/quan-regular-khaki-ms-22e3905-41094",
+    "quantity": 44
+  },
+  {
+    "uuid": "b41ee33f0e4c46b891ecdc4dc10d1259",
+    "name": "Khaki Pants",
+    "description": "Premium Khaki fabric, glossy and wrinkle-resistant, easy to iron back to the right form, helping to create an elegant and luxurious style for the wearer. Basic style long pants, ankle length, suitable for this summer.",
+    "price": 29,
+    "colors": [
+      "light pink"
+    ],
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL",
+      "XXL"
+    ],
+    "category": "pants",
+    "thumbnail": "https://pubcdn.ivymoda.com/files/product/thumab/1400/2023/07/12/6973ea7c52d8915b16f87b761a38ebf6.JPG",
+    "url": "https://ivymoda.com/sanpham/quan-khaki-ms-22e3906-41098",
+    "quantity": 25
+  },
+  {
+    "uuid": "a13c4ffeba764fb1b0a05df423c77ad9",
+    "name": "Jogger Sweatpants",
+    "description": "Material: Using Interlock fabric composed of 65% Cotton 30% Polyester 5% Spandex. Features windproof, thermal insulation to keep body warm. Long pants with elastic waistband, drawstring for easy waist adjustment, 2 square front pockets. Cuffed leg openings.",
+    "price": 12,
+    "colors": [
+      "plum red pattern"
+    ],
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL",
+      "XXL"
+    ],
+    "category": "pants",
+    "thumbnail": "https://pubcdn.ivymoda.com/files/product/thumab/1400/2024/11/21/b0ef76723518f9759037c7dd479e9d9c.webp",
+    "url": "https://ivymoda.com/sanpham/quan-ni-jogger-ms-22e3626-36629",
+    "quantity": 86
+  },
+  {
+    "uuid": "f452dde760704c8fb2ffe6dc27e2ddd9",
+    "name": "Cargo shorts with belt detail",
+    "description": "Knee-length shorts with elastic waistband and decorative belt - 2 side pockets and square cargo pockets - Made from sturdy khaki fabric, durable, maintains good shape",
+    "price": 8,
+    "colors": [
+      "smoky grey"
+    ],
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL",
+      "XXL"
+    ],
+    "category": "pants",
+    "thumbnail": "https://pubcdn.ivymoda.com/files/product/thumab/1400/2023/03/15/8ee62dfbfb9160903b2ddbf58fc21529.jpg",
+    "url": "https://ivymoda.com/sanpham/quan-shorts-tui-hop-phoi-dai-ms-20e3594-41172",
+    "quantity": 35
+  },
+  {
+    "uuid": "c301874283d54b0a856728aa7ff66c05",
+    "name": "Regular fit dress pants",
+    "description": "Regular fit long pants. Ankle length. Waistband with button and buttonhole. Zipper closure. Made from sturdy khaki fabric, structured silhouette, youthful and distinctive colors suitable for mixing with various types of tops.",
+    "price": 12,
+    "colors": [
+      "ash pink"
+    ],
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL",
+      "XXL"
+    ],
+    "category": "pants",
+    "thumbnail": "https://pubcdn.ivymoda.com/files/product/thumab/1400/2023/02/16/542a1d37a3c6091eded1168ce04e4ee9.jpg",
+    "url": "https://ivymoda.com/sanpham/quan-tay-dang-regular-fit-ms-22e3607-40371",
+    "quantity": 49
+  }
+]

@@ -1,0 +1,630 @@
+{
+    "products":
+    [
+      {
+          "_id": "485e5c62-169e-5b53-a01f-27a20979bc5c",
+          "name": "Lucille Silk Collared Shirt",
+          "description": "Modern office wear is no longer limited to stiff, formal outfits, as today, women can look stylish every day when heading to the office, not just on special occasions! This shirt is made from high-quality silk material, soft and lightly glossy, providing a gentle feeling to the skin. The classic polka dot pattern brings a youthful and fashionable look, helping you stand out in any situation. The alluring draped collar design, combined with gentle waves, enhances the shirt's charm. The shirt has a light, loose fit, making it easy to pair with trousers, skirts, or jeans, giving a refined and attractive appearance.",
+          "price": "41",
+          "sizes": [
+              "S",
+              "M",
+              "L",
+              "XL",
+              "XXL"
+          ],
+          "colors": [
+              "Ivory Pattern",
+              "Black Pattern"
+          ],
+          "out_of_stock": false,
+          "category": "Shirts",
+          "images": [
+              "https://pubcdn.ivymoda.com/files/product/thumab/1400/2024/11/05/a9d992905aa523d5ffcd9646752e38c1.webp",
+              "https://pubcdn.ivymoda.com/files/product/thumab/1400/2024/11/05/bca8b48c107e2152f7d5eba42253c5cf.webp"
+          ],
+          "url": "https://ivymoda.com/sanpham/ao-so-mi-lua-co-do-lucille-ms-17m8943-40924"
+      },
+      {
+          "_id": "485e5c62-169e-5b53-a01f-27a209740496",
+          "name": "SAPPHIRE Cotton Shirt",
+          "description": "The design is part of the SAPPHIRE CHIC collection, inspired by the noble blue color of Sapphire stone with modern office designs that stand out with high aesthetic value and sophistication through highlighted details without losing the inherent elegance. The shirt perfectly combines classic and modern styles. Made from high-quality Cotton material, the shirt is not only soft and breathable but also ensures comfort and ease throughout the day. The material is particularly durable and highly absorbent, making it ideal for busy workdays or important meetings. The neat mandarin collar design is suitable for office events and meetings. The long sleeves with meticulous stitching show the elegance of the chic lady. The shirt can be easily paired with trousers, jeans, or skirts, helping you create flexible and diverse outfits.",
+          "price": "50",
+          "sizes": [
+              "S",
+              "M",
+              "L",
+              "XL",
+              "XXL"
+          ],
+          "out_of_stock": false,
+          "colors": [
+              "Stone Grey"
+          ],
+          "category": "Shirts",
+          "images": [
+              "https://pubcdn.ivymoda.com/files/product/thumab/1400/2024/10/25/83c2015356eb093f721300702bebe3e1.webp"
+          ],
+          "url": "https://ivymoda.com/sanpham/ao-so-mi-sapphire-cotton-ms-61m8355-40496"
+      },
+      {
+          "_id": "485e5c62-169e-5b53-a01f-27a209740805",
+          "name": "Long Sleeves Tencel Shirt",
+          "description": "The Long Sleeves Tencel shirt offers an elegant and comfortable style with high-quality Tencel fabric, known for its softness, breathability, and excellent moisture absorption. The shirt not only provides comfort but also has a slight sheen, giving it a luxurious and modern look. The classic long sleeve design makes it suitable for various occasions, from office wear to casual meetings. Its relaxed fit makes it easy to pair with trousers, skirts, or jeans. This is a great option for long workdays while maintaining an elegant style.",
+          "price": "47",
+          "sizes": [
+              "S",
+              "M",
+              "L",
+              "XL",
+              "XXL"
+          ],
+          "colors": [
+              "Beige",
+              "Lotus Pink"
+          ],
+          "out_of_stock": false,
+          "category": "Shirts",
+          "images": [
+              "https://pubcdn.ivymoda.com/files/product/thumab/1400/2024/09/21/3acb03efa746f276df7e5c00667cf041.webp"
+          ],
+          "url": "https://ivymoda.com/sanpham/ao-so-mi-long-sleeves-tencel-ms-17m8938-40804"
+      },
+      {
+          "_id": "485e5c62-169e-5b53-a01f-27a209737857",
+          "name": "French Style Vest (with Croptop)",
+          "description": "This set includes a short-sleeve blazer and a croptop, creating a perfect outfit for dates, parties, or work. The short-sleeve blazer features a simple yet sophisticated design, with an elasticated waist to enhance the sleek, fashionable look. The soft and breathable fabric ensures comfort throughout the day. The croptop with straps, paired with pleated high-waisted pants, creates a harmonious and refined combination. The simple yet elegant design makes it suitable for various fashion styles. You can pair it with high heels for an elegant and sophisticated look, or choose sneakers for a dynamic and youthful style. Regardless of how you style it, this set will help you feel confident and stand out in any situation.",
+          "price": "39",
+          "sizes": [
+              "S",
+              "M",
+              "L",
+              "XL",
+              "XXL"
+          ],
+          "colors": [
+              "Mustard Yellow",
+              "Pale Pink",
+              "Matcha Green"
+          ],
+          "out_of_stock": false,
+          "category": "Shirts",
+          "images": [
+              "https://pubcdn.ivymoda.com/files/product/thumab/1400/2024/09/25/0070f22761707c69900ed906e46b998e.webp",
+              "https://pubcdn.ivymoda.com/files/product/thumab/1400/2024/09/21/3acb03efa746f276df7e5c00667cf041.webp",
+              "https://pubcdn.ivymoda.com/files/product/thumab/1400/2023/04/12/cace34ad88c3dfa34f39d0ee0fbe6710.webp"
+          ],
+          "url": "https://ivymoda.com/sanpham/ao-vest-kieu-french-kem-ao-croptop-ms-61m8355-37855"
+      },
+      {
+          "_id": "485e5c62-169e-5b53-a01f-27a2097340597",
+          "name": "Tencel Silk Shirt with Ruffled Detail",
+          "description": "This design is chosen from the Office Divas collection, marked by a modern style tailored for women. The minimalist design is subtly enhanced by ruffled details, which not only elevate the elegant beauty but also express an independent personality and high-class fashion sense. The Tencel silk shirt features a ruffled body detail, creating a unique and refined look that enhances the wearer's personal style. - High-quality Tencel silk fabric, soft, breathable, and durable - The ruffled detail adds a unique, feminine touch - Long sleeves for an elegant appearance, suitable for various occasions and weather - A modern fit, easily paired with skirts, trousers, or jeans - Perfect for work, parties, or social gatherings.",
+          "price": "47",
+          "sizes": [
+              "S",
+              "M",
+              "L"
+          ],
+          "colors": [
+              "Ivory White",
+              "Coral Pink"
+          ],
+          "out_of_stock": false,
+          "category": "Shirts",
+          "images": [
+              "https://pubcdn.ivymoda.com/files/product/thumab/1400/2024/11/20/34321d43f649d1aa924694ccf718357e.webp"
+          ],
+          "url": "https://ivymoda.com/sanpham/ao-lua-tencel-than-beo-cach-dieu-ms-17b9956-40597"
+      },
+      {
+          "_id": "485e5c62-169e-5b53-a01f-27a2097340803",
+          "name": "Sleeves Style Shirt",
+          "description": "This design, chosen from the Office Divas Collection, features a modern style specifically for women. The minimalist design language is subtly highlighted with soft, stylized details that not only enhance the elegant beauty but also express an independent personality and sophisticated fashion sense. The Tencel silk shirt with a body accentuated by stylish pleats creates a unique and refined look, elevating the wearer’s personal style. - High-quality Tencel silk material, soft, breathable, and durable - A stylish pleated body design that creates a unique, feminine accent - Elegant long sleeves, suitable for various occasions and weather conditions - Modern fit, easy to pair with skirts, trousers, or jeans - Perfect for work, parties, or meeting friends.",
+          "price": "47",
+          "sizes": [
+              "S",
+              "M",
+              "L"
+          ],
+          "colors": [
+              "Smoke Gray"
+          ],
+          "out_of_stock": true,
+          "category": "Shirts",
+          "images": [
+              "https://pubcdn.ivymoda.com/files/product/thumab/1400/2024/09/21/f0205ba29e85c469ad5695ca9fae11eb.webp"
+          ],
+          "url": "https://ivymoda.com/sanpham/ao-so-mi-tay-kieu-sleeves-ms-17h9976-41367s"
+      },
+      {
+          "_id": "485e5c62-169e-5b53-a01f-27a2097340167",
+          "name": "Viscose Printed Dress Set",
+          "description": "The new design feature in the Spring-Summer Collection launched by IVY Moda is the modern burnout weaving technique, which creates a unique fabric pattern that showcases the wearer's elegance. This dress set consists of a chiffon jacket combined with a trendy printed flared dress. The lightweight jacket gracefully covers the shoulders, showing elegance while ensuring politeness and sophistication in the office environment. The dress features stylish two straps, a form-fitting top, and a gently flared semi-circular bottom. The design is made from two premium materials: Viscose and Poly, and the exclusive hand-drawn burnout technique creates a distinct pattern. The product is highly smooth and comfortable to wear without feeling stuffy. It’s a perfect choice for the Spring-Summer weather.",
+          "price": "96",
+          "sizes": [
+              "S",
+              "M",
+              "L",
+              "XL",
+              "XXL"
+          ],
+          "colors": [
+              "White",
+              "Black"
+          ],
+          "out_of_stock": false,
+          "category": "Shirts",
+          "images": [
+              "https://pubcdn.ivymoda.com/files/product/thumab/1400/2024/03/22/3fda254b3ecb7edf97250b1e1858d86b.webp",
+              "https://pubcdn.ivymoda.com/files/product/thumab/1400/2024/04/03/d94f3d8e404bad8f34288f842ce860ba.webp"
+          ],
+          "url": "https://ivymoda.com/sanpham/set-dam-hoa-tiet-viscose-ms-61m8804-40166"
+      },
+      {
+          "_id": "485e5c62-169e-5b53-a01f-27a2097340142",
+          "name": "Peony Set - Stylish Jacket and Flared Dress",
+          "description": "The Peony Set is an option that meets both the elegance and sophistication required in the office while helping the wearer show off their feminine and gentle side, as IVY Moda suggests for this Spring-Summer wardrobe. The jacket features a stylish round collar and a short, above-the-waist design that gives the set a fashionable touch. The A-line dress with a form-fitting top and slightly flared bottom is a great item that hides imperfections and makes it easier for the wearer to move. The product combines two premium materials: Rayon and Poly, offering a smooth, comfortable texture, creating a soft feel when worn. Additionally, the material has natural drape and is waterproof, breathable, and cool for summer. IVY Moda blends elegant beauty with a focus on comfort, offering a design that is both luxurious and comfortable. Not only beautiful in design and material, the Peony Set is highly versatile, perfect for both office wear and attending events.",
+          "price": "90",
+          "sizes": [
+              "S",
+              "M",
+              "L",
+              "XL",
+              "XXL"
+          ],
+          "colors": [
+              "Gray",
+              "Light Orange"
+          ],
+          "out_of_stock": false,
+          "category": "Dresses",
+          "images": [
+              "https://pubcdn.ivymoda.com/files/product/thumab/1400/2024/04/03/27a4fcc8da3f934f70ea41b0d227dc34.webp",
+              "https://pubcdn.ivymoda.com/files/product/thumab/1400/2024/03/22/4a2e8142d755737868922cdc32c7a0a6.webp"
+          ],
+          "url": "https://ivymoda.com/sanpham/peony-set-bo-ao-khoac-kieu-va-dam-xoe-ms-61m8784-40143"
+      },
+      {
+          "_id": "485e5c62-169e-5b53-a01f-27a2097340869",
+          "name": "Floral Pattern T-shirt",
+          "description": "The t-shirt is part of the Her Signature collection with exquisite design details, combined with a gentle pattern that reflects the new office fashion style – confident, elegant, yet charming. - High-quality cotton fabric, soft, stretchy, and form-fitting - Elegant floral pattern, offering a feminine and graceful look - Stylish round neckline, adding a delicate and fashionable touch - Long sleeves, ideal for cooler days or formal occasions - Easy to pair with various outfits, suitable for casual outings, office wear, or meeting friends",
+          "price": "34",
+          "sizes": [
+              "S",
+              "M",
+              "XL",
+              "XXL"
+          ],
+          "colors": [
+              "White",
+              "Black"
+          ],
+          "out_of_stock": false,
+          "category": "Shirts",
+          "images": [
+              "https://pubcdn.ivymoda.com/files/product/thumab/1400/2024/11/05/e22d3d80c318033f346c85158da3ab8b.webp",
+              "https://pubcdn.ivymoda.com/files/product/thumab/1400/2024/10/23/0aac8031ff785d0435e4dbb2284ba627.webp"
+          ],
+          "url": "https://ivymoda.com/sanpham/ao-thun-van-hoa-ms-58m8948-40869"
+      },
+      {
+          "_id": "485e5c62-169e-5b53-a01f-27a2097341051",
+          "name": "Long Sleeve Fitted T-shirt",
+          "description": "This t-shirt features a stylish square neckline that enhances the neck and shoulder area, creating an elegant yet seductive look. The form-fitting design is suitable for various outfits such as skirts, jeans, or trousers. - High-quality cotton fabric, stretchy, soft, and body-hugging - Stylish square neckline, accentuating the neck and shoulders, adding allure - Fitted design that flatters the figure, suitable for various styles - Elegant long sleeves, perfect for cooler weather - Easy to pair with a wide range of outfits, from casual outings to office wear",
+          "price": "790000",
+          "sizes": [
+              "S",
+              "M",
+              "XL",
+              "XXL"
+          ],
+          "colors": [
+              "Dark Brown",
+              "Black"
+          ],
+          "out_of_stock": false,
+          "category": "Shirts",
+          "images": [
+              "https://pubcdn.ivymoda.com/files/product/thumab/1400/2024/11/05/75d609ac1165f0b9b415b71d1ec92f2d.webp"
+          ],
+          "url": "https://ivymoda.com/sanpham/ao-thun-om-long-sleeve-ms-58m8946-41051"
+      },
+      {
+          "_id": "485e5c62-169e-5b53-a01f-27a2097340780",
+          "name": "Queen Style Pleated T-shirt",
+          "description": "This t-shirt features a stylish square neckline that enhances the neck and shoulder area, creating an elegant yet seductive look. The form-fitting design is suitable for various outfits such as skirts, jeans, or trousers. - High-quality cotton fabric, stretchy, soft, and body-hugging - Stylish square neckline, accentuating the neck and shoulders, adding allure - Fitted design that flatters the figure, suitable for various styles - Elegant long sleeves, perfect for cooler weather - Easy to pair with a wide range of outfits, from casual outings to office wear",
+          "price": "33",
+          "sizes": [
+              "S",
+              "M",
+              "XL",
+              "XXL"
+          ],
+          "colors": [
+              "Dark Brown",
+              "Black"
+          ],
+          "out_of_stock": false,
+          "category": "Shirts",
+          "images": [
+              "https://pubcdn.ivymoda.com/files/product/thumab/1400/2024/10/25/5d5609b8d89c1dec1b38922e38d8672d.webp",
+              "https://pubcdn.ivymoda.com/files/product/thumab/1400/2024/10/23/dda259b8a9a78b559bf31d7b8da6dd2d.webp"
+          ],
+          "url": "https://ivymoda.com/sanpham/ao-thun-xep-kieu-queen-ms-58m8881-40780"
+      },
+      {
+          "_id": "485e5c62-169e-5b53-a01f-27a2097340780",
+          "name": "Queen Style Pleated T-shirt",
+          "description": "This design is part of the “SOLAR - SHINE TOGETHER” collection, aiming to honor modern femininity through every detail – from softness and grace to strength and independence. Each product expresses pride, while breaking down barriers for women to freely express their individuality and live true to themselves. The blazer brings a sophisticated and modern beauty with its youthful, trendy design. The high-quality Serge woven fabric not only feels soft but is also durable, maintaining its shape over time. The delicate striped pattern makes the shirt stand out while remaining easy to coordinate, offering many diverse fashion styles. The blazer design features neat stitching, a flattering fit that enhances the figure, and helps the wearer look elegant and confident. It has convenient side pockets and a collar, creating a polished look suitable for both office environments and events. Additionally, the neutral colors and refined stripes make this jacket an essential item in your wardrobe.",
+          "price": "117",
+          "sizes": [
+              "S",
+              "M",
+              "XL",
+              "XXL"
+          ],
+          "colors": [
+              "Smoke Gray Stripe",
+              "Dark Blue Stripe"
+          ],
+          "out_of_stock": false,
+          "category": "Coats",
+          "images": [
+              "https://pubcdn.ivymoda.com/files/product/thumab/1400/2024/10/25/1abccfaf1be0591ef24d7218008e34f2.webp"
+          ],
+          "url": "https://ivymoda.com/sanpham/ao-blazer-ke-serge-ms-67m8878-40928"
+      },
+      {
+          "_id": "485e5c62-169e-5b53-a01f-27a2097340850",
+          "name": "Serge Checkered Wide-Leg Pants",
+          "description": "These modern trousers blend youthful fashion style with the sophistication of the office environment. The high-waisted design combined with wide legs enhances the figure while offering comfort to the wearer. The Serge fabric, made from Poly, Rayon, and Spandex fibers, is soft, breathable, lightly stretchable, and perfect for daily activities such as work or leisure. The elegant checkered pattern and neutral colors make it easy to pair with different tops, from simple t-shirts to shirts or blazers, creating a fashionable yet sophisticated look.",
+          "price": "56",
+          "sizes": [
+              "S",
+              "M",
+              "XL",
+              "XXL"
+          ],
+          "colors": [
+              "Smoke Gray Stripe",
+              "Dark Blue Stripe"
+          ],
+          "out_of_stock": false,
+          "category": "Coats",
+          "images": [
+              "https://pubcdn.ivymoda.com/files/product/thumab/1400/2024/10/25/1abccfaf1be0591ef24d7218008e34f2.webp"
+          ],
+          "url": "https://ivymoda.com/sanpham/quan-ke-serge-ong-suong-ms-22m8878-40850"
+      },
+      {
+          "_id": "485e5c62-169e-5b53-a01f-27a2097339508",
+          "name": "Short-Sleeve Office Blazer",
+          "description": "These modern trousers blend youthful fashion style with the sophistication of the office environment. The high-waisted design combined with wide legs enhances the figure while offering comfort to the wearer. The Serge fabric, made from Poly, Rayon, and Spandex fibers, is soft, breathable, lightly stretchable, and perfect for daily activities such as work or leisure. The elegant checkered pattern and neutral colors make it easy to pair with different tops, from simple t-shirts to shirts or blazers, creating a fashionable yet sophisticated look.",
+          "price": "51",
+          "sizes": [
+              "S",
+              "M",
+              "XL",
+              "XXL"
+          ],
+          "colors": [
+              "Black",
+              "Bright Red",
+              "Light Purple"
+          ],
+          "out_of_stock": false,
+          "category": "Coats",
+          "images": [
+              "https://pubcdn.ivymoda.com/files/product/thumab/1400/2024/03/05/89401e30a6bfffef2b8c4e86fdb15f3d.webp",
+              "https://pubcdn.ivymoda.com/files/product/thumab/1400/2024/06/28/05bfc59eec6cbdf6236094e8046619fe.webp"
+          ],
+          "url": "https://ivymoda.com/sanpham/ao-blazer-cong-so-tay-ngan-ms-61m8698-39508"
+      },
+      {
+          "_id": "485e5c62-169e-5b53-a01f-27a2097340469",
+          "name": "Straight-Leg Jeans in Slate Blue",
+          "description": "This design is part of the SAPPHIRE CHIC collection, inspired by the royal blue color of Sapphire stones, with modern office designs that leave an impression with high aesthetics and sophistication through details that highlight the luxury without losing its inherent elegance. The straight-leg jeans are a perfect choice for those who love a youthful, modern style while ensuring comfort with every step. With the unique slate blue color, these jeans offer a bold look, easy to match with many different outfits. Made from durable, slightly stretchy denim material. Meticulous stitching, secure zipper, and high waist design enhance the shape and make you feel more confident when wearing the product. Whether paired with a simple t-shirt, shirt, or jacket, these jeans create an energetic fashion style.",
+          "price": "48",
+          "sizes": [
+              "S",
+              "M",
+              "XL",
+              "XXL"
+          ],
+          "colors": [
+              "Slate Blue"
+          ],
+          "out_of_stock": false,
+          "category": "Pants",
+          "images": [
+              "https://pubcdn.ivymoda.com/files/product/thumab/1400/2024/10/25/3fc1cbd7417e87dc3c475a138308e774.webp"
+          ],
+          "url": "https://ivymoda.com/sanpham/quan-jeans-ong-suong-xanh-ghi-da-ms-25m8836-40469"
+      },
+      {
+          "_id": "485e5c62-169e-5b53-a01f-27a2097336628",
+          "name": "Skort Design Shorts",
+          "description": "These high-waisted shorts offer a youthful appearance and enhance the figure. The highlight is the luxurious metal button row and the skirt-like design that allows you to dress comfortably while still exuding a feminine charm. The fabric used is Tuysi, a high-end material preferred by designers for its elegance and comfort. These shorts are made from soft, lightweight, breathable Tuysi fabric, which resists wrinkles and retains its shape well. Mix and match these shorts with various tops, perfect for outings, parties, or work.",
+          "price": "474",
+          "sizes": [
+              "S",
+              "M",
+              "XL",
+              "XXL"
+          ],
+          "colors": [
+              "Black",
+              "White"
+          ],
+          "out_of_stock": false,
+          "category": "Pants",
+          "images": [
+              "https://pubcdn.ivymoda.com/files/product/thumab/1400/2023/07/06/4c26d3c556c53fb5b5fec68c46d32e1a.webp"
+          ],
+          "url": "https://ivymoda.com/sanpham/quan-sooc-gia-vay-ms-20m8137-36628"
+      },
+      {
+          "_id": "485e5c62-169e-5b53-a01f-27a2097340585",
+          "name": "Lam Cobalt Pencil Skirt",
+          "description": "The Lam Cobalt Pencil Skirt is a perfect blend of classic beauty and modern elegance. Made from high-quality tweed, this skirt exudes luxury with its prominent textured fabric that feels sturdy but still soft when worn. The cobalt blue color serves as a striking accent for any outfit. The pencil shape enhances curves and femininity. A slight slit in the front adds ease of movement without drawing too much attention. The simple yet elegant design of the skirt pairs effortlessly with shirts, blouses, or blazers, making it suitable for office environments or special events.",
+          "price": "52",
+          "sizes": [
+              "S",
+              "M",
+              "XL",
+              "XXL"
+          ],
+          "colors": [
+              "Dark Blue"
+          ],
+          "out_of_stock": false,
+          "category": "Dresses",
+          "images": [
+              "https://pubcdn.ivymoda.com/files/product/thumab/1400/2024/10/25/d874479c9f7774c47e854cbbea111a77.webp"
+          ],
+          "url": "https://ivymoda.com/sanpham/chan-vay-but-chi-lam-cobalt-ms-31b9950-40585"
+      },
+      {
+          "_id": "485e5c62-169e-5b53-a01f-27a2097340962",
+          "name": "Pauline Neckline Fitted Dress",
+          "description": "Part of the Fall/Winter 2024 collection, 'SOLAR - SHINE TOGETHER' is presented as a symphony that honors the spirit of freedom, optimism, and the vibrant beauty of women. Marking the transformation of modern women, overcoming the 'double standards' imposed on them. The designs in this collection celebrate modern femininity through every line – from softness and grace to strength and independence. Each product expresses pride, breaking barriers for women to freely express their personalities and live true to themselves. - High-quality Tuysi fabric, light stretch, comfortable and flattering - Stylized polo collar, offering elegance and sophistication - Eye-catching buttons on the front body, adding a luxurious touch - Pleated detail on the shoulders, enhancing softness and refinement - Long sleeves suitable for chilly weather and formal occasions",
+          "price": "108",
+          "sizes": [
+              "S",
+              "M",
+              "XL",
+              "XXL"
+          ],
+          "colors": [
+              "Beige"
+          ],
+          "out_of_stock": false,
+          "category": "Dresses",
+          "images": [
+              "https://pubcdn.ivymoda.com/files/product/thumab/1400/2024/11/05/14b5ae2fd2847a741ac80b9e32f3203f.webp"
+          ],
+          "url": "https://ivymoda.com/sanpham/dam-om-co-kieu-pauline-ms-48b0017-40962"
+      },
+      {
+          "_id": "485e5c62-169e-5b53-a01f-27a2097341041",
+          "name": "Viviane Pleated Fitted Dress",
+          "description": "The embodiment of charm and elegance, the Viviane dress from the newly released Fall/Winter collection is set to become a priority in your wardrobe. Designed with a body-hugging form, this dress highlights the curves and natural beauty of the wearer. The high-quality fabric, lightly stretchable and soft, provides comfort while maintaining the perfect shape. The focal point of the Viviane dress is the delicate pleats on the body, making the dress more alluring. Featuring a boat neckline and long sleeves, the dress is adorned with stylish floral lace patterns, ensuring you stand out at parties, events, or special occasions.",
+          "price": "78",
+          "sizes": [
+              "S",
+              "M",
+              "XL",
+              "XXL"
+          ],
+          "colors": [
+              "Black",
+              "White"
+          ],
+          "out_of_stock": false,
+          "category": "Dresses",
+          "images": [
+              "https://pubcdn.ivymoda.com/files/product/thumab/1400/2024/11/05/d826c0005f5c097ddef8874893cb6db3.webp"
+          ],
+          "url": "https://ivymoda.com/sanpham/dam-om-xep-ly-viviane-ms-48m8945-41041"
+      },
+      {
+          "_id": "485e5c62-169e-5b53-a01f-27a2097340994",
+          "name": "Point Supima - Regular Fit T-shirt",
+          "description": "- Round-neck T-shirt - Short-sleeved design - Plain pattern with bold striped edges - Regular fit - Supima Cotton fabric - Stretchable and elastic - Breathable, moisture-wicking - Skin-safe - Maintains shape perfectly when worn - Easily mixes and matches with various outfits",
+          "price": "30",
+          "sizes": [
+              "S",
+              "M",
+              "L",
+              "XL",
+              "XXL"
+          ],
+          "colors": [
+              "Black"
+          ],
+          "out_of_stock": false,
+          "category": "T-shirts",
+          "images": [
+              "https://pubcdn.ivymoda.com/files/product/thumab/1400/2024/08/05/f4ef4f313b7a55c28b792e27d1b95cfa.jpg",
+              "https://pubcdn.ivymoda.com/files/product/thumab/1400/2024/08/05/6edf29d4954591bf216396f11fa09cd5.jpg"
+          ],
+          "url": "https://ivymoda.com/sanpham/point-supima-ao-thun-regular-ms-57d4326-40994"
+      },
+      {
+          "_id": "485e5c62-169e-5b53-a01f-27a2097340036",
+          "name": "Regular Striped Shirt",
+          "description": "- Polo collar\n- Long sleeves\n- Button-front design\n- Regular length\n- Striped pattern\n- Regular fit\n- Made of raw cloth and oxford fabric\n- Good moisture absorption\n- Effective wrinkle resistance",
+          "price": "33",
+          "sizes": [
+              "S",
+              "M",
+              "L",
+              "XL",
+              "XXL"
+          ],
+          "colors": [
+              "Black"
+          ],
+          "out_of_stock": false,
+          "category": "Jackets",
+          "images": [
+              "https://pubcdn.ivymoda.com/files/product/thumab/1400/2024/03/12/83412835226d401ef7e9c4ef35453df7.JPG"
+          ],
+          "url": "https://ivymoda.com/sanpham/ao-so-mi-regular-ke-soc-ms-17d4168-40036"
+      },
+      {
+          "_id": "485e5c62-169e-5b53-a01f-27a2097340997",
+          "name": "Jacket with Hood",
+          "description": "- The jacket with hood MS 70E4031 is suitable for many occasions. It is the perfect choice for those who frequently travel in the winter.\n- Long sleeves combined with a spacious hood and a convenient front zipper, easy to zip up.\n- Cuffed wrists help block wind and keep you warm during use.\n- The jacket has a comfortable fit, does not fuzz, and resists wrinkles effectively.\n- The dark brown color suits young people, giving a stylish and modern feel.",
+          "price": "87",
+          "sizes": [
+              "S",
+              "M",
+              "L",
+              "XL",
+              "XXL"
+          ],
+          "colors": [
+              "Olive green",
+              "Navy blue"
+          ],
+          "out_of_stock": false,
+          "category": "Jackets",
+          "images": [
+              "https://pubcdn.ivymoda.com/files/product/thumab/1400/2024/03/12/8cf09ae4439a01048c9e142b8fcf5606.JPG",
+              "https://pubcdn.ivymoda.com/files/product/thumab/1400/2024/03/12/fae7c097f7c0c6d05c9d6b433ad3b8ff.JPG"
+          ],
+          "url": "https://ivymoda.com/sanpham/ao-khoac-kem-mu-ms-70e4031-40997"
+      },
+      {
+          "_id": "485e5c62-169e-5b53-a01f-27a2097341020",
+          "name": "Regular Smart Jeans",
+          "description": "- Basic jeans\n- Length just above the ankle\n- Highlighted with contrasting stitching\n- 4-pocket design\n- Button closure with belt loops\n- YKK zipper, custom-made buttons\n- Selected denim fabric\n- No dyes or harmful chemicals used\n- High durability, limited fading\n- Maintains good shape\n- Easy to mix & match with various outfits",
+          "price": "52",
+          "sizes": [
+              "29",
+              "30",
+              "31",
+              "32",
+              "33"
+          ],
+          "colors": [
+              "Stone grey"
+          ],
+          "out_of_stock": false,
+          "category": "Shorts",
+          "images": [
+              "https://pubcdn.ivymoda.com/files/product/thumab/1400/2024/08/20/5e533e0e92f6c0afc51e384dc18f7955.jpg"
+          ],
+          "url": "https://ivymoda.com/sanpham/quan-jeans-regular-smart-ms-25e4110-41020"
+      },
+      {
+          "_id": "485e5c62-169e-5b53-a01f-27a2097340366",
+          "name": "Slim Fit Khaki Shorts",
+          "description": "Knee-length shorts with a front zipper fastening. Two side diagonal pockets. Made from durable khaki fabric, thick and holds shape well.",
+          "price": "52",
+          "sizes": [
+              "29",
+              "30",
+              "31",
+              "32",
+              "33"
+          ],
+          "colors": [
+              "Stone Grey"
+          ],
+          "out_of_stock": false,
+          "category": "Shorts",
+          "images": [
+              "https://pubcdn.ivymoda.com/files/product/thumab/1400/2023/09/07/56be452a9120f8342ffabc886fd1b207.JPG"
+          ],
+          "url": "https://ivymoda.com/sanpham/quan-shorts-khaki-dang-slim-fit-ms-20e3598-40366"
+      },
+      {
+          "_id": "485e5c62-169e-5b53-a01f-27a2097338214",
+          "name": "Cloud T-shirt Set",
+          "description": "A yellow-toned set that includes a short-sleeved T-shirt and shorts. The set is made from soft material that absorbs sweat well. The T-shirt is designed to fit comfortably and can be worn with various types of pants or skirts. The shorts have a loose fit suitable for summer, perfect for active play. The cute, fun design is sure to be loved by kids.",
+          "price": "247",
+          "sizes": [
+              "29",
+              "30",
+              "31",
+              "32",
+              "33"
+          ],
+          "colors": [
+              "Yellow Daisy Pattern",
+              "Mustard Yellow Pattern"
+          ],
+          "out_of_stock": false,
+          "category": "Shorts",
+          "images": [
+              "https://pubcdn.ivymoda.com/files/product/thumab/1400/2023/06/13/a01b36ad2eabfe14b04b8775353bca5e.webp"
+          ],
+          "url": "https://ivymoda.com/sanpham/ao-thun-cloud-ms-57g1643-38214"
+      },
+      {
+          "_id": "485e5c62-169e-5b53-a01f-27a2097336924",
+          "name": "Long Sleeve Floral T-shirt Dress",
+          "description": "A straight-cut T-shirt dress with a round collar and long cuffed sleeves. The length is above the knee, with two side diagonal pockets. Made from soft cotton fabric, it keeps kids warm on chilly days.",
+          "price": "21",
+          "sizes": [
+              "4-5",
+              "6-7",
+              "8-9"
+          ],
+          "colors": [
+              "White Floral Pattern",
+              "Navy Blue Floral Pattern",
+              "Pink Purple"
+          ],
+          "out_of_stock": false,
+          "category": "Dresses",
+          "images": [
+              "https://pubcdn.ivymoda.com/files/product/thumab/1400/2022/12/30/7681c68edeb94fdcf8d88f1dc4b57fae.webp"
+          ],
+          "url": "https://ivymoda.com/sanpham/dam-thun-dai-tay-hoa-tiet-hoa-ms-42g1602-36924"
+      },
+      {
+          "_id": "485e5c62-169e-5b53-a01f-27a2097337537",
+          "name": "Dinosaur T-shirt",
+          "description": "The Dinosaur T-shirt features a dinosaur print on the front. The T-shirt has a sleeveless design, making it perfect for active boys who love outdoor activities and enjoy comfort during movement. The material is breathable, helping the child feel comfortable on hot days. Additionally, the T-shirt is easy to pair with other clothes. Parents can combine this T-shirt with shorts or jeans, depending on the occasion and the child's preference.",
+          "price": "13",
+          "sizes": [
+              "4-5",
+              "6-7",
+              "8-9"
+          ],
+          "colors": [
+              "White"
+          ],
+          "out_of_stock": false,
+          "category": "T-shirts",
+          "images": [
+              "https://pubcdn.ivymoda.com/files/product/thumab/1400/2023/04/05/4a0f8e8b07bd45a5716e2e734b0c43ab.webp"
+          ],
+          "url": "https://ivymoda.com/sanpham/ao-thun-dino-saurs-ms-56k1547-37537"
+      },
+      {
+          "_id": "485e5c62-169e-5b53-a01f-27a2097337537",
+          "name": "Boys' Khaki Jogger Pants",
+          "description": "The boys' khaki jogger pants have a long fit with elastic cuffs at the ankles and a comfortable stretchy waistband. There are two side pockets. The khaki fabric is thick, soft, and creates a sporty silhouette. These pants are easy to mix with various types of shirts, making them suitable for school or casual outings.",
+          "price": "26",
+          "sizes": [
+              "4-5",
+              "8-9",
+              "10-11"
+          ],
+          "colors": [
+              "White"
+          ],
+          "out_of_stock": false,
+          "category": "Pants",
+          "images": [
+              "https://pubcdn.ivymoda.com/files/product/thumab/1400/2022/11/11/61b053fd6a020afbed10281abad5485b.webp"
+          ],
+          "url": "https://ivymoda.com/sanpham/quan-khaki-jogger-be-trai-ms-22k1525-36167"
+      }
+    ]
+}

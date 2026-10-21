@@ -1,0 +1,302 @@
+[
+  {
+    "uuid": "89bd762135b246d3803325553613ee9a",
+    "name": "Polo Sweater with Trim",
+    "description": "Polo Sweater with Trim - Premium product line, soft wool material, classic design with delicate trim detailing. Various sizes from S to XXL, suitable for many body types. Currently available in grey-brown.",
+    "price": 17,
+    "colors": [
+      "red-orange stripes"
+    ],
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL",
+      "XXL"
+    ],
+    "category": "shirt",
+    "thumbnail": "https://pubcdn.ivymoda.com/files/product/thumab/1400/2024/10/04/a9eec8ff104bfc51e9e5841d9df0506e.jpg",
+    "url": "https://ivymoda.com/sanpham/ao-len-polo-phoi-vien-ms-57e2622-36648",
+    "quantity": 11
+  },
+  {
+    "uuid": "6a8c4d5d08144c92a4a31a3c2a5a2b76",
+    "name": "Wool Polo Shirt",
+    "description": "The wool polo shirt belongs to the high-end Senora product line, made from premium wool material, with a slim fit design, long sleeves, stand-up collar, plain pattern, and regular length. The product needs careful maintenance, dry clean only to maintain durability and long-lasting shape.",
+    "price": 51,
+    "colors": [
+      "matcha green pattern"
+    ],
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL",
+      "XXL"
+    ],
+    "category": "shirt",
+    "thumbnail": "https://pubcdn.ivymoda.com/files/product/thumab/400/2023/12/18/e96f227a96007b2ff36817431baabfa9.JPG",
+    "url": "https://ivymoda.com/sanpham/ao-polo-len-long-cuu-ms-58e3176-36368",
+    "quantity": 60
+  },
+  {
+    "uuid": "b358548c089245febbe41ebd71d5e1d8",
+    "name": "Knitted Cardigan",
+    "description": "High-end knitted cardigan, wool material, turtleneck, long sleeves, loose-fitting style, regular length, plain pattern.",
+    "price": 28,
+    "colors": [
+      "matcha green"
+    ],
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL",
+      "XXL"
+    ],
+    "category": "jacket",
+    "thumbnail": "https://pubcdn.ivymoda.com/files/product/thumab/1400/2023/02/16/69f37e850582127f613ef61bddeaa3a3.jpg",
+    "url": "https://ivymoda.com/sanpham/ao-khoac-len-ms-77e2625-36666",
+    "quantity": 63
+  },
+  {
+    "uuid": "6a4bceeb296d4898975a842d1656fe61",
+    "name": "Button-up collar sweater",
+    "description": "Product line: Men\nProduct group: Top\nCollar: Other\nSleeves: Long sleeves\nStyle: Slim fit\nLength: Regular length\nPattern: Solid\nMaterial: Wool",
+    "price": 22,
+    "colors": [
+      "blue striped"
+    ],
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL",
+      "XXL"
+    ],
+    "category": "shirt",
+    "thumbnail": "https://pubcdn.ivymoda.com/files/product/thumab/1400/2023/01/17/8f5f43ce77c6901320e5feb0909dfc7e.jpg",
+    "url": "https://ivymoda.com/sanpham/ao-len-co-cai-khuy-ms-58e2623-36656",
+    "quantity": 19
+  },
+  {
+    "uuid": "1d01be5604614388882f1aa57e38f53c",
+    "name": "High-neck Zip-up Sweater",
+    "description": "Made from soft, stretchy, and highly elastic knit fabric. Long-sleeve design with a high collar and zipper detail that serves both as a decorative accent and warmth retention. Regular fit style comfortable and suitable for Vietnamese body types.",
+    "price": 19,
+    "colors": [
+      "candy pink"
+    ],
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL",
+      "XXL"
+    ],
+    "category": "tops",
+    "thumbnail": "https://pubcdn.ivymoda.com/files/product/thumab/1400/2023/08/31/a72839b870231d12d738ab3597a281e6.JPG",
+    "url": "https://ivymoda.com/sanpham/ao-len-co-cao-keo-khoa-ms-58e3168-36365",
+    "quantity": 12
+  },
+  {
+    "uuid": "a290d54028ee447c8557a6cf15dd4ef9",
+    "name": "Zigzag Knitted Sweater",
+    "description": "Product line: Men\nProduct group: Tops\nNeckline: Round neck\nSleeves: Long sleeves\nStyle: Regular fit\nLength: Regular length\nPattern: Other\nMaterial: Wool",
+    "price": 17,
+    "colors": [
+      "ivory"
+    ],
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL",
+      "XXL"
+    ],
+    "category": "tops",
+    "thumbnail": "https://pubcdn.ivymoda.com/files/product/thumab/1400/2023/12/17/3ca6adfcc809f129ec2fe008ad456ac3.jpg",
+    "url": "https://ivymoda.com/sanpham/ao-len-det-noi-ziczac-ms-58e3192-36222",
+    "quantity": 42
+  },
+  {
+    "uuid": "fcb3f9f868954555966069dbee48caab",
+    "name": "Long-sleeve polo shirt",
+    "description": "Regular fit long-sleeve Polo shirt with collar and 3 buttons. Straight fit with elastic cuffs. Soft and breathable knit fabric provides absolute comfort. Metagent logo printed on right chest.",
+    "price": 12,
+    "colors": [
+      "olive"
+    ],
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL",
+      "XXL"
+    ],
+    "category": "shirt",
+    "thumbnail": "https://pubcdn.ivymoda.com/files/product/thumab/1400/2023/01/10/cb7efb3c694d3d362fadde2e59ce50cb.jpg",
+    "url": "https://ivymoda.com/sanpham/ao-thun-polo-dai-tay-ms-58e3696-41166",
+    "quantity": 43
+  },
+  {
+    "uuid": "b39a996bb86644b3b0a2a99443bb777e",
+    "name": "Men Jacket",
+    "description": "Product line: Men\nProduct group: Jacket\nCollar: Hooded\nSleeves: Long sleeves\nStyle: Loose fit\nLength: Long\nPattern: Plain\nMaterial: Polyester",
+    "price": 35,
+    "colors": [
+      "light beige"
+    ],
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL",
+      "XXL"
+    ],
+    "category": "jacket",
+    "thumbnail": "https://pubcdn.ivymoda.com/files/product/thumab/1400/2023/03/15/277811386a35e3b10dc03db4a5a26a99.jpg",
+    "url": "https://ivymoda.com/sanpham/ao-khoac-ms-71e3162-35426",
+    "quantity": 59
+  },
+  {
+    "uuid": "e9450f9f6a364161b74cf42fdb346c44",
+    "name": "Super Light Padded Jacket",
+    "description": "Super light padded jacket, made from Polyester material, cotton padded for warmth, loose fit, high collar, zipper closure, youthful design, lightweight, warm.",
+    "price": 31,
+    "colors": [
+      "coral pink"
+    ],
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL",
+      "XXL"
+    ],
+    "category": "jacket",
+    "thumbnail": "https://pubcdn.ivymoda.com/files/product/thumab/1400/2023/01/17/63a3bb19e57305f17aa46ffeed907954.jpg",
+    "url": "https://ivymoda.com/sanpham/ao-khoac-phao-sieu-nhe-ms-70e3148-36576",
+    "quantity": 46
+  },
+  {
+    "uuid": "4c2450cb4d934c8cb6a319aacfc9b5c6",
+    "name": "Textured slim fit shirt",
+    "description": "Textured slim fit shirt in navy blue, suitable for multiple seasons throughout the year. The design fits snugly, creating a comfortable feeling for the wearer.",
+    "price": 14,
+    "colors": [
+      "red-orange striped"
+    ],
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL",
+      "XXL"
+    ],
+    "category": "shirt",
+    "thumbnail": "https://pubcdn.ivymoda.com/files/product/thumab/1400/2023/01/17/fc2c6694729cd04f36962275cc5696c6.jpg",
+    "url": "https://ivymoda.com/sanpham/ao-so-mi-vai-tho-dang-slim-fit-ms-17e3661-41183",
+    "quantity": 85
+  },
+  {
+    "uuid": "2b6a491f1a7d4da89edb079dd8f61e62",
+    "name": "Crest jumper - Color-block Regular fit sweater",
+    "description": "Round neck sweater with long sleeves, modern color mix knit design, Regular fit silhouette, made from premium synthetic wool that provides good warmth, soft texture, breathable, easy to mix with many outfits.",
+    "price": 25,
+    "colors": [
+      "smoke grey"
+    ],
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL",
+      "XXL"
+    ],
+    "category": "sweater",
+    "thumbnail": "https://pubcdn.ivymoda.com/files/product/thumab/1400/2024/10/04/205ff4dfc42cca287b9496deb911e0c4.jpg",
+    "url": "https://ivymoda.com/sanpham/crest-jumper-ao-len-phoi-mau-regular-fit-ms-58e4118-41134",
+    "quantity": 47
+  },
+  {
+    "uuid": "938cef3f207e4e99a048dab9c4ee37ec",
+    "name": "Echo Polo - Regular fit knitted polo shirt",
+    "description": "Polo shirt with collar - Short sleeves - Lightly ribbed hem design - Regular fit style - Premium knit material - Soft, smooth and comfortable - Easy to combine with many outfits",
+    "price": 21,
+    "colors": [
+      "blue striped"
+    ],
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL",
+      "XXL"
+    ],
+    "category": "shirt",
+    "thumbnail": "https://pubcdn.ivymoda.com/files/product/thumab/1400/2024/10/04/8434d4ab1e421ef72950475f128217bd.jpg",
+    "url": "https://ivymoda.com/sanpham/echo-polo-ao-len-co-duc-regular-fit-ms-57e4116-41135",
+    "quantity": 3
+  },
+  {
+    "uuid": "a2c2eed134bb4412b33cf998268987a0",
+    "name": "Daily Metagent T-shirt",
+    "description": "Round neck t-shirt - Short sleeve design - Plain pattern - REGULAR FIT style - Cotton material - Stretchy, elastic - Sweat absorption - Absolute shape retention - Easy to mix & match with many outfits",
+    "price": 7,
+    "colors": [
+      "red orange striped"
+    ],
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL",
+      "XXL"
+    ],
+    "category": "t-shirt",
+    "thumbnail": "https://pubcdn.ivymoda.com/files/product/thumab/1400/2024/10/05/c8ea051dbbfe291dee184cb389ca94d6.webp",
+    "url": "https://ivymoda.com/sanpham/ao-thun-daily-metagent-ms-57d0005-40785",
+    "quantity": 24
+  },
+  {
+    "uuid": "e537fd6766a2484a81b4aafded5fcde5",
+    "name": "Regular CASUAL Supima T-shirt",
+    "description": "Round neck t-shirt with short sleeves, solid pattern, Regular Fit style, made from Supima Cotton material, stretchy, elastic, sweat-absorbent, maintains perfect shape, easy to mix&match with many outfits.",
+    "price": 13,
+    "colors": [
+      "yellow"
+    ],
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL",
+      "XXL"
+    ],
+    "category": "shirt",
+    "thumbnail": "https://pubcdn.ivymoda.com/files/product/thumab/1400/2024/08/15/4fefd608ed928ebbd4594a6e53e0f503.jpg",
+    "url": "https://ivymoda.com/sanpham/ao-thun-regular-casual-supima-ms-57d4361-41057",
+    "quantity": 13
+  },
+  {
+    "uuid": "e4eb43a321b6402dbe4846d7f0b0fd42",
+    "name": "Modal Slim Fit Polo Shirt with Contrasting Collar",
+    "description": "Modal Slim Fit Polo Shirt with Contrasting Collar - Polo shirt with stand collar, short sleeves, regular length, solid pattern, color mixing at collar and sleeve cuffs, Slim fit style, material composition: 58% Cotton, 39% Modal, 3% Spandex, elastic stretch, sweat-absorbent, breathable, skin-safe, effectively wrinkle-resistant, easy to mix&match with many outfits, suitable for work and casual wear.",
+    "price": 17,
+    "colors": [
+      "candy pink"
+    ],
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL",
+      "XXL"
+    ],
+    "category": "shirt",
+    "thumbnail": "https://pubcdn.ivymoda.com/files/product/thumab/1400/2024/08/20/ca3651d0061d7f433b913c4cff4cd620.jpg",
+    "url": "https://ivymoda.com/sanpham/ao-polo-modal-slim-fit-phoi-co-ms-57e4214-41060",
+    "quantity": 65
+  }
+]

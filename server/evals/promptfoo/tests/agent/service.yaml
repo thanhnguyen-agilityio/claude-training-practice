@@ -1,0 +1,62 @@
+- vars:
+    case: Ask about free shipping.
+    query: Do you offer free shipping?
+  assert:
+    - type: contains-all
+      value:
+      - 'free shipping'
+      - '1 million VND'
+- vars:
+    case: Ask about guide to maintain clothing shape.
+    query: How can I maintain the shape of my clothing?
+  assert:
+    - type: icontains
+      value: 'tips'
+    - type: contains-any
+      value:
+      - 'Rotate Usage'
+      - 'Avoid Overloading Pockets'
+      - 'Clean Regularly'
+      - 'Professional Cleaning'
+- vars:
+    case: Ask about changing phone number.
+    query: How can I change or update the phone number linked to my IVY Moda account?
+  assert:
+    - type: contains-any
+      value:
+      - 'CSKH@ivy.com.vn'
+      - '3'
+- vars:
+    case: Ask about return product.
+    query: Do you allow return product?
+  assert:
+    - type: contains-any
+      value:
+      - 'return policy'
+      - '15 days'
+      - 'invoice'
+- vars:
+    case: Ask about list of policies.
+    query: Give me list of policies
+  assert:
+    - type: contains-all
+      value:
+      - 'Payments Policy'
+      - 'Returns Policy'
+      - 'Warranty Policy'
+      - 'Shipping Policy'
+      - 'Privacy Policy'
+- vars:
+    case: Ask about list of categories.
+    query: Give me list of categories
+  assert:
+    - type: contains-all
+      value:
+      - 'Shirts'
+      - 'T-Shirts'
+      - 'Sweaters'
+      - 'Coats'
+      - 'Jackets'
+      - 'Pants'
+      - 'Shorts'
+      - 'Dresses'

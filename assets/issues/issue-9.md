@@ -1,4 +1,4 @@
-# Issue [#9]()
+# Issue [#9](https://github.com/thanhnguyen-agilityio/claude-training-practice/issues/9)
 ## Title: Error messages are too technical and unhelpful for users
 ## Description:
 

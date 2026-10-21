@@ -1,4 +1,4 @@
-# Issue [#7]()
+# Issue [#7](https://github.com/thanhnguyen-agilityio/claude-training-practice/issues/7)
 ## Title: No clear feedback on what the chatbot is doing
 ## Description:
 

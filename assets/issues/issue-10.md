@@ -1,4 +1,4 @@
-# Issue [#10]()
+# Issue [#10](https://github.com/thanhnguyen-agilityio/claude-training-practice/issues/10)
 ## Title: Approval requests don't explain why user permission is needed
 ## Description:
 

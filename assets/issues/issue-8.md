@@ -1,4 +1,4 @@
-# Issue [#8]()
+# Issue [#8](https://github.com/thanhnguyen-agilityio/claude-training-practice/issues/8)
 ## Title: Chat messages disappear without warning or explanation
 ## Description:
 

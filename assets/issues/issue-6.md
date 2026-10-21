@@ -1,4 +1,4 @@
-# Issue [#6]()
+# Issue [#6](https://github.com/thanhnguyen-agilityio/claude-training-practice/issues/6)
 ## Title: Conversation freezes after clicking Yes/No approval buttons
 ## Description:
 

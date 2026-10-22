@@ -23,5 +23,15 @@
 
 ```
 (Pdb) state["messages"]
-[ToolMessage(content='Category, Product, SupportTicket', name='sql_db_list_tables', id='b0d34fc1-aa17-453b-ba8a-672619b6fa9c', tool_call_id='call_O1NRClmsOjuujZaCD5lUNbo5'), ToolMessage(content='\nCREATE TABLE "Product" (\n\tid INTEGER NOT NULL, \n\tname VARCHAR NOT NULL, \n\tdescription VARCHAR, \n\tprice FLOAT NOT NULL, \n\tquantity INTEGER, \n\tcategory_id INTEGER NOT NULL, \n\tsizes VARCHAR, \n\tthumbnail VARCHAR, \n\turl VARCHAR, \n\tPRIMARY KEY (id), \n\tFOREIGN KEY(category_id) REFERENCES "Category" (id)\n)', name='sql_db_schema', id='0dd9b4d2-474b-46ae-a07e-6872b5f686b1', tool_call_id='call_BHb0bHPybr8K2Ecnhr8pE6NW'), AIMessage(content='', additional...
+[
+    ToolMessage(content='.', name='sql_db_list_tables', id='b0d34fc1-aa17-453b-ba8a-672619b6fa9c', tool_call_id='call_O1NRClmsOjuujZaCD5lUNbo5'),
+
+    ToolMessage(content='.', name='sql_db_schema', id='0dd9b4d2-474b-46ae-a07e-6872b5f686b1', tool_call_id='call_BHb0bHPybr8K2Ecnhr8pE6NW'),
+
+    AIMessage(content='', tool_calls=[{'name': 'check_and_execute_query_tool', 'args': {'query': "SELECT * FROM Product WHERE name LIKE '%Straight Cut Button-down Collar Shirt%';"}, 'id': 'call_qhyEBn0Fq4TkV9AN0Uw27E9o', 'type': 'tool_call'}]),
+
+    ToolMessage(content="[(21, 'Straight Cut Button-down Collar Shirt', '...', 17.0, 51, 2, 'S,M,L,XL,XXL', '.', '.')]", name='check_and_execute_query_tool', id='f3488c6c-7499-4714-a03f-7ef2e4811de9', tool_call_id='call_qhyEBn0Fq4TkV9AN0Uw27E9o'),
+
+    AIMessage(content="...", additional_kwargs={}, response_metadata={'finish_reason': 'stop', 'model_name': 'ft:gpt-4o-mini-2024-07-18:personal::B16sK6xs', 'system_fingerprint': 'fp_6f625379d6'}, id='run-aeecf799-a718-43f1-91c7-779486f56890'),
+]
 ```

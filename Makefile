@@ -6,11 +6,11 @@ load_env:
 # APP
 .PHONY: run_server
 run_server:
-	cd server && langchain app serve --port 8080 --app main:app
+	cd server && uv run --env-file ../.env langchain app serve --port 8080 --app main:app
 
 .PHONY: run_client
 run_client:
-	cd client && uv run streamlit run app.py
+	cd client && uv run --env-file ../.env streamlit run app.py
 
 # KNOWLEDGE BASE
 .PHONY: create_knowledge_base

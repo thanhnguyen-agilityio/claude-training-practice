@@ -2,7 +2,7 @@ import json
 import os
 import time
 
-from langchain_core.messages import AnyMessage, ToolMessage
+from langchain_core.messages import AnyMessage, HumanMessage, SystemMessage, ToolMessage
 from langchain_core.runnables import RunnableLambda
 from langgraph.prebuilt import ToolNode
 
@@ -168,3 +168,23 @@ def handle_keep_recent_messages(
         start -= 1
 
     return messages[start:]
+
+
+def build_model_input(
+        messages: list[AnyMessage],
+        summary: str = "",
+        recent_messages_number: int = 5
+) -> list[AnyMessage]:
+    """
+    Messages to send to the model: summary of older messages + recent window.
+    The window is widened back to a HumanMessage so the current question is
+    never cut. State is untouched, full history stays for the UI.
+    """
+    start = max(len(messages) - recent_messages_number, 0)
+    while start > 0 and not isinstance(messages[start], HumanMessage):
+        start -= 1
+
+    recent = messages[start:]
+    if not summary:
+        return recent
+    return [SystemMessage(f"Summary of earlier conversation: {summary}")] + recent

@@ -170,21 +170,21 @@ def handle_keep_recent_messages(
     return messages[start:]
 
 
-def build_model_input(
-        messages: list[AnyMessage],
-        summary: str = "",
-        recent_messages_number: int = 5
-) -> list[AnyMessage]:
+def recent_window(messages: list[AnyMessage], recent_messages_number: int = 5) -> list[AnyMessage]:
     """
-    Messages to send to the model: summary of older messages + recent window.
-    The window is widened back to a HumanMessage so the current question is
-    never cut. State is untouched, full history stays for the UI.
+    Last N messages, widened back to a HumanMessage so the current question
+    is never cut. State is untouched, full history stays for the UI.
     """
     start = max(len(messages) - recent_messages_number, 0)
     while start > 0 and not isinstance(messages[start], HumanMessage):
         start -= 1
 
-    recent = messages[start:]
+    return messages[start:]
+
+
+def prepend_summary(messages: list[AnyMessage], summary: str = "") -> list[AnyMessage]:
+    """Add the summary of older messages in front. Call it AFTER trim_messages,
+    which drops system messages by default."""
     if not summary:
-        return recent
-    return [SystemMessage(f"Summary of earlier conversation: {summary}")] + recent
+        return messages
+    return [SystemMessage(f"Summary of earlier conversation: {summary}")] + messages

@@ -16,8 +16,9 @@ from langgraph.prebuilt import tools_condition
 from langgraph.store.memory import InMemoryStore
 from utils.utils import (
     create_tool_node_with_fallback,
-    build_model_input,
     get_path,
+    prepend_summary,
+    recent_window,
 )
 
 # Initialize store, memory, and cache
@@ -40,19 +41,16 @@ class Assistant:
         self.runnable = runnable
 
     def __call__(self, state: State, config: RunnableConfig):
-        # Summary of older messages + recent window, then trim by token count
+        # Recent window trimmed by token count, then summary of older messages
         messages = trim_messages(
-            build_model_input(
-                state["messages"],
-                state.get("summary", ""),
-                constants.RECENT_MESSAGE_LIMIT,
-            ),
+            recent_window(state["messages"], constants.RECENT_MESSAGE_LIMIT),
             max_tokens=1000,
             strategy="last",
             start_on="human",
             token_counter=model_gpt_4o_mini,
             allow_partial=False
         )
+        messages = prepend_summary(messages, state.get("summary", ""))
 
         # Invoke assistant
         result = self.runnable.invoke({**state, "messages": messages})
@@ -106,9 +104,9 @@ def summarize_conversation(state: State):
     (UI history), the assistant only sends summary + recent window to the model.
     """
     messages = state["messages"]
-    # Same cut as build_model_input, so nothing falls between summary and window.
-    older = messages[:len(messages) - len(build_model_input(
-        messages, "", constants.RECENT_MESSAGE_LIMIT))]
+    # Same cut as the assistant window, so nothing falls between summary and window.
+    window = recent_window(messages, constants.RECENT_MESSAGE_LIMIT)
+    older = messages[:len(messages) - len(window)]
     if not older:
         return {}
 

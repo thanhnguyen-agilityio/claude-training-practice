@@ -2,7 +2,7 @@ import json
 import os
 import time
 
-from langchain_core.messages import AIMessage, AnyMessage, ToolMessage
+from langchain_core.messages import AnyMessage, ToolMessage
 from langchain_core.runnables import RunnableLambda
 from langgraph.prebuilt import ToolNode
 
@@ -161,6 +161,7 @@ def handle_keep_recent_messages(
     Util function to keep the recent messages and remove the old ones.
     The window is widened backwards so it never starts on a ToolMessage,
     which would be orphaned from the AIMessage that made the tool call.
+    recent_messages_number=0 keeps nothing (returns []), not everything.
     """
     start = max(len(messages) - recent_messages_number, 0)
     while start > 0 and isinstance(messages[start], ToolMessage):

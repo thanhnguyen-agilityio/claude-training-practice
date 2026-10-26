@@ -45,6 +45,7 @@ class Assistant:
             state["messages"],
             max_tokens=1000,
             strategy="last",
+            start_on="human",
             token_counter=model_gpt_4o_mini,
             allow_partial=False
         )

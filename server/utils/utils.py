@@ -159,27 +159,11 @@ def handle_keep_recent_messages(
 ) -> list[AnyMessage]:
     """
     Util function to keep the recent messages and remove the old ones.
+    The window is widened backwards so it never starts on a ToolMessage,
+    which would be orphaned from the AIMessage that made the tool call.
     """
-    tool_call_ids = set()
+    start = max(len(messages) - recent_messages_number, 0)
+    while start > 0 and isinstance(messages[start], ToolMessage):
+        start -= 1
 
-    recent_messages = messages[-recent_messages_number:]
-    remove_messages = messages[:-recent_messages_number]
-
-    # Collect tool call IDs from the recent_messages
-    for msg in recent_messages:
-        if hasattr(msg, 'tool_calls'):
-            tool_call_ids.update([tc["id"] for tc in msg.tool_calls])
-
-    # Keeping necessary context for tool calling of the recent_messages
-    for msg in remove_messages:
-        # Keep messages that are responses to recent tool calls
-        if isinstance(msg, ToolMessage) and msg.tool_call_id in tool_call_ids:
-            recent_messages.append(msg)
-        elif (
-            isinstance(msg, AIMessage)
-            and msg.tool_calls
-            and any(tc["id"] in tool_call_ids for tc in msg.tool_calls)
-        ):
-            recent_messages.append(msg)
-
-    return recent_messages
+    return messages[start:]

@@ -3,7 +3,7 @@ import asyncio
 import streamlit as st
 from st_pages import add_page_title, get_nav_from_toml
 from utils.apis import health_check
-from utils.utils import get_session_id
+from utils.utils import get_thread_id, render_share_button
 
 # Initialize user_id and thread_id
 if "user_id" not in st.session_state:
@@ -30,16 +30,8 @@ with st.sidebar:
     )
     st.divider()
 
-    # Set thread id and load history (if any)
-    input_thread_id = st.text_input(
-        "Input Your Thread ID To Continue the Conversation:"
-    )
-    st.session_state.thread_id = input_thread_id or get_session_id()
-
-    st.markdown(
-        f"Current Thread ID:\n **{st.session_state.thread_id}**",
-        help="We will support to load session and history with this ID in the future.",
-    )
+    get_thread_id()
+    render_share_button()
 
 nav = get_nav_from_toml(".streamlit/pages.toml")
 pg = st.navigation(nav)

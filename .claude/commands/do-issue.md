@@ -20,7 +20,7 @@ Work GitHub issue #$ARGUMENTS end to end. Stop only at the **GATE** or when a ru
 ## 3. Test
 - Run the full test suite with the Test command from CLAUDE.md. All must pass. Report the command and result.
 - If the change is user-visible, run the app (server + client) and reproduce the issue's scenario. Use Claude in Chrome if it is connected; otherwise give me the exact manual steps and wait for my result.
-- Screenshots: save them outside the repo and list the paths. I will drag them into the PR; `gh` cannot attach images.
+- Screenshots: save them outside the repo. In step 5 you attach them to the PR's **Screenshots** section yourself.
 - Same failure after 3 fix attempts → stop and ask.
 
 ## 4. Review
@@ -29,7 +29,9 @@ Work GitHub issue #$ARGUMENTS end to end. Stop only at the **GATE** or when a ru
 
 ## 5. Ship
 - Push the branch. Run `/pr $ARGUMENTS` for the body (it must include `Closes #$ARGUMENTS`), then `gh pr create`. Never open a PR with a one-line body.
-- Reply with the PR link, the screenshot paths, and anything left unverified.
+- Attach screenshots: `gh` cannot upload images, so open the PR in Claude in Chrome, edit the description, upload each file into the **Screenshots** section, and save. Then check the images render.
+- Only if you can't (no browser tool connected, or the upload fails), list the screenshot paths and I will drag them in.
+- Reply with the PR link, whether the screenshots are attached (or their paths), and anything left unverified.
 
 ## Rules
 - Smallest change that meets the issue's expectation. No unrelated refactors, no new dependencies.

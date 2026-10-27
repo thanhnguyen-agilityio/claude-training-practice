@@ -8,7 +8,7 @@ from agent.tools import safe_tools, sensitive_tool_names, sensitive_tools, tools
 from langchain.callbacks.streaming_stdout import StreamingStdOutCallbackHandler
 from langchain_community.cache import SQLiteCache
 from langchain_core.globals import set_llm_cache
-from langchain_core.messages import HumanMessage, RemoveMessage, trim_messages
+from langchain_core.messages import HumanMessage, trim_messages
 from langchain_core.runnables import Runnable, RunnableConfig
 from langgraph.checkpoint.sqlite import SqliteSaver
 from langgraph.graph import END, START, MessagesState, StateGraph
@@ -17,7 +17,8 @@ from langgraph.store.memory import InMemoryStore
 from utils.utils import (
     create_tool_node_with_fallback,
     get_path,
-    handle_keep_recent_messages,
+    prepend_summary,
+    recent_window,
 )
 
 # Initialize store, memory, and cache
@@ -33,6 +34,9 @@ if os.getenv('RUN_EVALUATION') == "false":
 
 class State(MessagesState):
     summary: str = ""
+    # Index of the first message sent to the model this turn. Set once by
+    # summarize_conversation so the summary and the window can't drift apart.
+    window_start: int = 0
 
 
 class Assistant:
@@ -40,19 +44,12 @@ class Assistant:
         self.runnable = runnable
 
     def __call__(self, state: State, config: RunnableConfig):
-        # Trim message by token count
-        messages = trim_messages(
-            state["messages"],
-            max_tokens=1000,
-            strategy="last",
-            start_on="human",
-            token_counter=model_gpt_4o_mini,
-            allow_partial=False
-        )
-        state["messages"] = messages
+        # Window cut by summarize_conversation, then summary of older messages
+        messages = state["messages"][state.get("window_start", 0):]
+        messages = prepend_summary(messages, state.get("summary", ""))
 
         # Invoke assistant
-        result = self.runnable.invoke(state)
+        result = self.runnable.invoke({**state, "messages": messages})
         return {"messages": result}
 
 
@@ -98,40 +95,35 @@ def route_tools(state: State):
 
 
 def summarize_conversation(state: State):
-    if (
-        len(state["messages"]) <= constants.RECENT_MESSAGE_LIMIT  + 1
-    ):
-        return state
+    """
+    Summarize messages older than the model window. Messages stay in state
+    (UI history), the assistant only sends summary + window to the model.
+    The cut is stored as window_start and reused for every assistant call in
+    this turn, so tool loops can't push messages out of the window unsummarized.
+    """
+    messages = state["messages"]
+    # Recent window, then token trim: the cut covers both.
+    window = recent_window(messages, constants.RECENT_MESSAGE_LIMIT)
+    # trim returns [] when the current turn alone is over budget; keep the
+    # untrimmed window then, the question must not be summarized away.
+    window = trim_messages(
+        window,
+        max_tokens=1000,
+        strategy="last",
+        start_on="human",
+        token_counter=model_gpt_4o_mini,
+        allow_partial=False
+    ) or window
+    window_start = len(messages) - len(window)
+    older = messages[:window_start]
+    if not older:
+        return {"window_start": window_start}
 
-    summary = state.get("summary", "")
-
-    if summary:
-        summary_message = (
-            f"This is summary of the conversation to date: {summary}\n\n"
-            "Extend the summary by taking into account the new messages above:"
-        )
-    else:
-        summary_message = "Create a summary of the conversation above:"
-
-
-    # Add prompt to our history
-    messages = state["messages"] + [HumanMessage(content=summary_message)]
-    response = model_gpt_4o_mini.invoke(messages)
-
-    # Delete all but the 5 most recent messages
-    recent_messages = handle_keep_recent_messages(
-        messages,
-        recent_messages_number=constants.RECENT_MESSAGE_LIMIT
+    # ponytail: re-summarize older slice each turn, store a summarized count if cost matters
+    response = model_gpt_4o_mini.invoke(
+        older + [HumanMessage(content="Create a summary of the conversation above:")]
     )
-    delete_messages = [
-        RemoveMessage(id=m.id) for m in messages
-        if m not in recent_messages
-    ]
-
-    return {
-        "summary": response.content,
-        "messages": delete_messages,
-    }
+    return {"summary": response.content, "window_start": window_start}
 
 
 def init_graph(

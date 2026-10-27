@@ -42,3 +42,45 @@ def test_summary_is_delimited_as_untrusted():
 def test_no_summary_adds_nothing():
     msgs = [HumanMessage("a"), AIMessage("b")]
     assert prepend_summary(msgs, "") == msgs
+
+
+def test_assistant_sends_only_from_window_start():
+    # Tool loop must not shrink the window: summarize_conversation set the cut once.
+    from agent.graph import Assistant
+
+    class Fake:
+        def invoke(self, state):
+            self.state = state
+            return AIMessage("ok")
+
+    msgs = [HumanMessage("H1"), AIMessage("A1"), HumanMessage("H2"), AIMessage("A2"),
+            HumanMessage("H3"), AIMessage("", tool_calls=[{"id": "c", "name": "t", "args": {}}]),
+            ToolMessage("r", tool_call_id="c")]
+    fake = Fake()
+    Assistant(fake)({"messages": msgs, "window_start": 0}, {})
+    assert fake.state["messages"] == msgs
+
+    Assistant(fake)({"messages": msgs, "window_start": 2}, {})
+    assert fake.state["messages"] == msgs[2:]
+
+
+def test_summarize_stores_cut_and_summarizes_exactly_older():
+    from unittest import mock
+
+    from agent import graph
+
+    msgs = [HumanMessage("H1"), AIMessage("A1"), HumanMessage("H2"), AIMessage("A2"),
+            HumanMessage("H3")]
+    with mock.patch.object(graph.constants, "RECENT_MESSAGE_LIMIT", 2), \
+         mock.patch.object(graph, "trim_messages", side_effect=lambda m, **kw: m), \
+         mock.patch.object(graph, "model_gpt_4o_mini") as llm:
+        llm.invoke.return_value = AIMessage("sum")
+        out = graph.summarize_conversation({"messages": msgs})
+
+    assert out == {"summary": "sum", "window_start": 2}
+    sent = llm.invoke.call_args.args[0]
+    assert sent[:-1] == msgs[:2]  # H1, A1 summarized; window widens back to H2
+
+    with mock.patch.object(graph.constants, "RECENT_MESSAGE_LIMIT", 5), \
+         mock.patch.object(graph, "trim_messages", side_effect=lambda m, **kw: m):
+        assert graph.summarize_conversation({"messages": msgs}) == {"window_start": 0}

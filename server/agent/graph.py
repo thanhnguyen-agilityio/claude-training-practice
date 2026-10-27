@@ -34,6 +34,9 @@ if os.getenv('RUN_EVALUATION') == "false":
 
 class State(MessagesState):
     summary: str = ""
+    # Index of the first message sent to the model this turn. Set once by
+    # summarize_conversation so the summary and the window can't drift apart.
+    window_start: int = 0
 
 
 class Assistant:
@@ -41,15 +44,8 @@ class Assistant:
         self.runnable = runnable
 
     def __call__(self, state: State, config: RunnableConfig):
-        # Recent window trimmed by token count, then summary of older messages
-        messages = trim_messages(
-            recent_window(state["messages"], constants.RECENT_MESSAGE_LIMIT),
-            max_tokens=1000,
-            strategy="last",
-            start_on="human",
-            token_counter=model_gpt_4o_mini,
-            allow_partial=False
-        )
+        # Window cut by summarize_conversation, then summary of older messages
+        messages = state["messages"][state.get("window_start", 0):]
         messages = prepend_summary(messages, state.get("summary", ""))
 
         # Invoke assistant
@@ -100,21 +96,31 @@ def route_tools(state: State):
 
 def summarize_conversation(state: State):
     """
-    Summarize messages older than the recent window. Messages stay in state
-    (UI history), the assistant only sends summary + recent window to the model.
+    Summarize messages older than the model window. Messages stay in state
+    (UI history), the assistant only sends summary + window to the model.
+    The cut is stored as window_start and reused for every assistant call in
+    this turn, so tool loops can't push messages out of the window unsummarized.
     """
     messages = state["messages"]
-    # Same cut as the assistant window, so nothing falls between summary and window.
-    window = recent_window(messages, constants.RECENT_MESSAGE_LIMIT)
-    older = messages[:len(messages) - len(window)]
+    # Recent window, then token trim: the cut covers both.
+    window = trim_messages(
+        recent_window(messages, constants.RECENT_MESSAGE_LIMIT),
+        max_tokens=1000,
+        strategy="last",
+        start_on="human",
+        token_counter=model_gpt_4o_mini,
+        allow_partial=False
+    )
+    window_start = len(messages) - len(window)
+    older = messages[:window_start]
     if not older:
-        return {}
+        return {"window_start": window_start}
 
     # ponytail: re-summarize older slice each turn, store a summarized count if cost matters
     response = model_gpt_4o_mini.invoke(
         older + [HumanMessage(content="Create a summary of the conversation above:")]
     )
-    return {"summary": response.content}
+    return {"summary": response.content, "window_start": window_start}
 
 
 def init_graph(

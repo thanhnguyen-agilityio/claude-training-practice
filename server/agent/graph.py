@@ -8,7 +8,12 @@ from agent.tools import safe_tools, sensitive_tool_names, sensitive_tools, tools
 from langchain.callbacks.streaming_stdout import StreamingStdOutCallbackHandler
 from langchain_community.cache import SQLiteCache
 from langchain_core.globals import set_llm_cache
-from langchain_core.messages import HumanMessage, RemoveMessage, trim_messages
+from langchain_core.messages import (
+    HumanMessage,
+    RemoveMessage,
+    SystemMessage,
+    trim_messages,
+)
 from langchain_core.runnables import Runnable, RunnableConfig
 from langgraph.checkpoint.sqlite import SqliteSaver
 from langgraph.graph import END, START, MessagesState, StateGraph
@@ -49,6 +54,13 @@ class Assistant:
             token_counter=model_gpt_4o_mini,
             allow_partial=False
         )
+        # Prepend summary after trimming so it is never trimmed away
+        summary = state.get("summary", "")
+        if summary:
+            messages = [
+                SystemMessage(f"Summary of earlier conversation: {summary}"),
+                *messages,
+            ]
         state["messages"] = messages
 
         # Invoke assistant

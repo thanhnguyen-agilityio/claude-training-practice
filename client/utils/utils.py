@@ -1,3 +1,5 @@
+from urllib.parse import quote
+
 from langchain_core.messages import ChatMessage
 from streamlit import streamlit as st
 from streamlit.runtime.scriptrunner import get_script_run_ctx
@@ -21,7 +23,7 @@ def render_share_button():
     if st.button("🔗 Share conversation", use_container_width=True):
         st.query_params["thread"] = st.session_state.thread_id
         origin = st.context.headers.get("Origin", "")
-        st.code(f"{origin}/?thread={st.session_state.thread_id}", language=None)
+        st.code(f"{origin}/?thread={quote(st.session_state.thread_id, safe='')}", language=None)
         st.caption("Anyone with this link can open this conversation.")
 
 

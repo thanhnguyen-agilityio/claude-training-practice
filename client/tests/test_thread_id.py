@@ -1,3 +1,5 @@
+from urllib.parse import quote
+
 from streamlit.testing.v1 import AppTest
 
 
@@ -47,4 +49,14 @@ def test_share_sets_link_to_thread():
     at.button[0].click().run()
 
     assert at.query_params["thread"] == [thread]
-    assert at.code[0].value.endswith(f"/?thread={thread}")
+    assert at.code[0].value.endswith(f"/?thread={quote(thread)}")
+
+
+def test_share_link_encodes_thread():
+    at = AppTest.from_function(app)
+    at.query_params["thread"] = "a&b c"
+    at.run()
+
+    at.button[0].click().run()
+
+    assert at.code[0].value.endswith("/?thread=a%26b%20c")

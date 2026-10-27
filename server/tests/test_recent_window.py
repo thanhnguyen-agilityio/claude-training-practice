@@ -84,3 +84,26 @@ def test_summarize_stores_cut_and_summarizes_exactly_older():
     with mock.patch.object(graph.constants, "RECENT_MESSAGE_LIMIT", 5), \
          mock.patch.object(graph, "trim_messages", side_effect=lambda m, **kw: m):
         assert graph.summarize_conversation({"messages": msgs}) == {"window_start": 0}
+
+
+def test_limit_zero_still_keeps_current_question():
+    msgs = [HumanMessage("a"), AIMessage("b"), HumanMessage("c")]
+    assert recent_window(msgs, 0) == msgs[2:]
+
+
+def test_summarize_falls_back_when_trim_empties_window():
+    # Current question alone is over the token budget: trim returns [], the
+    # question must stay in the window instead of being summarized away.
+    from unittest import mock
+
+    from agent import graph
+
+    msgs = [HumanMessage("a"), AIMessage("b"), HumanMessage("x" * 2000)]
+    counter = lambda ms: sum(len(m.content) for m in ms)  # noqa: E731
+    counter.invoke = mock.Mock(return_value=AIMessage("sum"))
+    with mock.patch.object(graph.constants, "RECENT_MESSAGE_LIMIT", 1), \
+         mock.patch.object(graph, "model_gpt_4o_mini", counter):
+        out = graph.summarize_conversation({"messages": msgs})
+
+    assert out == {"summary": "sum", "window_start": 2}
+    assert counter.invoke.call_args.args[0][:-1] == msgs[:2]

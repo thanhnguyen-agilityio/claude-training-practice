@@ -156,9 +156,10 @@ def create_tool_node_with_fallback(tools: list) -> dict:
 def recent_window(messages: list[AnyMessage], recent_messages_number: int = 5) -> list[AnyMessage]:
     """
     Last N messages, widened back to a HumanMessage so the current question
-    is never cut. State is untouched, full history stays for the UI.
+    is never cut (so at least 1 message is kept). State is untouched, full
+    history stays for the UI.
     """
-    start = max(len(messages) - recent_messages_number, 0)
+    start = max(len(messages) - max(recent_messages_number, 1), 0)
     while start > 0 and not isinstance(messages[start], HumanMessage):
         start -= 1
 

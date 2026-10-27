@@ -103,14 +103,17 @@ def summarize_conversation(state: State):
     """
     messages = state["messages"]
     # Recent window, then token trim: the cut covers both.
+    window = recent_window(messages, constants.RECENT_MESSAGE_LIMIT)
+    # trim returns [] when the current turn alone is over budget; keep the
+    # untrimmed window then, the question must not be summarized away.
     window = trim_messages(
-        recent_window(messages, constants.RECENT_MESSAGE_LIMIT),
+        window,
         max_tokens=1000,
         strategy="last",
         start_on="human",
         token_counter=model_gpt_4o_mini,
         allow_partial=False
-    )
+    ) or window
     window_start = len(messages) - len(window)
     older = messages[:window_start]
     if not older:

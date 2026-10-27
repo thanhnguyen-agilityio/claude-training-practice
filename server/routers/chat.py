@@ -24,7 +24,7 @@ async def chat_invoke(request: ChatRequest):
     }
     messages = [("user", request.message)]
     graph = init_graph(config=config)
-    response = graph.invoke({"messages": messages}, config)["messages"][0].content
+    response = graph.invoke({"messages": messages}, config)["messages"][-1].content
     return Response(
         response,
         media_type="application/json",

@@ -167,8 +167,7 @@ def recent_window(messages: list[AnyMessage], recent_messages_number: int = 5) -
 
 
 def prepend_summary(messages: list[AnyMessage], summary: str = "") -> list[AnyMessage]:
-    """Add the summary of older messages in front. Call it AFTER trim_messages,
-    which drops system messages by default."""
+    """Add the summary of older messages in front."""
     if not summary:
         return messages
     # The summary is model-written from user/tool text, so treat it as data, not instructions.

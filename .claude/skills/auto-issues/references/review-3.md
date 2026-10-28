@@ -1,6 +1,6 @@
 # Review 3: merge checklist
 
-Read the issue and `gh pr diff <pr>` (changed lines plus ~20 lines of context), the PR description, and `gh pr checks <pr>`. Do not trust the PR's evidence: in a temp worktree of the PR head (`git worktree add <scratch>/r3 origin/<branch>`), run the test and lint commands from CLAUDE.md (quiet, `| tail -n 30`), and the new or changed tests against `origin/main` (worktree `<scratch>/r3-main`). Remove both worktrees after. For curl evidence on routes that do not call the LLM, rerun the requests yourself (start and stop the server as `.claude/preflight.md` Notes say). Read `<scratch>/preflight-checks.md` for on-demand check results.
+Read the issue and `gh pr diff <pr>` (changed lines plus ~20 lines of context), the PR description, and `gh pr checks <pr>`. Do not trust the PR's evidence: in a temp worktree of the PR head (`git worktree add <scratch>/r3 origin/<branch>`, set up as `.claude/preflight.md` Notes say for a new worktree), run the test and lint commands from CLAUDE.md (quiet, `| tail -n 30`), and the new or changed tests against `origin/main` (worktree `<scratch>/r3-main`). Remove both worktrees after. For curl evidence on routes that do not call the LLM, rerun the requests yourself (start and stop the server as `.claude/preflight.md` Notes say). Read `<scratch>/preflight-checks.md` for on-demand check results.
 
 Answer each item **yes / no** with evidence:
 1. Every point of the issue's Expected section is covered by a test, a curl check, or a verified browser step (list the mapping).

@@ -19,5 +19,8 @@ Pick the highest level the diff needs:
 ## Notes
 - Run the app: start `make run_server` (API, `http://localhost:8080`) and, for the browser level, `make run_client` (UI, `http://localhost:8501`) in the background. Stop both when done, on success or failure: stop the processes you started (keep their PIDs from the background start; `make run_server` runs `langchain app serve`, so `pkill -f uvicorn` does not match it), then confirm nothing listens on 8080 or 8501 (`lsof -ti tcp:8080 -ti tcp:8501 -sTCP:LISTEN` prints nothing).
 - API routes: `GET /health`; `GET /history/?thread_id=<id>`; `POST /chat/invoke` and `POST /chat/stream` with `{"message": "...", "thread_id": "<id>", "user_id": "<id>"}`; `POST /chat/approve` and `POST /chat/reject` with `{"thread_id": "<id>", "user_id": "<id>"}`. Chat and approve/reject call the LLM; health and history do not.
+- Read an issue with `gh issue view <n> --json title,body,author,labels,comments` (`--comments` fails with the Projects-classic error).
+- New worktree setup: copy `server/db/` (gitignored: SQLite store and embeddings) from the main checkout, and run tests with `--env-file <main checkout>/.env`; without them server tests fail to collect (`sqlite3.OperationalError`).
+- Lint: `uv run ruff check .` and `uv run ruff format --check <changed .py files>`. Never run `ruff format .` on the whole repo: `main` has pre-existing format drift in untouched files.
 - Browser for checks and screenshot upload: Claude in Chrome.
 - `gh pr edit` fails on this repo (Projects-classic error): edit PR bodies and labels through `gh api`.

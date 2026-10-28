@@ -1,6 +1,6 @@
 # Worker: one issue
 
-You cannot start subagents: write code and run commands yourself. Read `in/auto-issues-lessons.md` and `.claude/preflight.md` Notes first.
+You cannot start subagents: write code and run commands yourself. Read `in/auto-issues-lessons.md` and `.claude/preflight.md` Notes first. Work only in your own worktree `<scratch>/wt-<n>`; never switch branches or edit files in the main checkout.
 
 Your steps are 1–4 and 6; step 5 is review 2, run by the orchestrator. Reply only with: result (ready / skipped / draft), branch, PR or comment link, plan files, verification level, tests added, test commands with result lines, proof log path, unverified items, one line per decision, and up to 3 lessons (what slowed you down or what you had to guess).
 
@@ -14,31 +14,31 @@ Your steps are 1–4 and 6; step 5 is review 2, run by the orchestrator. Reply o
 - **On-demand checks:** before curl or browser verification, read `<scratch>/preflight-checks.md`. Run each needed check (`server`; plus `client` and `browser` for browser) that is not recorded as pass, and append `<check>: pass|fail <time> <error>`; when a prerequisite fails, append its dependents as `skipped (needs <check>)`. Retry a recorded fail once per issue. Still failing → mark **unverified** with the failed check. A pass only means the setup works: still start what you need and wait for its health check.
 
 ## 1. Plan
-- `gh issue view <n> --comments`.
+- Read the issue as `.claude/preflight.md` Notes say.
 - Read the code the issue touches and trace the real flow. Mark each claim Known (read in code) or Assumed.
 - Decide open questions yourself when one option is clearly the smallest safe change that meets the Expected section. Record decisions and assumptions for the PR body.
 - Plan: files to change, tests to add, how to verify. List anything beyond Expected as a follow-up; do not build it.
 - **Skip** when the ticket is wrong (contradicts code or docs, already behaves as expected, duplicate), the bug cannot be reproduced, or it needs a decision you cannot make (options that change what users see or can do in different ways and the issue does not pick one, a new dependency, more than ~5 files). Comment on the issue: which case, the evidence, the question for me. No branch, no PR. Reply `skipped`.
 
 ## 2. Build
-- `git switch main && git pull --ff-only`; branch `<fix|feat>/issue-<n>-<short-slug>`.
+- `git fetch origin && git worktree add <scratch>/wt-<n> -b <fix|feat>/issue-<n>-<short-slug> origin/main`, set it up as `.claude/preflight.md` Notes say (new worktree), and run everything from there.
 - Bug: use the `repro-bug` skill; commit its failing test first, then the fix; its report goes in the PR body. Cannot reproduce → skip with the report in the comment. Feature: add the test with the change.
 - Small commits, each with passing tests, except the bug's failing reproduction test commit. Message: conventional prefix + one sentence, max 20 words, no body.
 - Every behavior change gets a test that fails without it. No behavior change (CI, refactor, rename, style, docs): no new test and no proof; say so in the PR.
-- **Fail-on-main proof:** `git worktree add <scratch>/proof origin/main`, copy in only the new or changed test files, run them, save the full output to `<scratch>/proof-<n>.log`, `git worktree remove <scratch>/proof`. They must fail on an assertion about the issue's behavior, not an import or collection error. If they pass, rewrite the test.
+- **Fail-on-main proof:** `git worktree add <scratch>/proof origin/main`, copy in only the new or changed test files, run them, set it up like your worktree, save the full output to `<scratch>/proof-<n>.log`, `git worktree remove <scratch>/proof`. They must fail on an assertion about the issue's behavior, not an import or collection error. If they pass, rewrite the test.
 
 ## 3. Test
-- All test and lint commands from CLAUDE.md must pass. Record commands and result lines.
+- All test commands from CLAUDE.md and the lint in `.claude/preflight.md` Notes must pass. Record commands and result lines.
 - Level tests: start nothing.
 - Level curl: start the server, run the requests that show the Expected behavior, keep each command, HTTP status, and trimmed response body.
-- Level browser: start server and client, reproduce the scenario in the browser named in `.claude/preflight.md` Notes. Take screenshots with `save_to_disk` at `scale: 0.5`, outside the repo; view one only to confirm the result.
+- Level browser: start server and client, reproduce the scenario in the browser named in `.claude/preflight.md` Notes. Take screenshots with `save_to_disk` at `scale: 0.5`, outside the repo, and record each file path right after saving; view one only to confirm the result.
 - Browser unavailable for a change that also touches `server/routers`: still do the curl level for that part.
 - Stop what you started as `.claude/preflight.md` Notes say, also on failure. Cannot verify → mark **unverified**.
 - Keep every failure's output: test name, assertion or error, traceback. A failure without its log does not count.
 - Same failure after 3 fix attempts → push, open a **draft** PR with a `## Failure log` section (command, failing tests, trimmed traceback). Reply `draft`.
 
 ## 4. Review 1
-- Run the `review-checklist` skill on `git diff main...HEAD`. Fix every item, rerun step 3, push the branch. Reply `ready`.
+- Call the `review-checklist` skill with the Skill tool on `git diff origin/main...HEAD`; a self-review does not count. Fix every item, rerun step 3, push the branch. Reply `ready`.
 
 ## 6. Ship (only when told "do step 6")
 - Scope: the diff touches only planned files, or the PR body explains why.
@@ -50,4 +50,4 @@ Your steps are 1–4 and 6; step 5 is review 2, run by the orchestrator. Reply o
   - CI check names and results;
   - review 1 and 2 verdicts and what was fixed;
   - verification: the level; for curl, each command, status, and trimmed body; for browser, steps and what you saw; or **unverified** and why.
-- Upload screenshots under `## Test evidence` by editing the PR on github.com in that browser; if that fails, list their paths in a PR comment.
+- Upload screenshots under `## Test evidence` by editing the PR on github.com in that browser; if that fails, list the recorded paths in a PR comment. When the PR is merged, closed, or left open, remove your worktree (`git worktree remove <scratch>/wt-<n>`).

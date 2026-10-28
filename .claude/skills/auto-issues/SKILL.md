@@ -5,20 +5,20 @@ argument-hint: <issue numbers, e.g. 6 20 8>
 model: sonnet
 disable-model-invocation: true
 ---
-Skill version: 4. Work GitHub issues $ARGUMENTS end to end with no approval stops. Merge only when review 3 is confident. I review the run report afterwards.
+Skill version: 5. Work GitHub issues $ARGUMENTS end to end with no approval stops. Merge only when review 3 is confident. I review the run report afterwards.
 
 Paths below are relative to `.claude/skills/auto-issues/`. `<scratch>` is your scratchpad dir.
 
 ## Roles
-- **Orchestrator** (you): preflight, queue, start agents, run reviews 2 and 3, merge, write the report. Never read issue code or diffs; keep only agent summaries.
+- **Orchestrator** (you): never switch branches or edit files in the main checkout; workers and reviewers use worktrees. Preflight, queue, start agents, run reviews 2 and 3, merge, write the report. Never read issue code or diffs; keep only agent summaries.
 - **Worker:** one fresh `Agent` (`model: sonnet`) per issue. Prompt: issue number, `<scratch>`, session id, issue start time, "Follow `references/worker.md` steps 1–4, then stop and reply." Keep its id; send review findings, "do step 6" and "sync" with `SendMessage`.
 - **Reviewers:** a fresh agent each time, given only what its step lists. They read the PR's diff (`gh pr diff <pr>`, or `git diff origin/main...origin/<branch>` before a PR exists), never the local checkout, and open only changed lines plus ~20 lines of context unless a finding needs more.
 
 ## Preflight
 If any check fails, stop the run: stop anything you started, start no issue, write the report with only a Preflight section (check, pass/fail, error, fix), reply with what I must fix.
-1. On `main`, clean tree outside `out/` (`git status --porcelain -- . ':!out'` is empty), `git pull --ff-only` works.
+1. `git fetch origin` works. The main checkout may be on any branch: nothing in this run uses it except `out/`.
 2. `gh auth status` passes; `gh repo view --json viewerPermission` is `WRITE`, `MAINTAIN` or `ADMIN`.
-3. All test and lint commands from CLAUDE.md pass on `main`.
+3. In a worktree of `origin/main` (`<scratch>/wt-main`, set up as `.claude/preflight.md` Notes say), all test commands from CLAUDE.md and the lint in its Notes pass. Keep it for the run; remove it at the end.
 4. Labels `auto-merged` and `needs-human-merge` exist; create missing ones with `gh label create`.
 5. `.claude/preflight.md` exists (missing → fail: this repo's setup is unverified). Run its `always` checks. Its `server`, `client` and `browser` checks run later, only when a worker first needs them; create an empty `<scratch>/preflight-checks.md` now; workers record results there.
 
@@ -37,11 +37,11 @@ Record start and end time (`date -u +%Y-%m-%dT%H:%M:%SZ`). **Budget:** 45 minute
 5. **Review 3:** fresh `Agent` (`model: opus`) gets the issue number, PR number, and `references/review-3.md`; it reruns the checks itself and returns the checklist and a verdict.
 6. **Decide**, first match wins (add labels with `gh api -X POST repos/{owner}/{repo}/issues/<pr>/labels -f "labels[]=<name>"`):
    - **Human gate** — `critical priority` label, or review 3 item 9 is **yes**, whatever the verdict: comment the checklist (and the reasons if not confident), add `needs-human-merge`, keep open and synced. Result: open – human gate.
-   - **Confident**: comment the checklist, add `auto-merged`, `gh pr merge <pr> --squash --delete-branch` (if `gh` fails with a Projects-classic error: `gh api -X PUT repos/{owner}/{repo}/pulls/<pr>/merge -f merge_method=squash`, then `gh api -X DELETE repos/{owner}/{repo}/git/refs/heads/<branch>`), `git switch main && git pull --ff-only`.
+   - **Confident**: comment the checklist, add `auto-merged`, `gh pr merge <pr> --squash --delete-branch` (if `gh` fails with a Projects-classic error: `gh api -X PUT repos/{owner}/{repo}/pulls/<pr>/merge -f merge_method=squash`, then `gh api -X DELETE repos/{owner}/{repo}/git/refs/heads/<branch>`), `git fetch origin`.
    - **Not confident**: comment the checklist, reasons, and what would make it mergeable; keep open, synced, checks passing.
 
 ## Run report
-After the last issue, `git switch main && git pull --ff-only` (also after an open or draft last issue), then read `references/run-report.md` and write the report it describes. Reply with the report path and the summary table.
+After the last issue, `git fetch origin`, then read `references/run-report.md` and write the report it describes. Reply with the report path and the summary table.
 
 ## Rules
 - Smallest change that meets the issue's Expected section. No unrelated refactors, new dependencies, or formatting churn in untouched code.

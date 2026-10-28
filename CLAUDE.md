@@ -5,7 +5,7 @@ LangGraph/LangServe customer-support agent (RAG + SQL + tools) with a Streamlit 
 ## Commands
 - Install: `uv sync` (copy `.env.example` to `.env` first)
 - Run: `make run_server` (port 8080) and `make run_client`
-- Test: `cd server && uv run --with pytest pytest tests` / `cd client && uv run --with pytest pytest tests`
+- Test: `cd server && uv run --env-file ../.env --with pytest python -m pytest tests` / `cd client && uv run --env-file ../.env --with pytest python -m pytest tests` / `uv run --with pytest python -m pytest scripts/tests`
 - Lint/format: `uv run ruff check . && uv run ruff format .`
 - Knowledge base: `make create_knowledge_base`
 - Evals: `make langsmith_experiments`, `make promptfoo_eval_agent`
@@ -16,7 +16,8 @@ LangGraph/LangServe customer-support agent (RAG + SQL + tools) with a Streamlit 
 - `server/evals` — LangSmith and Promptfoo evaluations
 - `server/data` — product data and support documents
 - `client` — Streamlit app (`pages/`, `services/`, `utils/`)
-- `assets/issues` — issue specs
+- `in` — input resources for AI (specs, references, sample data)
+- `out` — AI outputs (e.g. `out/run-reports/` from `/auto-issues`); not edited by hand
 
 ## Conventions
 - Save cost. Opus advisor. Sonnet/Haiku code. Haiku mechanical tasks. Remember!

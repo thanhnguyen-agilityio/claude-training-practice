@@ -59,7 +59,7 @@ Record the issue's start time (`date -u +%Y-%m-%dT%H:%M:%SZ`) before step 1 and 
 - Scope check: the diff touches only files from the plan. If not, either revert the extra files or explain why in the PR body.
 - Push the branch. Run `/pr <n>` for the body; it must include `Closes #<n>`, the decisions/assumptions from step 1, review 1 and 2 results, and anything unverified. Then `gh pr create`. Never open a PR with a one-line body.
 - Wait for CI: `gh pr checks <pr> --watch`. If no checks are configured, rely on the local test run. Failed checks → fix (max 3 attempts), else leave the PR open, do not merge, move on.
-- Update the PR description with the evidence, under a `## Test evidence` section (`gh pr edit <pr> --body-file <file>`). It must show:
+- Update the PR description with the evidence, under a `## Test evidence` section (`gh api -X PATCH repos/{owner}/{repo}/pulls/<pr> -F body=@<file>`; `gh pr edit` fails on this repo with a Projects-classic error). It must show:
   - each test command you ran on the final commit, with its result line (e.g. `42 passed in 3.1s`) and the ruff result;
   - the new or changed tests, and that the bug test failed before the fix;
   - CI check names and results from `gh pr checks <pr>`;

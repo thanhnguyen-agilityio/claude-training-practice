@@ -1,7 +1,7 @@
 # Run report
 
 Write `out/run-reports/<YYYY-MM-DD>-run-<k>.md` (today; `k` = next free number for today, from 1) in the main checkout, whatever branch it is on; do not commit it. Sections:
-- **Run info:** date, skill version, issues requested, queue order, preflight results, and on-demand check results from `<scratch>/preflight-checks.md` (or "not needed").
+- **Run info:** date, skill version, arguments and the issues they selected (with dropped and "not reached" ones), queue order, preflight results, and on-demand check results from `<scratch>/preflight-checks.md` (or "not needed").
 - **Summary:** issue, title, priority, result (merged / open – human gate / open – not confident / draft – failing / draft – over budget / draft – review 2 blocking / skipped), PR link, merge commit.
 - **Per issue:** what changed and why, decisions and assumptions, tests with results, review 1/2/3 verdicts, unverified items, follow-ups. Skipped or open: the reason and a link to your comment.
 - **Needs my attention:** every skipped or open issue with its question, and every `needs-human-merge` PR.

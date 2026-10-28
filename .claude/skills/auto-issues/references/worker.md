@@ -18,7 +18,7 @@ Your steps are 1–4 and 6; step 5 is review 2, run by the orchestrator. Reply o
 - Read the code the issue touches and trace the real flow. Mark each claim Known (read in code) or Assumed.
 - Decide open questions yourself when one option is clearly the smallest safe change that meets the Expected section. Record decisions and assumptions for the PR body.
 - Plan: files to change, tests to add, how to verify. List anything beyond Expected as a follow-up; do not build it.
-- **Skip** when the ticket is wrong (contradicts code or docs, already behaves as expected, duplicate), the bug cannot be reproduced, or it needs a decision you cannot make (options that change what users see or can do in different ways and the issue does not pick one, a new dependency, more than ~5 files). Comment on the issue: which case, the evidence, the question for me. No branch, no PR. Reply `skipped`.
+- **Skip** when the ticket is wrong (contradicts code or docs, already behaves as expected, duplicate), the bug cannot be reproduced, or it needs a decision you cannot make (options that change what users see or can do in different ways and the issue does not pick one, a new dependency, more than ~5 files). Comment on the issue: which case, the evidence, the question for me, ending with `<!-- auto-issues:skipped -->`. No branch, no PR. Reply `skipped`.
 
 ## 2. Build
 - `git fetch origin && git worktree add <scratch>/wt-<n> -b <fix|feat>/issue-<n>-<short-slug> origin/main`, set it up as `.claude/preflight.md` Notes say (new worktree), and run everything from there.

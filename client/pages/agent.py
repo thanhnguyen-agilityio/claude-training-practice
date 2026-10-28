@@ -112,15 +112,14 @@ with st.spinner("Loading..."):
     except Exception:
         pass
 
+# Welcome message is client-only (never in server history): pick once, always show at top
+if "welcome_message" not in st.session_state:
+    st.session_state.welcome_message = random.choice(WELCOME_MESSAGE)
+render_message(ChatMessage(role="assistant", content=st.session_state.welcome_message))
+
 # Show history messages to UI
 for msg in history.messages:
     render_message(msg)
-
-# Initialize welcome message
-if len(history.messages) == 0:
-    chat_message = ChatMessage(role="assistant", content=random.choice(WELCOME_MESSAGE))
-    render_message(chat_message)
-    history.add_message(chat_message)
 
 
 # Handle user interaction

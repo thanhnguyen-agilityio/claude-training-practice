@@ -1,6 +1,6 @@
 # Run report
 
-Write `docs/out/run-reports/<YYYY-MM-DD>-run-<k>.md` (today; `k` = next free number for today, from 1) on `main` locally; do not commit it. Sections:
+Write `out/run-reports/<YYYY-MM-DD>-run-<k>.md` (today; `k` = next free number for today, from 1) on `main` locally; do not commit it. Sections:
 - **Run info:** date, issues requested, queue order, preflight results.
 - **Summary:** issue, title, priority, result (merged / open – human gate / open – not confident / draft – failing / skipped), PR link, merge commit.
 - **Per issue:** what changed and why, decisions and assumptions, tests with results, review 1/2/3 verdicts, unverified items, follow-ups. Skipped or open: the reason and a link to your comment.

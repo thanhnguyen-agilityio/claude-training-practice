@@ -11,7 +11,7 @@ def create_support_ticket(
     subject: str,
     name: str = "User",
     phone: str = "",
-    description: str = "",
+    description: str = ""
 ) -> str:
     """
     Use this tool to help use create a customer support ticket

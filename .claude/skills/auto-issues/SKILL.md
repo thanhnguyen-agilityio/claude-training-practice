@@ -5,7 +5,7 @@ argument-hint: <issue numbers, e.g. 6 20 8>
 model: sonnet
 disable-model-invocation: true
 ---
-Skill version: 3. Work GitHub issues $ARGUMENTS end to end with no approval stops. Merge only when review 3 is confident. I review the run report afterwards.
+Skill version: 4. Work GitHub issues $ARGUMENTS end to end with no approval stops. Merge only when review 3 is confident. I review the run report afterwards.
 
 Paths below are relative to `.claude/skills/auto-issues/`. `<scratch>` is your scratchpad dir.
 
@@ -20,7 +20,7 @@ If any check fails, stop the run: stop anything you started, start no issue, wri
 2. `gh auth status` passes; `gh repo view --json viewerPermission` is `WRITE`, `MAINTAIN` or `ADMIN`.
 3. All test and lint commands from CLAUDE.md pass on `main`.
 4. Labels `auto-merged` and `needs-human-merge` exist; create missing ones with `gh label create`.
-5. `.claude/preflight.md` exists (missing → fail: this repo's setup is unverified). Run every check in it.
+5. `.claude/preflight.md` exists (missing → fail: this repo's setup is unverified). Run its `always` checks. Its `server`, `client` and `browser` checks run later, only when a worker first needs them; create an empty `<scratch>/preflight-checks.md` now; workers record results there.
 
 Record each result for the report. Note the run start (`date -u +%Y-%m-%dT%H:%M:%SZ`) and the session id: `basename "$(ls -t ~/.claude/projects/$(pwd | tr '/.' '--')/*.jsonl | head -1)" .jsonl`.
 

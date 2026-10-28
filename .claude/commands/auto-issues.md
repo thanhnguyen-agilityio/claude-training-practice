@@ -1,8 +1,14 @@
 ---
 description: Fully automated: take selected GitHub issues end to end (plan, build, test, 3 reviews, PR, merge) with no stops
 argument-hint: <issue numbers, e.g. 6 20 8>
+model: sonnet
 ---
 Work GitHub issues $ARGUMENTS end to end with **no approval stops**. You plan, build, test, review three times, open the PR and merge it yourself when you are confident. I review the run report afterwards.
+
+## Roles (keeps context small: each issue starts clean)
+- **Orchestrator** (you, this session, on Sonnet): preflight, queue, start agents, review 2 and 3 agents, merge, run report. Never read the issue's code or diffs yourself; keep only each agent's short summary.
+- **Worker:** one fresh `Agent` (`model: sonnet`) per issue. Give it this file's path, the issue number, the scratch dir, and its job: steps 1–4, then stop and reply. After review 2 passes, the orchestrator sends it "do step 6"; it replies again when the evidence is in the PR. Subagents cannot start subagents, so it writes code and runs commands itself. It replies with only: result (ready / skipped / draft), branch, PR link, plan files, tests added, proof log path, unverified items, and one line per decision. Keep its id: review findings go back to it with `SendMessage`, so it keeps its context.
+- **Reviewers:** a fresh agent each time, given only what its step lists.
 
 ## Preflight
 Check the setup before touching any issue. If any check fails, stop the whole run: do not start an issue, write the run report with only a **Preflight** section (each check, pass/fail, the error, how to fix), and reply with what I need to fix.
@@ -39,7 +45,6 @@ Record the issue's start time (`date -u +%Y-%m-%dT%H:%M:%SZ`) before step 1 and 
 
 ### 2. Build
 - `git switch main && git pull --ff-only`, then branch `<fix|feat>/issue-<n>-<short-slug>`.
-- Write code with an `Agent` subagent on `model: sonnet`; give it the plan, the files and the test to add. Use `model: haiku` for running commands and tests.
 - Bug: use the `repro-bug` skill and commit its failing test first, then the fix. Its report goes in the PR body. Cannot reproduce → skip (step 1) and put the report in the comment. Feature: add the test with the change.
 - Small commits, each with passing tests. Message: conventional prefix + one sentence, max 20 words, no body.
 - Every behavior change gets a test that fails without the change.
@@ -55,10 +60,10 @@ Record the issue's start time (`date -u +%Y-%m-%dT%H:%M:%SZ`) before step 1 and 
 - Run the `review-checklist` skill on `git diff main...HEAD`. Fix every item, then rerun step 3.
 
 ### 5. Review 2: independent review
-- Start a fresh `Agent` (`model: sonnet`) that has not seen your plan or reasoning. Give it only the issue text and `git diff main...HEAD`. Ask it to check: (a) the diff meets the issue's Expected section, (b) it is the **minimum** change — flag any line not needed for the ticket, (c) bugs, security, missing tests.
-- Fix every real finding and remove every unneeded line, then rerun step 3. If you changed code, rerun review 2 once more. Still blocking findings after that → draft PR with the findings, do not merge, move on.
+- The orchestrator starts a fresh `Agent` (`model: sonnet`) that has not seen the plan or reasoning. Give it only the issue text and the branch name; it reads `git diff main...HEAD` itself. Ask it to check: (a) the diff meets the issue's Expected section, (b) it is the **minimum** change — flag any line not needed for the ticket, (c) bugs, security, missing tests.
+- Send the findings to the worker (`SendMessage`). It fixes every real finding and removes every unneeded line, then reruns step 3. If you changed code, rerun review 2 once more. Still blocking findings after that → draft PR with the findings, do not merge, move on.
 
-### 6. Ship and merge
+### 6. Ship (worker, after review 2 passes)
 - Scope check: the diff touches only files from the plan. If not, either revert the extra files or explain why in the PR body.
 - Push the branch. Run `/pr <n>` for the body; it must include `Closes #<n>`, the decisions/assumptions from step 1, review 1 and 2 results, and anything unverified. Then `gh pr create`. Never open a PR with a one-line body.
 - Wait for CI: `gh pr checks <pr> --watch`. If no checks are configured, rely on the local test run. Failed checks → read the log (`gh run view <run-id> --log-failed`), fix (max 3 attempts), else leave the PR open with the failing log tail in a PR comment, do not merge, move on.
@@ -71,9 +76,9 @@ Record the issue's start time (`date -u +%Y-%m-%dT%H:%M:%SZ`) before step 1 and 
   Use only results from commands you ran in this session, never remembered ones.
 - Attach screenshots in Claude in Chrome by editing the PR description on github.com, under `## Test evidence`; if that fails, list the paths in a PR comment.
 
-### 7. Review 3: merge decision
+### 7. Review 3: merge decision (orchestrator)
 - Sync first: `git fetch origin && git merge origin/main`, rerun step 3 if anything came in, push.
-- Start a fresh `Agent` (`model: opus`) that has not seen your reasoning. Give it the issue text, `git diff origin/main...HEAD`, the PR description with the evidence, the proof log, and `gh pr checks <pr>`. It answers each item **yes / no** with the evidence:
+- Start a fresh `Agent` (`model: opus`) that has not seen your reasoning. Give it the issue number, the PR number and the proof log path; it reads the issue, `git diff origin/main...HEAD`, the PR description and `gh pr checks <pr>` itself. It answers each item **yes / no** with the evidence:
   1. Every point of the issue's Expected section is covered by a test or a verified browser step (list the mapping).
   2. The fail-on-main proof exists and fails for the issue's reason, not an import or collection error.
   3. Tests and ruff pass on the final commit; CI checks pass (or none are configured, stated).

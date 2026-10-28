@@ -1,0 +1,45 @@
+name: CI
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+jobs:
+  test:
+    name: test
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v5
+        with:
+          enable-cache: true
+      - name: Install dependencies
+        run: uv sync --frozen
+      # Server code opens SQLite files under server/db at import time (gitignored).
+      - name: Create server/db
+        run: mkdir -p server/db
+      # Each check runs even if an earlier one failed, so one run shows every failure.
+      - name: Server tests
+        if: ${{ !cancelled() }}
+        working-directory: server
+        run: uv run --with pytest python -m pytest tests
+      - name: Client tests
+        if: ${{ !cancelled() }}
+        working-directory: client
+        run: uv run --with pytest python -m pytest tests
+      - name: Scripts tests
+        if: ${{ !cancelled() }}
+        run: uv run --with pytest python -m pytest scripts/tests
+      - name: Ruff
+        if: ${{ !cancelled() }}
+        run: uv run ruff check .

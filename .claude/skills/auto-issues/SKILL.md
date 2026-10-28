@@ -1,11 +1,11 @@
 ---
 name: auto-issues
 description: Take selected GitHub issues end to end with no approval stops (plan, build, test, 3 reviews, PR, merge), when the user runs /auto-issues with issue numbers.
-argument-hint: <issue numbers, e.g. 6 20 8>
+argument-hint: <issue numbers, e.g. 6 20 8> [--skip-preflight]
 model: sonnet
 disable-model-invocation: true
 ---
-Skill version: 5. Work GitHub issues $ARGUMENTS end to end with no approval stops. Merge only when review 3 is confident. I review the run report afterwards.
+Skill version: 6. Work the GitHub issue numbers in $ARGUMENTS (ignore `--skip-preflight` there) end to end with no approval stops. Merge only when review 3 is confident. I review the run report afterwards.
 
 Paths below are relative to `.claude/skills/auto-issues/`. `<scratch>` is your scratchpad dir.
 
@@ -15,6 +15,8 @@ Paths below are relative to `.claude/skills/auto-issues/`. `<scratch>` is your s
 - **Reviewers:** a fresh agent each time, given only what its step lists. They read the PR's diff (`gh pr diff <pr>`, or `git diff origin/main...origin/<branch>` before a PR exists), never the local checkout, and open only changed lines plus ~20 lines of context unless a finding needs more.
 
 ## Preflight
+**`--skip-preflight`** in the arguments: I know the setup works. Run only checks 2 and 4, check 5's file check and empty `<scratch>/preflight-checks.md`, and the run start and session id lines below; record the rest as `skipped by user`. On-demand checks still run when a worker needs them. Report it in Run info: "baseline on `main` not verified".
+
 If any check fails, stop the run: stop anything you started, start no issue, write the report with only a Preflight section (check, pass/fail, error, fix), reply with what I must fix.
 1. `git fetch origin` works. The main checkout may be on any branch: nothing in this run uses it except `out/`.
 2. `gh auth status` passes; `gh repo view --json viewerPermission` is `WRITE`, `MAINTAIN` or `ADMIN`.

@@ -18,7 +18,7 @@ You cannot start subagents: write code and run commands yourself. Reply only wit
 
 ## 3. Test
 - All suites from CLAUDE.md plus `uv run ruff check .` must pass. Record commands and result lines.
-- User-visible change: run server and client, reproduce the scenario in Claude in Chrome, save screenshots outside the repo, then stop server and client. Cannot verify → mark **unverified**. Not user-visible → no browser check.
+- User-visible change: run the app and reproduce the scenario in the browser named in `.claude/preflight.md` Notes, save screenshots outside the repo, then stop the app. Cannot verify → mark **unverified**. Not user-visible → no browser check.
 - Keep every failure's output: test name, assertion or error, traceback. A failure without its log does not count.
 - Same failure after 3 fix attempts → push, open a **draft** PR with a `## Failure log` section (command, failing tests, trimmed traceback). Reply `draft`.
 
@@ -29,10 +29,10 @@ You cannot start subagents: write code and run commands yourself. Reply only wit
 - Scope: the diff touches only planned files, or the PR body explains why.
 - Push. Run `/pr <n>` for the body: `Closes #<n>`, decisions and assumptions, review 1 and 2 results, unverified items. `gh pr create`. Never a one-line body.
 - CI: `gh pr checks <pr> --watch`; none configured → rely on local tests. Failed → `gh run view <run-id> --log-failed`, fix (max 3 attempts), else comment the failing log tail on the PR and reply `draft`.
-- Add `## Test evidence` to the PR body with `gh api -X PATCH repos/{owner}/{repo}/pulls/<pr> -F body=@<file>` (`gh pr edit` fails on this repo). Only results from commands you ran:
+- Add `## Test evidence` to the PR body with `gh api -X PATCH repos/{owner}/{repo}/pulls/<pr> -F body=@<file>`. Only results from commands you ran:
   - each test command on the final commit with its result line (e.g. `42 passed in 3.1s`), and the ruff result;
   - new or changed tests, and the fail-on-main proof (command and failing output) in a `<details>` block;
   - CI check names and results;
   - review 1 and 2 verdicts and what was fixed;
   - browser check: steps and what you saw, or **unverified** and why.
-- Upload screenshots under `## Test evidence` by editing the PR on github.com in Claude in Chrome; if that fails, list their paths in a PR comment.
+- Upload screenshots under `## Test evidence` by editing the PR on github.com in that browser; if that fails, list their paths in a PR comment.

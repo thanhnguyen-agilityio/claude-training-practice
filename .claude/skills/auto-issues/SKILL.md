@@ -11,18 +11,18 @@ Paths below are relative to `.claude/skills/auto-issues/`. `<scratch>` is your s
 
 ## Roles
 - **Orchestrator** (you): preflight, queue, start agents, run reviews 2 and 3, merge, write the report. Never read issue code or diffs; keep only agent summaries.
-- **Worker:** one fresh `Agent` (`model: sonnet`) per issue. Prompt: issue number, `<scratch>`, "Follow `references/worker.md` steps 1–4, then stop and reply." Keep its id; send review findings and "do step 6" with `SendMessage`.
+- **Worker:** one fresh `Agent` (`model: sonnet`) per issue. Prompt: issue number, `<scratch>`, `.claude/preflight.md`, "Follow `references/worker.md` steps 1–4, then stop and reply." Keep its id; send review findings and "do step 6" with `SendMessage`.
 - **Reviewers:** a fresh agent each time, given only what its step lists.
 
 ## Preflight
 If any check fails, stop the run: start no issue, write the report with only a Preflight section (check, pass/fail, error, fix), reply with what I must fix.
 1. On `main`, clean tree, `git pull --ff-only` works.
 2. `gh auth status` passes; `gh repo view --json viewerPermission` is `WRITE`, `MAINTAIN` or `ADMIN`.
-3. `.env` has every key in `.env.example` (compare names only; never print values). `uv sync` succeeds.
-4. All test suites from CLAUDE.md and `uv run ruff check .` pass on `main`.
-5. `make run_server` and `make run_client` in the background; `curl -sf http://localhost:8080/health` and `http://localhost:8501` answer.
-6. Labels `auto-merged` and `needs-human-merge` exist; create missing ones with `gh label create`.
-7. Claude in Chrome: load its tools in one `ToolSearch`; `tabs_context_mcp` connects; a tab opens `http://localhost:8501` and `https://github.com` signed in. Then stop server and client.
+3. All test and lint commands from CLAUDE.md pass on `main`.
+4. Labels `auto-merged` and `needs-human-merge` exist; create missing ones with `gh label create`.
+5. `.claude/preflight.md` exists (missing → fail: this repo's setup is unverified). Run every check in it.
+
+`.claude/preflight.md` Notes say how to run the app, which browser to use, and repo quirks; pass its path to every worker.
 
 Record each result for the report. Note the run start (`date -u +%Y-%m-%dT%H:%M:%SZ`) and the session id: `basename "$(ls -t ~/.claude/projects/$(pwd | tr '/.' '--')/*.jsonl | head -1)" .jsonl`.
 
@@ -37,7 +37,7 @@ Record start and end time (`date -u +%Y-%m-%dT%H:%M:%SZ`).
 3. **Worker, step 6:** send "do step 6"; it replies with the PR link when the evidence is in.
 4. **Sync** (worker): send "sync"; it runs `git fetch origin && git merge origin/main` on the branch and, if anything came in, reruns tests and pushes.
 5. **Review 3:** fresh `Agent` (`model: opus`) gets the issue number, PR number, proof log path, and `references/review-3.md`; it returns the yes/no checklist and a verdict.
-6. **Decide** (add labels with `gh api -X POST repos/{owner}/{repo}/issues/<pr>/labels -f "labels[]=<name>"`; `gh pr edit` fails on this repo):
+6. **Decide** (add labels with `gh api -X POST repos/{owner}/{repo}/issues/<pr>/labels -f "labels[]=<name>"`):
    - **Human gate** — `critical priority` label, or the change touches SQL, auth, secrets, or user input reaching a query or shell: comment the checklist, add `needs-human-merge`, keep open and synced. Result: open – human gate.
    - **Confident**: comment the checklist, add `auto-merged`, `gh pr merge <pr> --squash --delete-branch`, `git switch main && git pull --ff-only`.
    - **Not confident**: comment the checklist, reasons, and what would make it mergeable; keep open, synced, checks passing.

@@ -80,13 +80,14 @@ class ChatService:
     def approve_tool_call(self, tool_call_id: str) -> dict:
         try:
             response = requests.post(
-                self.base_url + "/chat/approve/", json={
+                self.base_url + "/chat/approve/",
+                json={
                     "message": "Approved",
                     "user_id": self.user_id,
                     "thread_id": self.thread_id,
                     "tool_call_id": tool_call_id,
                     "user_input": "The tool call is approved.",
-                }
+                },
             )
         except Exception as e:
             raise Exception(
@@ -103,13 +104,14 @@ class ChatService:
     def reject_tool_call(self, tool_call_id: str):
         try:
             response = requests.post(
-                self.base_url + "/chat/reject/", json={
+                self.base_url + "/chat/reject/",
+                json={
                     "message": "Rejected",
                     "user_id": self.user_id,
                     "thread_id": self.thread_id,
                     "tool_call_id": tool_call_id,
                     "user_input": "The tool call is rejected.",
-                }
+                },
             )
         except Exception as e:
             raise Exception(

@@ -45,7 +45,9 @@ def check_graph_interruption(config):
 def continue_interruption(config):
     # Continue to use tool
     print("continue the interruption:")
-    events = graph.stream(Command(resume={"action": "continue"}), config, stream_mode="values")
+    events = graph.stream(
+        Command(resume={"action": "continue"}), config, stream_mode="values"
+    )
     for event in events:
         if "messages" in event:
             event["messages"][-1].pretty_print()
@@ -85,7 +87,7 @@ if __name__ == "__main__":
             stream_graph_updates(user_input, config)
 
             check_graph_interruption(config)
-    #         # continue_interruption(config)
+        #         # continue_interruption(config)
         except Exception as e:
             # fallback if input() is not available
             print("Error:", e)

@@ -13,11 +13,14 @@ if "loop" not in st.session_state:
     st.session_state.loop = asyncio.new_event_loop()
     asyncio.set_event_loop(st.session_state.loop)
 
+
 def handle_approve():
     chat_service.approve_tool_call(st.session_state.tool_call_id)
 
+
 def handle_reject():
     chat_service.reject_tool_call(st.session_state.tool_call_id)
+
 
 async def process_response(response):
     async for content in response:
@@ -53,7 +56,7 @@ async def process_response(response):
                     type="tertiary",
                     icon="❌",
                     use_container_width=True,
-                    on_click=handle_reject
+                    on_click=handle_reject,
                 )
 
             return response_holder[0]
@@ -63,9 +66,7 @@ async def process_response(response):
 
     message_placeholder.markdown(response_holder[0])
     if response_holder[0]:
-        history.add_message(
-            ChatMessage(role="assistant", content=response_holder[0])
-        )
+        history.add_message(ChatMessage(role="assistant", content=response_holder[0]))
 
 
 # Initialize chat service

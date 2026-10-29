@@ -34,7 +34,10 @@ def render_share_button():
     if st.button("🔗 Share conversation", use_container_width=True):
         st.query_params["thread"] = st.session_state.thread_id
         origin = st.context.headers.get("Origin", "")
-        st.code(f"{origin}/?thread={quote(st.session_state.thread_id, safe='')}", language=None)
+        st.code(
+            f"{origin}/?thread={quote(st.session_state.thread_id, safe='')}",
+            language=None,
+        )
         st.caption("Anyone with this link can open this conversation.")
 
 

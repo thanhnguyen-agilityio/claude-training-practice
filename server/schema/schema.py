@@ -16,6 +16,7 @@ class ChatRequest(BaseModel):
         examples=["847c6285-8fc9-4560-a83f-4e6285809254"],
     )
 
+
 class ToolCallApprovalRequest(BaseModel):
     user_id: str = Field(
         description="User ID.",

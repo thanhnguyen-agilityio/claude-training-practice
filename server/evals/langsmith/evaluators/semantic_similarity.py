@@ -36,7 +36,9 @@ def compare_semantic_similarity(root_run: Run, example: Example):
         ),
     ]
     try:
-        ai_message = model_evals.with_structured_output(Similarity_Score).invoke(messages)
+        ai_message = model_evals.with_structured_output(Similarity_Score).invoke(
+            messages
+        )
     except Exception as e:
         # from remote_pdb import RemotePdb
         # RemotePdb('127.0.0.1', 4444).set_trace()

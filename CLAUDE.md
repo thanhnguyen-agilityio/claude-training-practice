@@ -6,6 +6,7 @@ LangGraph/LangServe customer-support agent (RAG + SQL + tools) with a Streamlit 
 - Install: `uv sync` (copy `.env.example` to `.env` first)
 - Run: `make run_server` (port 8080) and `make run_client`
 - Test: `cd server && uv run --env-file ../.env --with pytest python -m pytest tests` / `cd client && uv run --env-file ../.env --with pytest python -m pytest tests` / `uv run --with pytest python -m pytest scripts/tests`
+- E2E (UI): `make e2e` starts server + client, runs `e2e/`, stops both. First run: `cd e2e && npm ci && npx playwright install chromium`; needs Node >=22.22.3 or >=24.8 and ports 8080/8501 free.
 - Lint/format: `uv run ruff check . && uv run ruff format .`
 - Knowledge base: `make create_knowledge_base`
 - Evals: `make langsmith_experiments`, `make promptfoo_eval_agent`

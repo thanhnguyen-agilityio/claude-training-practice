@@ -1,12 +1,14 @@
 import asyncio
 import json
+import threading
+from collections import defaultdict
 from typing import AsyncGenerator
 
 from agent.graph import init_graph
 from agent.tools import sensitive_tool_names
 from fastapi import APIRouter
 from fastapi.responses import Response, StreamingResponse
-from langchain_core.messages import ToolMessage
+from langchain_core.messages import AIMessage, ToolMessage
 from schema.schema import ChatRequest, ToolCallApprovalRequest
 from utils.utils import build_require_approval_message
 
@@ -22,11 +24,42 @@ TOOL_STATUS = {
     "create_support_ticket": "Preparing your support ticket...",
 }
 TOOL_DONE_STATUS = "✓ Got the results, preparing your answer..."
+HEARTBEAT_SECONDS = 5
+STOPPED_NOTE = "_(stopped)_"
+# ponytail: one lock per thread id, never freed; evict old ids if thread count grows large
+_thread_locks: defaultdict[str, threading.Lock] = defaultdict(threading.Lock)
 
 
 def ndjson(obj) -> bytes:
     """One JSON value per line: the client splits the stream on newlines."""
     return (json.dumps(obj) + "\n").encode("utf-8")
+
+
+def stopped_text(partial: str) -> str:
+    return f"{partial}\n\n{STOPPED_NOTE}" if partial else STOPPED_NOTE
+
+
+def finish_stopped(graph, config, events, partial):
+    """Close a stopped run and save its state so the thread accepts the next message."""
+    events.close()
+    snapshot = graph.get_state(config)
+    if not snapshot.next:
+        return  # run already finished, nothing to fix
+    messages = snapshot.values.get("messages", [])
+    answered = {m.tool_call_id for m in messages if isinstance(m, ToolMessage)}
+    cancelled = [
+        ToolMessage(
+            tool_call_id=call["id"],
+            content="Cancelled: the user stopped the response.",
+        )
+        for call in getattr(messages[-1], "tool_calls", None) or []
+        if call["id"] not in answered
+    ]
+    graph.update_state(
+        config,
+        {"messages": [*cancelled, AIMessage(content=stopped_text(partial))]},
+        as_node="assistant",
+    )
 
 
 @router.post("/invoke")
@@ -82,19 +115,50 @@ async def stream_agent_response(request: ChatRequest) -> AsyncGenerator[bytes, N
     # graph.stream is sync: pull each item in a thread so the event loop can flush
     # events (e.g. status) to the client while a tool or the LLM is still running.
     events = graph.stream({"messages": messages}, config, stream_mode="messages")
-    while (event := await asyncio.to_thread(next, events, None)) is not None:
-        msg, metadata = event
-        status = None
-        if metadata["langgraph_node"] == "assistant":
-            for chunk in getattr(msg, "tool_call_chunks", None) or []:
-                status = TOOL_STATUS.get(chunk.get("name")) or status
-        elif isinstance(msg, ToolMessage):
-            status = TOOL_DONE_STATUS
-        if status and status != last_status:
-            last_status = status
-            yield ndjson({"status": status})
-        if metadata["langgraph_node"] == "assistant":
-            yield ndjson(msg.content)
+    lock = _thread_locks[request.thread_id]
+
+    def step():
+        # The lock also makes a new request on this thread wait for a stopped run's cleanup.
+        with lock:
+            return next(events, None)
+
+    partial = ""
+    finished = False
+    try:
+        while True:
+            pending = asyncio.ensure_future(asyncio.to_thread(step))
+            # Heartbeat keeps the client's read timeout alive and lets it act on Stop
+            # while a step is slow.
+            while not (await asyncio.wait({pending}, timeout=HEARTBEAT_SECONDS))[0]:
+                yield ndjson({"heartbeat": True})
+            event = pending.result()
+            if event is None:
+                break
+            msg, metadata = event
+            status = None
+            if metadata["langgraph_node"] == "assistant":
+                for chunk in getattr(msg, "tool_call_chunks", None) or []:
+                    status = TOOL_STATUS.get(chunk.get("name")) or status
+                if isinstance(msg.content, str):
+                    partial += msg.content
+            elif isinstance(msg, ToolMessage):
+                status = TOOL_DONE_STATUS
+                partial = ""
+            if status and status != last_status:
+                last_status = status
+                yield ndjson({"status": status})
+            if metadata["langgraph_node"] == "assistant":
+                yield ndjson(msg.content)
+        finished = True
+    finally:
+        if not finished:
+            # Client disconnected (Stop): the in-flight step finishes, then the graph
+            # closes and the partial answer is saved. Off-thread so the event loop is free.
+            def cleanup():
+                with lock:
+                    finish_stopped(graph, config, events, partial)
+
+            threading.Thread(target=cleanup, daemon=True).start()
 
     # interrupt
     snapshot = graph.get_state(config)

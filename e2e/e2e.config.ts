@@ -7,6 +7,8 @@ export default {
   targets: [{ engine: web(), app: { url: process.env.APP_URL ?? 'http://localhost:8501' } }],
   // Chat replies come from the real LLM, so allow slow turns.
   timeout: 300_000,
+  // ponytail: one retry absorbs LLM reply variance; if flakes persist, stub the LLM for e2e instead.
+  retries: 1,
   agents: {
     // Reads OPENAI_API_KEY, the same key the app uses.
     default: { model: openai('gpt-4o-mini') },

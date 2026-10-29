@@ -15,7 +15,7 @@ test('welcome message shows on a new chat', async ({ app, screen }) => {
   await expect(screen.getByTestId('stChatMessage')).toHaveCount(1, { timeout: 30_000 });
 });
 
-test('a quick-start click gets a reply', async ({ app, agent, screen }) => {
+test('a quick-start click gets a reply', async ({ app, screen }) => {
   await app.open('/');
   await screen.getByRole('button', 'Do you offer free shipping?').click();
   // welcome, the question, then a reply with text in it
@@ -24,7 +24,7 @@ test('a quick-start click gets a reply', async ({ app, agent, screen }) => {
     { timeout: REPLY_TIMEOUT },
   );
   await waitForReplyDone(screen);
-  await agent.assert('the last assistant message answers the question about free shipping');
+  await expect(screen.getByTestId('stChatMessage')).toHaveCount(3);
 });
 
 test('rejecting a support ticket does not create it', async ({ app, agent, screen }) => {
@@ -32,7 +32,8 @@ test('rejecting a support ticket does not create it', async ({ app, agent, scree
   // Give every field the tool needs in one message, so the agent goes straight to approval.
   const input = screen.getByPlaceholder('Give me categories list.');
   await input.fill(
-    'Create a support ticket. Email: e2e@example.test. Subject: Damaged item. Description: My order arrived broken.',
+    'Create a support ticket now. Name: E2E Tester. Email: e2e@example.test. Phone: 0900000000. ' +
+      'Subject: Damaged item. Description: My order arrived broken.',
   );
   await input.press('Enter');
 

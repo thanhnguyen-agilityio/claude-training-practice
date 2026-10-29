@@ -5,7 +5,7 @@ import streamlit as st
 from langchain_community.chat_message_histories import StreamlitChatMessageHistory
 from langchain_core.messages import ChatMessage
 from services.chat_service import ChatService
-from utils.constants import BOT_AVATAR, WELCOME_MESSAGE
+from utils.constants import BOT_AVATAR, ERROR_GENERIC, WELCOME_MESSAGE
 from utils.utils import convert_chat_message, render_message
 
 expander = st.expander("Quick Start:")
@@ -147,6 +147,6 @@ if prompt := st.chat_input(placeholder="Give me categories list."):
                 #     st.button('Approve', on_click=approve_action, args=[1])
                 # else:
                 #     st.write_stream(response)
-            except Exception as e:
-                st.error(e)
+            except Exception:
+                st.error(ERROR_GENERIC)
                 st.stop()

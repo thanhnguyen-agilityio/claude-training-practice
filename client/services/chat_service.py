@@ -3,7 +3,7 @@ import json
 import httpx
 import requests
 from langserve import RemoteRunnable
-from utils.constants import API_BASE_URL
+from utils.constants import API_BASE_URL, ERROR_CONNECTION, ERROR_REQUEST
 
 
 class ChatService:
@@ -28,12 +28,12 @@ class ChatService:
             )
         except Exception as e:
             raise Exception(
-                "Cannot invoke chat API. Please check the server logs."
+                ERROR_CONNECTION
             ) from e
         else:
             if response.status_code != 200:
                 raise Exception(
-                    "Chat API response not success. Please check the server logs."
+                    ERROR_REQUEST
                 )
 
             return response.json()
@@ -67,12 +67,12 @@ class ChatService:
             )
         except Exception as e:
             raise Exception(
-                "Cannot get chat history. Please check the server logs."
+                ERROR_CONNECTION
             ) from e
         else:
             if response.status_code != 200:
                 raise Exception(
-                    "Cannot get chat history. Please check the server logs."
+                    ERROR_REQUEST
                 )
 
             return response.json()
@@ -90,12 +90,12 @@ class ChatService:
             )
         except Exception as e:
             raise Exception(
-                "Cannot call chat API. Please check the server logs."
+                ERROR_CONNECTION
             ) from e
         else:
             if response.status_code != 200:
                 raise Exception(
-                    "Chat API response not success. Please check the server logs."
+                    ERROR_REQUEST
                 )
 
             return response.json()
@@ -113,12 +113,12 @@ class ChatService:
             )
         except Exception as e:
             raise Exception(
-                "Cannot call chat API. Please check the server logs."
+                ERROR_CONNECTION
             ) from e
         else:
             if response.status_code != 200:
                 raise Exception(
-                    "Chat API response not success. Please check the server logs."
+                    ERROR_REQUEST
                 )
 
             return response.json()

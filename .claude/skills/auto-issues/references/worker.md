@@ -24,7 +24,7 @@ Your steps are 1–4 and 6; step 5 is review 2, run by the orchestrator. Reply o
 ## 2. Build
 - `git fetch origin && git worktree add <scratch>/wt-<n> -b <fix|feat>/issue-<n>-<short-slug> origin/main`, set it up as `.claude/preflight.md` Notes say (new worktree), and run everything from there.
 - Bug: use the `repro-bug` skill; commit its failing test first, then the fix; its report goes in the PR body. Cannot reproduce → skip with the report in the comment. Feature: add the test with the change.
-- Small commits, each with passing tests, except the bug's failing reproduction test commit. Message: conventional prefix + one sentence, max 20 words, no body.
+- Small commits, each with passing tests, except the bug's failing reproduction test commit. Message: conventional prefix + one sentence, max 20 words, no body other than any required trailer (e.g. `Co-Authored-By`).
 - Every behavior change gets a test that fails without it. No behavior change (CI, refactor, rename, style, docs): no new test and no proof; say so in the PR.
 - **Fail-on-main proof:** `git worktree add <scratch>/proof origin/main`, copy in only the new or changed test files, run them, set it up like your worktree, save the full output to `<scratch>/proof-<n>.log`, `git worktree remove <scratch>/proof`. They must fail on an assertion about the issue's behavior, not an import or collection error. If they pass, rewrite the test.
 - Write tests so they can fail that way: import only names that exist on main (use literals, not new constants), find UI elements by label or text with an explicit `assert` (`assert btn, "no New chat button"`, never `at.button[1]`), and make every test fail when the feature is absent, not only when it is wrong (no assertion that also holds on main).

@@ -52,7 +52,6 @@ async def process_response(response):
             continue
 
         if content["require_approval"]:
-            status_placeholder.empty()
             message = content["message"]
             tool_call_data = content["tool_call_data"]
             st.session_state.tool_call_id = tool_call_data["id"]
@@ -87,7 +86,6 @@ async def process_response(response):
             response_holder[0] += content.get("content", "")
             message_placeholder.markdown(response_holder[0] + "▌")
 
-    status_placeholder.empty()
     message_placeholder.markdown(response_holder[0])
     if response_holder[0]:
         history.add_message(
@@ -157,5 +155,8 @@ if prompt := st.chat_input(placeholder="Give me categories list."):
                 # else:
                 #     st.write_stream(response)
             except Exception as e:
+                status_placeholder.empty()  # st.stop() below skips `finally` output
                 st.error(e)
                 st.stop()
+            finally:
+                status_placeholder.empty()

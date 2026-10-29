@@ -2,6 +2,7 @@ from pathlib import Path
 from unittest.mock import patch
 
 from services.chat_service import ChatService
+from streamlit.delta_generator import DeltaGenerator
 from streamlit.testing.v1 import AppTest
 
 AGENT_PAGE = str(Path(__file__).parents[1] / "pages" / "agent.py")
@@ -25,31 +26,37 @@ def run(stream):
     return at
 
 
+def captions_shown(stream):
+    shown = []
+    real = DeltaGenerator.caption
+
+    def spy(self, body, *a, **k):
+        shown.append(body)
+        return real(self, body, *a, **k)
+
+    with patch.object(DeltaGenerator, "caption", spy):
+        at = run(stream)
+    return at, shown
+
+
 def test_status_hidden_once_answer_streams():
-    at = run(fake_stream)
+    at, shown = captions_shown(fake_stream)
 
     assert not at.exception
+    assert shown == ["Searching the product database..."]
+    assert not at.caption
     assert at.chat_message[-1].markdown[0].value == "Found it"
 
 
-def test_status_shown_while_waiting():
-    # A stream that dies after the status leaves the status on screen (AppTest only sees the final state).
-    async def status_then_fail(self, message):
-        yield {"status": "Searching the product database..."}
-        raise RuntimeError("boom")
-
-    at = run(status_then_fail)
-
-    assert any(c.value == "Searching the product database..." for c in at.caption)
-
-
-def test_empty_chunk_keeps_status():
+def test_empty_chunk_keeps_status_and_error_clears_it():
     # Tool-call chunks stream an empty string right after the status.
     async def status_empty_fail(self, message):
         yield {"status": "Searching the product database..."}
         yield ""
         raise RuntimeError("boom")
 
-    at = run(status_empty_fail)
+    at, shown = captions_shown(status_empty_fail)
 
-    assert any(c.value == "Searching the product database..." for c in at.caption)
+    assert shown == ["Searching the product database..."]
+    assert not at.caption
+    assert at.error

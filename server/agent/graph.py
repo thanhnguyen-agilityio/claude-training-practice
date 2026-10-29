@@ -118,6 +118,7 @@ def summarize_conversation(state: State):
     ) or window
     window_start = len(messages) - len(window)
     # Only messages not yet in the summary; messages are append-only so indices are stable.
+    # Old checkpoints lack summarized_count: they re-read all older messages once; accepted.
     count = state.get("summarized_count", 0)
     new = messages[count:window_start]
     if not new:
@@ -134,7 +135,7 @@ def summarize_conversation(state: State):
     return {
         "summary": response.content,
         "window_start": window_start,
-        "summarized_count": max(count, window_start),
+        "summarized_count": window_start,
     }
 
 

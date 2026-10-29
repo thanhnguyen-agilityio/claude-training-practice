@@ -1,4 +1,5 @@
 import asyncio
+import logging
 import random
 
 import streamlit as st
@@ -110,7 +111,7 @@ with st.spinner("Loading..."):
 
         history.messages = history_message_convert
     except Exception:
-        pass
+        logging.exception("Cannot load chat history")
 
 # Welcome message is client-only (never in server history): pick once, always show at top
 if "welcome_message" not in st.session_state:
@@ -148,5 +149,6 @@ if prompt := st.chat_input(placeholder="Give me categories list."):
                 # else:
                 #     st.write_stream(response)
             except Exception:
+                logging.exception("Chat stream failed")
                 st.error(ERROR_GENERIC)
                 st.stop()

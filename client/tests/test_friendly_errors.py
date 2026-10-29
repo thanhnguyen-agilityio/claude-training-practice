@@ -1,5 +1,6 @@
 from pathlib import Path
 
+
 import pytest
 import requests
 from services.chat_service import ChatService
@@ -17,6 +18,7 @@ def fail_connect(*a, **k):
 
 class Resp500:
     status_code = 500
+    text = "internal boom detail"
 
 
 @pytest.mark.parametrize("method", ["get", "post"])
@@ -43,7 +45,7 @@ def test_messages_have_no_technical_terms():
         assert not any(t in m.lower() for t in TECHNICAL)
 
 
-def test_chat_stream_failure_shows_friendly_message(monkeypatch):
+def test_chat_stream_failure_shows_friendly_message(monkeypatch, caplog):
     def broken_stream(self, prompt):
         raise RuntimeError("All connection attempts failed")
 
@@ -56,6 +58,7 @@ def test_chat_stream_failure_shows_friendly_message(monkeypatch):
     at.chat_input[0].set_value("hello").run()
 
     assert [e.value for e in at.error] == [ERROR_GENERIC]
+    assert "All connection attempts failed" in caplog.text
 
 
 def test_health_check_failure_is_friendly(monkeypatch):
@@ -65,3 +68,33 @@ def test_health_check_failure_is_friendly(monkeypatch):
     monkeypatch.setattr("streamlit.stop", lambda: None)
     health_check()
     assert errors == [ERROR_CONNECTION]
+
+
+def test_invoke_and_reject_non_200_are_friendly_and_logged(monkeypatch, caplog):
+    monkeypatch.setattr(requests, "post", lambda *a, **k: Resp500())
+    s = ChatService()
+    for fn in (lambda: s.chat_invoke("hi"), lambda: s.reject_tool_call("1")):
+        with pytest.raises(Exception) as e:
+            fn()
+        assert str(e.value) == ERROR_REQUEST
+    assert "HTTP 500: internal boom detail" in caplog.text
+
+
+def test_history_load_failure_is_logged_and_page_still_renders(monkeypatch, caplog):
+    def boom(self):
+        raise Exception("history down")
+
+    monkeypatch.setattr(ChatService, "chat_history", boom)
+    at = AppTest.from_file(AGENT_PAGE, default_timeout=30)
+    at.session_state["user_id"] = "u1"
+    at.session_state["thread_id"] = "t1"
+    at.run()
+    assert not at.exception and not at.error
+    assert "history down" in caplog.text
+
+
+def test_connection_cause_is_logged(monkeypatch, caplog):
+    monkeypatch.setattr(requests, "post", fail_connect)
+    with pytest.raises(Exception):
+        ChatService().chat_invoke("hi")
+    assert "boom" in caplog.text

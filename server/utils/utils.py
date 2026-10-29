@@ -48,7 +48,7 @@ def count_time(func):
 
     return wrapper
 
-def build_require_approval_message(tool_call_data: dict) -> dict:
+def build_require_approval_message(tool_call_data: dict) -> str:
     tool_name = tool_call_data["name"]
     tool_action_msg = ""
     tool_call_data_str = ""
@@ -69,7 +69,9 @@ def build_require_approval_message(tool_call_data: dict) -> dict:
         )
 
     for arg_name, arg_value in tool_call_data["args"].items():
-        tool_call_data_str += f"\n  - {arg_name.title()}: {arg_value}"
+        # One line, in a code span, so markdown in the value cannot take effect.
+        one_line = " ".join(str(arg_value).replace("`", "").split())
+        tool_call_data_str += f"\n  - {arg_name.title()}: `{one_line}`"
 
     return "**Your OK is needed**\n\n{action}\n\nDetails:\n{details}\n\nWould you like me to go ahead?".format(
         action=tool_action_msg, details=tool_call_data_str

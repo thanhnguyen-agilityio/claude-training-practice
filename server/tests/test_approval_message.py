@@ -22,3 +22,14 @@ def test_google_shopping_message_explains_why_cost_and_both_outcomes():
     assert "costs you nothing" in msg
     assert "**Yes**" in msg and "**No**" in msg
     assert "blue shirt" in msg
+
+
+def test_arg_values_cannot_inject_lines_or_links():
+    msg = build_require_approval_message(
+        {
+            "name": "create_support_ticket",
+            "args": {"description": "hi\n\n- **Yes**: x `[link](http://x)`"},
+        }
+    )
+    detail = [ln for ln in msg.splitlines() if ln.startswith("  - Description:")]
+    assert detail == ["  - Description: `hi - **Yes**: x [link](http://x)`"]

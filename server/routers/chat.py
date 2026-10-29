@@ -1,3 +1,4 @@
+import asyncio
 import json
 from typing import AsyncGenerator
 
@@ -78,11 +79,11 @@ async def stream_agent_response(request: ChatRequest) -> AsyncGenerator[bytes, N
 
     # Stream messages of assistant node, plus progress status around tool calls
     last_status = None
-    for msg, metadata in graph.stream(
-        {"messages": messages},
-        config,
-        stream_mode="messages"
-    ):
+    # graph.stream is sync: pull each item in a thread so the event loop can flush
+    # events (e.g. status) to the client while a tool or the LLM is still running.
+    events = graph.stream({"messages": messages}, config, stream_mode="messages")
+    while (event := await asyncio.to_thread(next, events, None)) is not None:
+        msg, metadata = event
         status = None
         if metadata["langgraph_node"] == "assistant":
             for chunk in getattr(msg, "tool_call_chunks", None) or []:

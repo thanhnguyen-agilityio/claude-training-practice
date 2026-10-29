@@ -74,3 +74,4 @@ def test_each_event_is_one_newline_terminated_line():
 
     assert all(b.endswith(b"\n") and b.count(b"\n") == 1 for b in raw)
     assert json.loads(raw[-1]) == "a\nb"
+

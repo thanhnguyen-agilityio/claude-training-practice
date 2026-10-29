@@ -24,8 +24,14 @@ def handle_reject():
 async def process_response(response):
     async for content in response:
         if isinstance(content, str):
+            if content:
+                status_placeholder.empty()
             response_holder[0] += content
             message_placeholder.markdown(response_holder[0] + "▌")
+            continue
+
+        if "status" in content:
+            status_placeholder.caption(content["status"])
             continue
 
         if content["require_approval"]:
@@ -141,6 +147,7 @@ if prompt := typed or clicked:
 
     with st.chat_message("assistant", avatar=BOT_AVATAR):
         message_placeholder = st.empty()
+        status_placeholder = st.empty()
         response_holder = [""]
 
         with st.spinner("Thinking..."):
@@ -159,6 +166,9 @@ if prompt := typed or clicked:
                 # else:
                 #     st.write_stream(response)
             except Exception:
+                status_placeholder.empty()  # st.stop() below skips `finally` output
                 logging.exception("Chat stream failed")
                 st.error(ERROR_GENERIC)
                 st.stop()
+            finally:
+                status_placeholder.empty()

@@ -60,11 +60,14 @@ class ChatService:
                 },
                 timeout=30,
             ) as response:
-                async for chunk in response.aiter_bytes():
+                # NDJSON: one JSON value per line, however the bytes are chunked
+                async for line in response.aiter_lines():
+                    if not line.strip():
+                        continue
                     try:
-                        yield json.loads(chunk)
+                        yield json.loads(line)
                     except json.JSONDecodeError:
-                        yield chunk.strip()
+                        logger.warning("Skipping malformed stream line: %r", line)
 
     def chat_history(self) -> dict:
         """Get chat history of a thread_id"""

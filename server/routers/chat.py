@@ -12,6 +12,22 @@ from utils.utils import build_require_approval_message
 
 router = APIRouter(prefix="/chat", tags=[""])
 
+# Progress text shown to the user while a tool runs
+TOOL_STATUS = {
+    "lookup_documents": "Looking up our policies and support documents...",
+    "check_and_execute_query_tool": "Searching the product database...",
+    "sql_db_list_tables": "Searching the product database...",
+    "sql_db_schema": "Searching the product database...",
+    "search_google_shopping": "Searching for similar items...",
+    "create_support_ticket": "Preparing your support ticket...",
+}
+TOOL_DONE_STATUS = "✓ Got the results, preparing your answer..."
+
+
+def ndjson(obj) -> bytes:
+    """One JSON value per line: the client splits the stream on newlines."""
+    return (json.dumps(obj) + "\n").encode("utf-8")
+
 
 @router.post("/invoke")
 async def chat_invoke(request: ChatRequest):
@@ -61,27 +77,36 @@ async def stream_agent_response(request: ChatRequest) -> AsyncGenerator[bytes, N
     messages = [("user", request.message)]
     graph = init_graph(config=config)
 
-    # Stream messages of assistant node
-    for msg, metadata in graph.stream(
-        {"messages": messages},
-        config,
-        stream_mode="messages"
-    ):
+    # Stream messages of assistant node, plus progress status around tool calls
+    last_status = None
+    # graph.stream is sync: pull each item in a thread so the event loop can flush
+    # events (e.g. status) to the client while a tool or the LLM is still running.
+    events = graph.stream({"messages": messages}, config, stream_mode="messages")
+    while (event := await asyncio.to_thread(next, events, None)) is not None:
+        msg, metadata = event
+        status = None
         if metadata["langgraph_node"] == "assistant":
-            yield json.dumps(msg.content).encode("utf-8")
-            await asyncio.sleep(0.05)
+            for chunk in getattr(msg, "tool_call_chunks", None) or []:
+                status = TOOL_STATUS.get(chunk.get("name")) or status
+        elif isinstance(msg, ToolMessage):
+            status = TOOL_DONE_STATUS
+        if status and status != last_status:
+            last_status = status
+            yield ndjson({"status": status})
+        if metadata["langgraph_node"] == "assistant":
+            yield ndjson(msg.content)
 
     # interrupt
     snapshot = graph.get_state(config)
     if snapshot.next and snapshot.next[0] == "sensitive_tools":
         for tool_call in snapshot.values["messages"][-1].tool_calls:
             if tool_call["name"] in sensitive_tool_names:
-                yield json.dumps({
+                yield ndjson({
                     "require_approval": True,
                     "message": build_require_approval_message(tool_call),
                     "thread_id": request.thread_id,
                     "tool_call_data": tool_call,
-                }).encode("utf-8")
+                })
                 return
 
 @router.post("/stream")
@@ -89,7 +114,7 @@ async def chat_stream(request: ChatRequest):
     """Stream chat messages"""
     return StreamingResponse(
         stream_agent_response(request),
-        media_type="application/json",
+        media_type="application/x-ndjson",
         headers={
             "Cache-Control": "no-cache",
             "Connection": "keep-alive",

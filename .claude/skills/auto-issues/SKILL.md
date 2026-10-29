@@ -5,12 +5,12 @@ argument-hint: <issue numbers | open [priority] [type]> [--skip-preflight]
 model: sonnet
 disable-model-invocation: true
 ---
-Skill version: 7. Work the GitHub issues selected by $ARGUMENTS (see Queue) end to end with no approval stops. Merge only when review 3 is confident. I review the run report afterwards.
+Skill version: 8. Work the GitHub issues selected by $ARGUMENTS (see Queue) end to end with no approval stops. Merge only when review 3 is confident. I review the run report and the run branch PR afterwards.
 
 Paths below are relative to `.claude/skills/auto-issues/`. `<scratch>` is your scratchpad dir.
 
 ## Roles
-- **Orchestrator** (you): never switch branches or edit files in the main checkout; workers and reviewers use worktrees. Preflight, queue, start agents, run reviews 2 and 3, merge, write the report. Never read issue code or diffs; keep only agent summaries.
+- **Orchestrator** (you): never switch branches or edit files in the main checkout, except `out/` and the Run branch section; workers and reviewers use worktrees. Preflight, queue, start agents, run reviews 2 and 3, merge, write the report, do the Run branch section. Never read issue code or diffs; keep only agent summaries.
 - **Worker:** one fresh `Agent` (`model: sonnet`) per issue. Prompt: issue number, `<scratch>`, session id, issue start time, "Follow `references/worker.md` steps 1–4, then stop and reply." Keep its id; send review findings, "do step 6" and "sync" with `SendMessage`.
 - **Reviewers:** a fresh agent each time, given only what its step lists. They read the PR's diff (`gh pr diff <pr>`, or `git diff origin/main...origin/<branch>` before a PR exists), never the local checkout, and open only changed lines plus ~20 lines of context unless a finding needs more.
 
@@ -52,7 +52,18 @@ Record start and end time (`date -u +%Y-%m-%dT%H:%M:%SZ`). **Budget:** 45 minute
    - **Not confident**: comment the checklist, reasons, and what would make it mergeable; keep open, synced, checks passing.
 
 ## Run report
-After the last issue, `git fetch origin`, then read `references/run-report.md` and write the report it describes. Reply with the report path and the summary table.
+After the last issue, `git fetch origin`, then read `references/run-report.md` and write the report it describes.
+
+## Run branch
+In the main checkout, after the report (`<date>-<k>` = the report's date and number):
+1. `git status --porcelain` must list only `out/`; otherwise skip this section and say why in the reply. `git switch -c run/<date>-<k> origin/main`, then `git branch --unset-upstream`.
+2. Commit `out/` (`chore: auto-issues run <date>-<k> report`).
+3. Rank the report's "Improvements for next run" items by value: issues, review rounds, or review 3 rejections each would have prevented, against its cost. `gh issue create --title "run-<date>-<k>-improvement" --label enhancement` with the ranked list, a link to the report on the run branch, and which items this branch implements.
+4. Implement the top 20% of the ranked list (round up, at least 1), one commit per item. Only rule edits in `references/*.md`, `.claude/preflight.md`, `in/auto-issues-lessons.md`; an item needing code or CI changes stays in the issue for a normal `/auto-issues` run. Run the lint from CLAUDE.md.
+5. In the report, mark the implemented items and link the issue; commit.
+6. `git push -u origin run/<date>-<k>`, run `/pr` for the body (`Refs #<issue>`: the rest stays open), `gh pr create`, add `needs-human-merge`. Never merge it: I review rule changes.
+
+Reply with the report path, the summary table, and the improvement issue and run branch PR links.
 
 ## Rules
 - Smallest change that meets the issue's Expected section. No unrelated refactors, new dependencies, or formatting churn in untouched code.

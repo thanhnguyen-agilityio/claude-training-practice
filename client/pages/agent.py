@@ -13,11 +13,12 @@ if "loop" not in st.session_state:
     st.session_state.loop = asyncio.new_event_loop()
     asyncio.set_event_loop(st.session_state.loop)
 
+# Buttons only record the choice; the slow call runs in the page body so a spinner can show.
 def handle_approve():
-    chat_service.approve_tool_call(st.session_state.tool_call_id)
+    st.session_state.pending_decision = "approve"
 
 def handle_reject():
-    chat_service.reject_tool_call(st.session_state.tool_call_id)
+    st.session_state.pending_decision = "reject"
 
 async def process_response(response):
     async for content in response:
@@ -116,6 +117,20 @@ if not history.messages and not (typed or clicked):
                 on_click=st.session_state.__setitem__,
                 args=("quick_start_prompt", example),
             )
+
+# Send the clicked Yes/No to the server, then rerun so the history reload shows its reply
+if decision := st.session_state.pop("pending_decision", None):
+    call = getattr(chat_service, f"{decision}_tool_call")
+    failed = False
+    with st.chat_message("assistant", avatar=BOT_AVATAR):
+        with st.spinner("Working on it..."):
+            try:
+                call(st.session_state.tool_call_id)
+            except Exception as e:
+                st.error(e)
+                failed = True
+    if not failed:
+        st.rerun()
 
 # Handle user interaction
 if prompt := typed or clicked:

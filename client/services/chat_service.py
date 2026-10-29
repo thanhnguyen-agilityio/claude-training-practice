@@ -31,15 +31,17 @@ class ChatService:
             )
         except Exception as e:
             logger.exception("Request failed")
-            raise Exception(ERROR_CONNECTION) from e
+            raise Exception(
+                ERROR_CONNECTION
+            ) from e
         else:
             if response.status_code != 200:
                 logger.error(
-                    "HTTP %s: %s",
-                    response.status_code,
-                    str(getattr(response, "text", ""))[:200],
+                    "HTTP %s: %s", response.status_code, response.text[:200]
                 )
-                raise Exception(ERROR_REQUEST)
+                raise Exception(
+                    ERROR_REQUEST
+                )
 
             return response.json()
 
@@ -72,66 +74,70 @@ class ChatService:
             )
         except Exception as e:
             logger.exception("Request failed")
-            raise Exception(ERROR_CONNECTION) from e
+            raise Exception(
+                ERROR_CONNECTION
+            ) from e
         else:
             if response.status_code != 200:
                 logger.error(
-                    "HTTP %s: %s",
-                    response.status_code,
-                    str(getattr(response, "text", ""))[:200],
+                    "HTTP %s: %s", response.status_code, response.text[:200]
                 )
-                raise Exception(ERROR_REQUEST)
+                raise Exception(
+                    ERROR_REQUEST
+                )
 
             return response.json()
 
     def approve_tool_call(self, tool_call_id: str) -> dict:
         try:
             response = requests.post(
-                self.base_url + "/chat/approve/",
-                json={
+                self.base_url + "/chat/approve/", json={
                     "message": "Approved",
                     "user_id": self.user_id,
                     "thread_id": self.thread_id,
                     "tool_call_id": tool_call_id,
                     "user_input": "The tool call is approved.",
-                },
+                }
             )
         except Exception as e:
             logger.exception("Request failed")
-            raise Exception(ERROR_CONNECTION) from e
+            raise Exception(
+                ERROR_CONNECTION
+            ) from e
         else:
             if response.status_code != 200:
                 logger.error(
-                    "HTTP %s: %s",
-                    response.status_code,
-                    str(getattr(response, "text", ""))[:200],
+                    "HTTP %s: %s", response.status_code, response.text[:200]
                 )
-                raise Exception(ERROR_REQUEST)
+                raise Exception(
+                    ERROR_REQUEST
+                )
 
             return response.json()
 
     def reject_tool_call(self, tool_call_id: str):
         try:
             response = requests.post(
-                self.base_url + "/chat/reject/",
-                json={
+                self.base_url + "/chat/reject/", json={
                     "message": "Rejected",
                     "user_id": self.user_id,
                     "thread_id": self.thread_id,
                     "tool_call_id": tool_call_id,
                     "user_input": "The tool call is rejected.",
-                },
+                }
             )
         except Exception as e:
             logger.exception("Request failed")
-            raise Exception(ERROR_CONNECTION) from e
+            raise Exception(
+                ERROR_CONNECTION
+            ) from e
         else:
             if response.status_code != 200:
                 logger.error(
-                    "HTTP %s: %s",
-                    response.status_code,
-                    str(getattr(response, "text", ""))[:200],
+                    "HTTP %s: %s", response.status_code, response.text[:200]
                 )
-                raise Exception(ERROR_REQUEST)
+                raise Exception(
+                    ERROR_REQUEST
+                )
 
             return response.json()

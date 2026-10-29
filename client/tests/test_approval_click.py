@@ -37,7 +37,7 @@ def run_after_click(monkeypatch, decision, fail=False):
     at.session_state["thread_id"] = "t"
     at.session_state["tool_call_id"] = "call_1"
     at.session_state["pending_decision"] = decision
-    return at.run()
+    return at.run(timeout=20)
 
 
 def reply_count(at):

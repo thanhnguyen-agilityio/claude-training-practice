@@ -21,6 +21,7 @@ Pick the highest level the diff needs:
 - API routes: `GET /health`; `GET /history/?thread_id=<id>`; `POST /chat/invoke` and `POST /chat/stream` with `{"message": "...", "thread_id": "<id>", "user_id": "<id>"}`; `POST /chat/approve` and `POST /chat/reject` with `{"thread_id": "<id>", "user_id": "<id>"}`. Chat and approve/reject call the LLM; health and history do not.
 - Read an issue with `gh issue view <n> --json title,body,author,labels,comments` (`--comments` fails with the Projects-classic error).
 - New worktree setup: copy `server/db/` (gitignored: SQLite store and embeddings) from the main checkout, and run tests with `--env-file <main checkout>/.env`; without them server tests fail to collect (`sqlite3.OperationalError`).
-- Lint: `uv run ruff check .` and `uv run ruff format --check <changed .py files>`. Never run `ruff format .` on the whole repo: `main` has pre-existing format drift in untouched files.
+- Lint: `uv run ruff check .` and `uv run ruff format --check .` (CI runs both). `main` is fully formatted, and the `.claude/settings.json` hook formats each `.py` file Claude edits, so never hand-format.
+- Commit with `PRE_COMMIT_ALLOW_NO_CONFIG=1 git commit ...`: a pre-commit hook is installed but the repo has no `.pre-commit-config.yaml`, so a plain commit fails. Check `git log` afterwards; in a `;` chain a failed commit is easy to miss.
 - Browser for checks and screenshot upload: Claude in Chrome.
 - `gh pr edit` fails on this repo (Projects-classic error): edit PR bodies and labels through `gh api`.

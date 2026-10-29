@@ -9,7 +9,7 @@ safe_tools = [
     check_and_execute_query_tool,
     sql_db_list_tables,
     sql_db_schema,
-    save_memory
+    save_memory,
 ]
 sensitive_tools = [
     search_google_shopping,
@@ -32,4 +32,3 @@ __all__ = [
     sensitive_tool_names,
     tools_mapping,
 ]
-

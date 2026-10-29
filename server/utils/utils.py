@@ -48,6 +48,7 @@ def count_time(func):
 
     return wrapper
 
+
 def build_require_approval_message(tool_call_data: dict) -> str:
     tool_name = tool_call_data["name"]
     tool_action_msg = ""
@@ -77,10 +78,12 @@ def build_require_approval_message(tool_call_data: dict) -> str:
         action=tool_action_msg, details=tool_call_data_str
     )
 
+
 # ----- LangGraph Utils - before use prebuilt create_react_agent -----
 # from langchain_core.messages import ToolMessage
 # from langchain_core.runnables import RunnableLambda
 # from langgraph.prebuilt import ToolNode
+
 
 def handle_tool_error(state) -> dict:
     error = state.get("error")
@@ -100,6 +103,7 @@ def create_tool_node_with_fallback(tools: list) -> dict:
     return ToolNode(tools).with_fallbacks(
         [RunnableLambda(handle_tool_error)], exception_key="error"
     )
+
 
 # ----- LangGraph Utils - before use prebuilt create_react_agent -----
 
@@ -165,7 +169,9 @@ def create_tool_node_with_fallback(tools: list) -> dict:
 #     return state
 
 
-def recent_window(messages: list[AnyMessage], recent_messages_number: int = 5) -> list[AnyMessage]:
+def recent_window(
+    messages: list[AnyMessage], recent_messages_number: int = 5
+) -> list[AnyMessage]:
     """
     Last N messages, widened back to a HumanMessage so the current question
     is never cut (so at least 1 message is kept). State is untouched, full

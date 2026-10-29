@@ -101,13 +101,16 @@ async def stream_agent_response(request: ChatRequest) -> AsyncGenerator[bytes, N
     if snapshot.next and snapshot.next[0] == "sensitive_tools":
         for tool_call in snapshot.values["messages"][-1].tool_calls:
             if tool_call["name"] in sensitive_tool_names:
-                yield ndjson({
-                    "require_approval": True,
-                    "message": build_require_approval_message(tool_call),
-                    "thread_id": request.thread_id,
-                    "tool_call_data": tool_call,
-                })
+                yield ndjson(
+                    {
+                        "require_approval": True,
+                        "message": build_require_approval_message(tool_call),
+                        "thread_id": request.thread_id,
+                        "tool_call_data": tool_call,
+                    }
+                )
                 return
+
 
 @router.post("/stream")
 async def chat_stream(request: ChatRequest):
@@ -124,6 +127,7 @@ async def chat_stream(request: ChatRequest):
 
 # ---------------------- CHAT STREAMING ----------------------
 
+
 # ---------------------- HUMAN IN THE LOOP ----------------------
 @router.post("/approve")
 async def approve_action(request: ToolCallApprovalRequest):
@@ -138,6 +142,7 @@ async def approve_action(request: ToolCallApprovalRequest):
 
     # Continue the graph
     graph.invoke(None, config)
+
 
 @router.post("/reject")
 async def reject_action(request: ToolCallApprovalRequest):
@@ -157,9 +162,8 @@ async def reject_action(request: ToolCallApprovalRequest):
                 ToolMessage(
                     tool_call_id=request.tool_call_id,
                     content=f"Tool call denied by user. Reasoning: '{request.user_input}'. The action was NOT performed (e.g. no support ticket was created) because the user chose not to. Tell the user plainly that, as they chose, it was not done (not because of an error or restriction), then ask what they would like to do next.",
-
                 ),
             ]
         },
-        config
+        config,
     )

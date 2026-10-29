@@ -12,14 +12,16 @@ class DocumentRequest(BaseModel):
         min_length=1,
     )
 
-    @field_validator('service_categories')
+    @field_validator("service_categories")
     @classmethod
     def validate_service_categories(cls, value):
         if not value:
-            raise ValidationError('service_categories cannot be empty')
+            raise ValidationError("service_categories cannot be empty")
 
         if set(value) - {"faqs", "policies"}:
-            raise ValidationError('service_categories must be either "faqs" or "policies"')
+            raise ValidationError(
+                'service_categories must be either "faqs" or "policies"'
+            )
 
         return value
 

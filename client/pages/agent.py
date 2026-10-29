@@ -14,12 +14,15 @@ if "loop" not in st.session_state:
     st.session_state.loop = asyncio.new_event_loop()
     asyncio.set_event_loop(st.session_state.loop)
 
+
 # Buttons only record the choice; the slow call runs in the page body so a spinner can show.
 def handle_approve():
     st.session_state.pending_decision = "approve"
 
+
 def handle_reject():
     st.session_state.pending_decision = "reject"
+
 
 async def process_response(response):
     async for content in response:
@@ -61,7 +64,7 @@ async def process_response(response):
                     type="tertiary",
                     icon="❌",
                     use_container_width=True,
-                    on_click=handle_reject
+                    on_click=handle_reject,
                 )
 
             return response_holder[0]
@@ -71,9 +74,7 @@ async def process_response(response):
 
     message_placeholder.markdown(response_holder[0])
     if response_holder[0]:
-        history.add_message(
-            ChatMessage(role="assistant", content=response_holder[0])
-        )
+        history.add_message(ChatMessage(role="assistant", content=response_holder[0]))
 
 
 # Initialize chat service

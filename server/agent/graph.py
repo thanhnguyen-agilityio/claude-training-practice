@@ -27,7 +27,7 @@ memory = SqliteSaver(
     sqlite3.connect(get_path("checkpoints.sqlite", "db"), check_same_thread=False)
 )
 
-if os.getenv('RUN_EVALUATION') == "false":
+if os.getenv("RUN_EVALUATION") == "false":
     # Only set cache when not running evaluation
     set_llm_cache(SQLiteCache(database_path="db/ecommerce_chatbot_cache.db"))
 
@@ -47,7 +47,7 @@ class Assistant:
 
     def __call__(self, state: State, config: RunnableConfig):
         # Window cut by summarize_conversation, then summary of older messages
-        messages = state["messages"][state.get("window_start", 0):]
+        messages = state["messages"][state.get("window_start", 0) :]
         messages = prepend_summary(messages, state.get("summary", ""))
 
         # Invoke assistant
@@ -61,8 +61,7 @@ def create_assistant_runnable(chat_model, config):
 
     # Config model with tool calling
     chat_model_bind_tools = chat_model.bind_tools(
-        tools=list(tools_mapping.values()),
-        parallel_tool_calls=False
+        tools=list(tools_mapping.values()), parallel_tool_calls=False
     )
 
     # Config system prompt
@@ -108,14 +107,17 @@ def summarize_conversation(state: State):
     window = recent_window(messages, constants.RECENT_MESSAGE_LIMIT)
     # trim returns [] when the current turn alone is over budget; keep the
     # untrimmed window then, the question must not be summarized away.
-    window = trim_messages(
-        window,
-        max_tokens=1000,
-        strategy="last",
-        start_on="human",
-        token_counter=model_gpt_4o_mini,
-        allow_partial=False
-    ) or window
+    window = (
+        trim_messages(
+            window,
+            max_tokens=1000,
+            strategy="last",
+            start_on="human",
+            token_counter=model_gpt_4o_mini,
+            allow_partial=False,
+        )
+        or window
+    )
     window_start = len(messages) - len(window)
     # Only messages not yet in the summary; messages are append-only so indices are stable.
     # Old checkpoints lack summarized_count: they re-read all older messages once; accepted.
@@ -169,9 +171,7 @@ def init_graph(
     builder.add_edge(START, "summarize_conversation")
     builder.add_edge("summarize_conversation", "assistant")
     builder.add_conditional_edges(
-        "assistant",
-        route_tools,
-        ["safe_tools", "sensitive_tools", END]
+        "assistant", route_tools, ["safe_tools", "sensitive_tools", END]
     )
     builder.add_edge("safe_tools", "assistant")
     builder.add_edge("sensitive_tools", "assistant")

@@ -7,11 +7,7 @@ from utils.utils import get_path
 
 @tool
 def create_support_ticket(
-    email: str,
-    subject: str,
-    name: str = "User",
-    phone: str = "",
-    description: str = ""
+    email: str, subject: str, name: str = "User", phone: str = "", description: str = ""
 ) -> str:
     """
     Use this tool to help use create a customer support ticket

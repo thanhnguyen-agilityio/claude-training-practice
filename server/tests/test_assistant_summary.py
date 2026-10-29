@@ -19,3 +19,27 @@ def test_assistant_input_includes_conversation_summary():
 
     sent = " ".join(str(m.content) for m in runnable.state["messages"])
     assert "Thanh" in sent, "summary never reaches the model"
+
+
+def test_summarize_only_new_older_messages(monkeypatch):
+    from agent import graph
+
+    seen = []
+
+    class FakeLLM:
+        def invoke(self, msgs):
+            seen.append(msgs)
+            return AIMessage("S2")
+
+    monkeypatch.setattr(graph, "model_gpt_4o_mini", FakeLLM())
+    monkeypatch.setattr(graph, "recent_window", lambda m, n: m[-1:])
+    monkeypatch.setattr(graph, "trim_messages", lambda w, **kw: w)
+    msgs = [HumanMessage(f"m{i}") for i in range(5)]
+    state = {"messages": msgs, "summary": "S1", "summarized_count": 3}
+
+    out = graph.summarize_conversation(state)
+
+    sent = [m.content for m in seen[0]]
+    assert "m0" not in sent and "m2" not in sent, "already-summarized messages re-sent"
+    assert "m3" in sent and any("S1" in c for c in sent)
+    assert out["summarized_count"] == 4 and out["summary"] == "S2"

@@ -64,7 +64,7 @@ def test_summarize_stores_cut_and_summarizes_exactly_older():
         llm.invoke.return_value = AIMessage("sum")
         out = graph.summarize_conversation({"messages": msgs})
 
-    assert out == {"summary": "sum", "window_start": 2}
+    assert out == {"summary": "sum", "window_start": 2, "summarized_count": 2}
     sent = llm.invoke.call_args.args[0]
     assert sent[:-1] == msgs[:2]  # H1, A1 summarized; window widens back to H2
 
@@ -92,5 +92,5 @@ def test_summarize_falls_back_when_trim_empties_window():
          mock.patch.object(graph, "model_gpt_4o_mini", counter):
         out = graph.summarize_conversation({"messages": msgs})
 
-    assert out == {"summary": "sum", "window_start": 2}
+    assert out == {"summary": "sum", "window_start": 2, "summarized_count": 2}
     assert counter.invoke.call_args.args[0][:-1] == msgs[:2]

@@ -37,6 +37,8 @@ class State(MessagesState):
     # Index of the first message sent to the model this turn. Set once by
     # summarize_conversation so the summary and the window can't drift apart.
     window_start: int = 0
+    # How many leading messages the summary already covers.
+    summarized_count: int = 0
 
 
 class Assistant:
@@ -115,15 +117,25 @@ def summarize_conversation(state: State):
         allow_partial=False
     ) or window
     window_start = len(messages) - len(window)
-    older = messages[:window_start]
-    if not older:
+    # Only messages not yet in the summary; messages are append-only so indices are stable.
+    count = state.get("summarized_count", 0)
+    new = messages[count:window_start]
+    if not new:
         return {"window_start": window_start}
 
-    # ponytail: re-summarize older slice each turn, store a summarized count if cost matters
-    response = model_gpt_4o_mini.invoke(
-        older + [HumanMessage(content="Create a summary of the conversation above:")]
-    )
-    return {"summary": response.content, "window_start": window_start}
+    prior = state.get("summary", "")
+    prompt = "Create a summary of the conversation above:"
+    if prior:
+        prompt = (
+            f"Existing summary of earlier messages:\n{prior}\n\n"
+            "Extend it with the messages above. Return the full updated summary:"
+        )
+    response = model_gpt_4o_mini.invoke(new + [HumanMessage(content=prompt)])
+    return {
+        "summary": response.content,
+        "window_start": window_start,
+        "summarized_count": max(count, window_start),
+    }
 
 
 def init_graph(

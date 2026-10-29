@@ -45,8 +45,9 @@ def test_messages_have_no_technical_terms():
 
 
 def test_chat_stream_failure_shows_friendly_message(monkeypatch, caplog):
-    def broken_stream(self, prompt):
+    async def broken_stream(self, prompt):
         raise RuntimeError("All connection attempts failed")
+        yield
 
     monkeypatch.setattr(ChatService, "chat_history", lambda self: [])
     monkeypatch.setattr(ChatService, "chat_stream", broken_stream)

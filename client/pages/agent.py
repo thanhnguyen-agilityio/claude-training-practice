@@ -6,7 +6,13 @@ import streamlit as st
 from langchain_community.chat_message_histories import StreamlitChatMessageHistory
 from langchain_core.messages import ChatMessage
 from services.chat_service import ChatService
-from utils.constants import BOT_AVATAR, ERROR_GENERIC, QUICK_START, WELCOME_MESSAGE
+from utils.constants import (
+    BOT_AVATAR,
+    ERROR_GENERIC,
+    QUICK_START,
+    STOPPED_NOTE,
+    WELCOME_MESSAGE,
+)
 from utils.utils import convert_chat_message, render_message
 
 # Initialize event loop - use to stream response customize with human approval
@@ -30,6 +36,11 @@ async def process_response(response):
             if content:
                 status_placeholder.empty()
             response_holder[0] += content
+            message_placeholder.markdown(response_holder[0] + "▌")
+            continue
+
+        if "heartbeat" in content:
+            # Any render lets Streamlit act on a Stop click while the server is busy.
             message_placeholder.markdown(response_holder[0] + "▌")
             continue
 
@@ -111,6 +122,16 @@ render_message(ChatMessage(role="assistant", content=st.session_state.welcome_me
 for msg in history.messages:
     render_message(msg)
 
+# A stopped reply shows until the server's saved copy (ends history with the assistant) loads
+reply = st.session_state.pop("stopped_reply", None)
+if reply is not None and history.messages and history.messages[-1].role == "user":
+    render_message(
+        ChatMessage(
+            role="assistant",
+            content=f"{reply}\n\n{STOPPED_NOTE}" if reply else STOPPED_NOTE,
+        )
+    )
+
 typed = st.chat_input(placeholder="Give me categories list.")
 clicked = st.session_state.pop("quick_start_prompt", None)
 
@@ -149,13 +170,18 @@ if prompt := typed or clicked:
     with st.chat_message("assistant", avatar=BOT_AVATAR):
         message_placeholder = st.empty()
         status_placeholder = st.empty()
+        stop_placeholder = st.empty()
+        # A click reruns the script, which interrupts the stream at the next render
+        stop_placeholder.button("Stop", key="stop_button", icon="⏹️")
         response_holder = [""]
 
+        response = chat_service.chat_stream(prompt)
+        # Left True when the run is interrupted (Stop click or new input)
+        stopped = True
         with st.spinner("Thinking..."):
             try:
-                response = chat_service.chat_stream(prompt)
-
                 st.session_state.loop.run_until_complete(process_response(response))
+                stopped = False
 
                 # If not have human approval, stream response is simple
                 # st.write_stream(response)
@@ -167,9 +193,15 @@ if prompt := typed or clicked:
                 # else:
                 #     st.write_stream(response)
             except Exception:
+                stopped = False
                 status_placeholder.empty()  # st.stop() below skips `finally` output
                 logging.exception("Chat stream failed")
                 st.error(ERROR_GENERIC)
                 st.stop()
             finally:
+                # Close the HTTP stream so the server sees the disconnect
+                st.session_state.loop.run_until_complete(response.aclose())
                 status_placeholder.empty()
+                stop_placeholder.empty()
+                if stopped:
+                    st.session_state.stopped_reply = response_holder[0]

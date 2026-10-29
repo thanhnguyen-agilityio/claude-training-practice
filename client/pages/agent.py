@@ -126,14 +126,16 @@ for msg in history.messages:
 # Send the clicked Yes/No to the server, then rerun so the history reload shows its reply
 if decision := st.session_state.pop("pending_decision", None):
     call = getattr(chat_service, f"{decision}_tool_call")
+    failed = False
     with st.chat_message("assistant", avatar=BOT_AVATAR):
         with st.spinner("Working on it..."):
             try:
                 call(st.session_state.tool_call_id)
             except Exception as e:
                 st.error(e)
-                st.stop()
-    st.rerun()
+                failed = True
+    if not failed:
+        st.rerun()
 
 # Handle user interaction
 if prompt := st.chat_input(placeholder="Give me categories list."):

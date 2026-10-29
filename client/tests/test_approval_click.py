@@ -6,6 +6,7 @@ class FakeService:
 
     calls = []
     replied = False
+    fail = False
 
     def __init__(self, **_):
         pass
@@ -16,6 +17,8 @@ class FakeService:
         return []
 
     def approve_tool_call(self, tool_call_id):
+        if FakeService.fail:
+            raise Exception("server down")
         FakeService.calls.append(("approve", tool_call_id))
         FakeService.replied = True
 
@@ -24,10 +27,10 @@ class FakeService:
         FakeService.replied = True
 
 
-def run_after_click(monkeypatch, decision):
+def run_after_click(monkeypatch, decision, fail=False):
     from services import chat_service
 
-    FakeService.calls, FakeService.replied = [], False
+    FakeService.calls, FakeService.replied, FakeService.fail = [], False, fail
     monkeypatch.setattr(chat_service, "ChatService", FakeService)
     at = AppTest.from_file("pages/agent.py")
     at.session_state["user_id"] = "u"
@@ -55,3 +58,11 @@ def test_reject_click_calls_server_and_shows_reply_once(monkeypatch):
     assert not at.exception
     assert FakeService.calls == [("reject", "call_1")]
     assert reply_count(at) == 1
+
+
+def test_server_error_is_shown_and_chat_input_stays(monkeypatch):
+    at = run_after_click(monkeypatch, "approve", fail=True)
+
+    assert not at.exception
+    assert [e.value for e in at.error] == ["server down"]
+    assert len(at.chat_input) == 1

@@ -1,9 +1,12 @@
 import json
+import logging
 
 import httpx
 import requests
 from langserve import RemoteRunnable
-from utils.constants import API_BASE_URL
+from utils.constants import API_BASE_URL, ERROR_CONNECTION, ERROR_REQUEST
+
+logger = logging.getLogger(__name__)
 
 
 class ChatService:
@@ -27,14 +30,16 @@ class ChatService:
                 self.base_url + "/chat/invoke", json={"input": input}
             )
         except Exception as e:
-            raise Exception(
-                "Cannot invoke chat API. Please check the server logs."
-            ) from e
+            logger.exception("Request failed: /chat/invoke")
+            raise Exception(ERROR_CONNECTION) from e
         else:
             if response.status_code != 200:
-                raise Exception(
-                    "Chat API response not success. Please check the server logs."
+                logger.error(
+                    "HTTP %s on /chat/invoke: %s",
+                    response.status_code,
+                    response.text[:200],
                 )
+                raise Exception(ERROR_REQUEST)
 
             return response.json()
 
@@ -53,27 +58,34 @@ class ChatService:
                 },
                 timeout=30,
             ) as response:
-                async for chunk in response.aiter_bytes():
+                # NDJSON: one JSON value per line, however the bytes are chunked
+                async for line in response.aiter_lines():
+                    if not line.strip():
+                        continue
                     try:
-                        yield json.loads(chunk)
+                        yield json.loads(line)
                     except json.JSONDecodeError:
-                        yield chunk.strip()
+                        logger.warning("Skipping malformed stream line: %r", line)
 
     def chat_history(self) -> dict:
         """Get chat history of a thread_id"""
         try:
             response = requests.get(
-                self.base_url + "/history", params={"thread_id": self.thread_id}
+                self.base_url + "/history",
+                params={"thread_id": self.thread_id},
+                timeout=30,
             )
         except Exception as e:
-            raise Exception(
-                "Cannot get chat history. Please check the server logs."
-            ) from e
+            logger.exception("Request failed: /history")
+            raise Exception(ERROR_CONNECTION) from e
         else:
             if response.status_code != 200:
-                raise Exception(
-                    "Cannot get chat history. Please check the server logs."
+                logger.error(
+                    "HTTP %s on /history: %s",
+                    response.status_code,
+                    response.text[:200],
                 )
+                raise Exception(ERROR_REQUEST)
 
             return response.json()
 
@@ -90,14 +102,16 @@ class ChatService:
                 },
             )
         except Exception as e:
-            raise Exception(
-                "Cannot call chat API. Please check the server logs."
-            ) from e
+            logger.exception("Request failed: /chat/approve")
+            raise Exception(ERROR_CONNECTION) from e
         else:
             if response.status_code != 200:
-                raise Exception(
-                    "Chat API response not success. Please check the server logs."
+                logger.error(
+                    "HTTP %s on /chat/approve: %s",
+                    response.status_code,
+                    response.text[:200],
                 )
+                raise Exception(ERROR_REQUEST)
 
             return response.json()
 
@@ -114,13 +128,15 @@ class ChatService:
                 },
             )
         except Exception as e:
-            raise Exception(
-                "Cannot call chat API. Please check the server logs."
-            ) from e
+            logger.exception("Request failed: /chat/reject")
+            raise Exception(ERROR_CONNECTION) from e
         else:
             if response.status_code != 200:
-                raise Exception(
-                    "Chat API response not success. Please check the server logs."
+                logger.error(
+                    "HTTP %s on /chat/reject: %s",
+                    response.status_code,
+                    response.text[:200],
                 )
+                raise Exception(ERROR_REQUEST)
 
             return response.json()

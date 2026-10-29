@@ -2,6 +2,16 @@ import random
 
 API_BASE_URL = "http://localhost:8080"
 
+# User-facing error messages (no technical terms)
+ERROR_GENERIC = "Oops! Something went wrong. Please try again in a moment."
+ERROR_CONNECTION = (
+    "We're having trouble connecting right now. Please refresh the page and try again."
+)
+ERROR_REQUEST = (
+    "We couldn't process your request. "
+    "If this keeps happening, please contact support at hi@ecommerce.com"
+)
+
 
 WELCOME_MESSAGE = [
     "How can I assist you today?",

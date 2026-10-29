@@ -1,11 +1,12 @@
 import asyncio
+import logging
 import random
 
 import streamlit as st
 from langchain_community.chat_message_histories import StreamlitChatMessageHistory
 from langchain_core.messages import ChatMessage
 from services.chat_service import ChatService
-from utils.constants import BOT_AVATAR, QUICK_START, WELCOME_MESSAGE
+from utils.constants import BOT_AVATAR, ERROR_GENERIC, QUICK_START, WELCOME_MESSAGE
 from utils.utils import convert_chat_message, render_message
 
 # Initialize event loop - use to stream response customize with human approval
@@ -14,19 +15,26 @@ if "loop" not in st.session_state:
     asyncio.set_event_loop(st.session_state.loop)
 
 
+# Buttons only record the choice; the slow call runs in the page body so a spinner can show.
 def handle_approve():
-    chat_service.approve_tool_call(st.session_state.tool_call_id)
+    st.session_state.pending_decision = "approve"
 
 
 def handle_reject():
-    chat_service.reject_tool_call(st.session_state.tool_call_id)
+    st.session_state.pending_decision = "reject"
 
 
 async def process_response(response):
     async for content in response:
         if isinstance(content, str):
+            if content:
+                status_placeholder.empty()
             response_holder[0] += content
             message_placeholder.markdown(response_holder[0] + "▌")
+            continue
+
+        if "status" in content:
+            status_placeholder.caption(content["status"])
             continue
 
         if content["require_approval"]:
@@ -92,7 +100,7 @@ with st.spinner("Loading..."):
 
         history.messages = history_message_convert
     except Exception:
-        pass
+        logging.exception("Cannot load chat history")
 
 # Welcome message is client-only (never in server history): pick once, always show at top
 if "welcome_message" not in st.session_state:
@@ -118,6 +126,20 @@ if not history.messages and not (typed or clicked):
                 args=("quick_start_prompt", example),
             )
 
+# Send the clicked Yes/No to the server, then rerun so the history reload shows its reply
+if decision := st.session_state.pop("pending_decision", None):
+    call = getattr(chat_service, f"{decision}_tool_call")
+    failed = False
+    with st.chat_message("assistant", avatar=BOT_AVATAR):
+        with st.spinner("Working on it..."):
+            try:
+                call(st.session_state.tool_call_id)
+            except Exception as e:
+                st.error(e)
+                failed = True
+    if not failed:
+        st.rerun()
+
 # Handle user interaction
 if prompt := typed or clicked:
     chat_message = ChatMessage(role="user", content=prompt)
@@ -126,6 +148,7 @@ if prompt := typed or clicked:
 
     with st.chat_message("assistant", avatar=BOT_AVATAR):
         message_placeholder = st.empty()
+        status_placeholder = st.empty()
         response_holder = [""]
 
         with st.spinner("Thinking..."):
@@ -143,6 +166,10 @@ if prompt := typed or clicked:
                 #     st.button('Approve', on_click=approve_action, args=[1])
                 # else:
                 #     st.write_stream(response)
-            except Exception as e:
-                st.error(e)
+            except Exception:
+                status_placeholder.empty()  # st.stop() below skips `finally` output
+                logging.exception("Chat stream failed")
+                st.error(ERROR_GENERIC)
                 st.stop()
+            finally:
+                status_placeholder.empty()

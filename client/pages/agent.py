@@ -32,13 +32,12 @@ if "loop" not in st.session_state:
     st.session_state.loop = asyncio.new_event_loop()
     asyncio.set_event_loop(st.session_state.loop)
 
+# Buttons only record the choice; the slow call runs in the page body so a spinner can show.
 def handle_approve():
-    with st.spinner("Creating your ticket..."):
-        chat_service.approve_tool_call(st.session_state.tool_call_id)
+    st.session_state.pending_decision = "approve"
 
 def handle_reject():
-    with st.spinner("Got it, finding another option..."):
-        chat_service.reject_tool_call(st.session_state.tool_call_id)
+    st.session_state.pending_decision = "reject"
 
 async def process_response(response):
     async for content in response:
@@ -123,6 +122,18 @@ render_message(ChatMessage(role="assistant", content=st.session_state.welcome_me
 for msg in history.messages:
     render_message(msg)
 
+
+# Send the clicked Yes/No to the server, then rerun so the history reload shows its reply
+if decision := st.session_state.pop("pending_decision", None):
+    call = getattr(chat_service, f"{decision}_tool_call")
+    with st.chat_message("assistant", avatar=BOT_AVATAR):
+        with st.spinner("Working on it..."):
+            try:
+                call(st.session_state.tool_call_id)
+            except Exception as e:
+                st.error(e)
+                st.stop()
+    st.rerun()
 
 # Handle user interaction
 if prompt := st.chat_input(placeholder="Give me categories list."):

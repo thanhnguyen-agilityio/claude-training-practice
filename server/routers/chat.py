@@ -12,6 +12,17 @@ from utils.utils import build_require_approval_message
 
 router = APIRouter(prefix="/chat", tags=[""])
 
+# Progress text shown to the user while a tool runs
+TOOL_STATUS = {
+    "lookup_documents": "Looking up our policies and support documents...",
+    "check_and_execute_query_tool": "Searching the product database...",
+    "sql_db_list_tables": "Searching the product database...",
+    "sql_db_schema": "Searching the product database...",
+    "search_google_shopping": "Searching for similar items...",
+    "create_support_ticket": "Creating your support ticket...",
+    "save_memory": "Saving your preferences...",
+}
+
 
 @router.post("/invoke")
 async def chat_invoke(request: ChatRequest):
@@ -68,6 +79,9 @@ async def stream_agent_response(request: ChatRequest) -> AsyncGenerator[bytes, N
         stream_mode="messages"
     ):
         if metadata["langgraph_node"] == "assistant":
+            for chunk in getattr(msg, "tool_call_chunks", None) or []:
+                if status := TOOL_STATUS.get(chunk["name"]):
+                    yield json.dumps({"status": status}).encode("utf-8")
             yield json.dumps(msg.content).encode("utf-8")
             await asyncio.sleep(0.05)
 

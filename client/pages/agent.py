@@ -41,11 +41,17 @@ def handle_reject():
 async def process_response(response):
     async for content in response:
         if isinstance(content, str):
+            status_placeholder.empty()
             response_holder[0] += content
             message_placeholder.markdown(response_holder[0] + "▌")
             continue
 
+        if "status" in content:
+            status_placeholder.caption(content["status"])
+            continue
+
         if content["require_approval"]:
+            status_placeholder.empty()
             message = content["message"]
             tool_call_data = content["tool_call_data"]
             st.session_state.tool_call_id = tool_call_data["id"]
@@ -80,6 +86,7 @@ async def process_response(response):
             response_holder[0] += content.get("content", "")
             message_placeholder.markdown(response_holder[0] + "▌")
 
+    status_placeholder.empty()
     message_placeholder.markdown(response_holder[0])
     if response_holder[0]:
         history.add_message(
@@ -130,6 +137,7 @@ if prompt := st.chat_input(placeholder="Give me categories list."):
 
     with st.chat_message("assistant", avatar=BOT_AVATAR):
         message_placeholder = st.empty()
+        status_placeholder = st.empty()
         response_holder = [""]
 
         with st.spinner("Thinking..."):

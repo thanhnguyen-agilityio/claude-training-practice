@@ -3,7 +3,10 @@ from utils.utils import build_require_approval_message
 
 def test_support_ticket_message_explains_why_and_both_outcomes():
     msg = build_require_approval_message(
-        {"name": "create_support_ticket", "args": {"email": "a@b.com", "subject": "Late order"}}
+        {
+            "name": "create_support_ticket",
+            "args": {"email": "a@b.com", "subject": "Late order"},
+        }
     )
     assert "support team" in msg
     assert "**Yes**" in msg and "**No**" in msg

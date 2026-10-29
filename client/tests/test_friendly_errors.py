@@ -1,6 +1,5 @@
 from pathlib import Path
 
-
 import pytest
 import requests
 from services.chat_service import ChatService
@@ -77,7 +76,7 @@ def test_invoke_and_reject_non_200_are_friendly_and_logged(monkeypatch, caplog):
         with pytest.raises(Exception) as e:
             fn()
         assert str(e.value) == ERROR_REQUEST
-    assert "HTTP 500: internal boom detail" in caplog.text
+    assert "HTTP 500 on /chat/invoke: internal boom detail" in caplog.text
 
 
 def test_history_load_failure_is_logged_and_page_still_renders(monkeypatch, caplog):

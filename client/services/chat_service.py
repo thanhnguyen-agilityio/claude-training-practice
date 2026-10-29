@@ -30,14 +30,14 @@ class ChatService:
                 self.base_url + "/chat/invoke", json={"input": input}
             )
         except Exception as e:
-            logger.exception("Request failed")
-            raise Exception(
-                ERROR_CONNECTION
-            ) from e
+            logger.exception("Request failed: /chat/invoke")
+            raise Exception(ERROR_CONNECTION) from e
         else:
             if response.status_code != 200:
                 logger.error(
-                    "HTTP %s: %s", response.status_code, response.text[:200]
+                    "HTTP %s on /chat/invoke: %s",
+                    response.status_code,
+                    response.text[:200],
                 )
                 raise Exception(
                     ERROR_REQUEST
@@ -73,14 +73,14 @@ class ChatService:
                 self.base_url + "/history", params={"thread_id": self.thread_id}
             )
         except Exception as e:
-            logger.exception("Request failed")
-            raise Exception(
-                ERROR_CONNECTION
-            ) from e
+            logger.exception("Request failed: /history")
+            raise Exception(ERROR_CONNECTION) from e
         else:
             if response.status_code != 200:
                 logger.error(
-                    "HTTP %s: %s", response.status_code, response.text[:200]
+                    "HTTP %s on /history: %s",
+                    response.status_code,
+                    response.text[:200],
                 )
                 raise Exception(
                     ERROR_REQUEST
@@ -100,14 +100,14 @@ class ChatService:
                 }
             )
         except Exception as e:
-            logger.exception("Request failed")
-            raise Exception(
-                ERROR_CONNECTION
-            ) from e
+            logger.exception("Request failed: /chat/approve")
+            raise Exception(ERROR_CONNECTION) from e
         else:
             if response.status_code != 200:
                 logger.error(
-                    "HTTP %s: %s", response.status_code, response.text[:200]
+                    "HTTP %s on /chat/approve: %s",
+                    response.status_code,
+                    response.text[:200],
                 )
                 raise Exception(
                     ERROR_REQUEST
@@ -127,14 +127,14 @@ class ChatService:
                 }
             )
         except Exception as e:
-            logger.exception("Request failed")
-            raise Exception(
-                ERROR_CONNECTION
-            ) from e
+            logger.exception("Request failed: /chat/reject")
+            raise Exception(ERROR_CONNECTION) from e
         else:
             if response.status_code != 200:
                 logger.error(
-                    "HTTP %s: %s", response.status_code, response.text[:200]
+                    "HTTP %s on /chat/reject: %s",
+                    response.status_code,
+                    response.text[:200],
                 )
                 raise Exception(
                     ERROR_REQUEST

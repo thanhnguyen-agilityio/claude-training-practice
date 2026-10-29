@@ -15,6 +15,7 @@ def test_new_chat_button_starts_fresh_conversation(monkeypatch):
     with patch("utils.apis.requests.get", return_value=MagicMock(status_code=200)):
         at.run()
         assert at.session_state["thread_id"] == "old"
+        assert MESSAGES_KEY in at.session_state  # key matches what the app uses
 
         buttons = [b for b in at.sidebar.button if b.label == "➕ New chat"]
         assert buttons, "no New chat button in the sidebar"

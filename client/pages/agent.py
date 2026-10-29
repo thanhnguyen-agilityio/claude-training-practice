@@ -25,6 +25,19 @@ def handle_reject():
     st.session_state.pending_decision = "reject"
 
 
+# Puts the Stop button over the chat input's send arrow; label kept for screen readers
+STOP_BUTTON_CSS = """<style>
+[data-testid="stChatInputSubmitButton"] { visibility: hidden; }
+.st-key-stop_area { position: absolute; right: 0; bottom: 1rem; width: 40px; gap: 0; z-index: 1; }
+.st-key-stop_area button {
+    width: 40px; height: 40px; min-height: 0; padding: 0; border: none; background: transparent;
+}
+.st-key-stop_area [data-testid="stMarkdownContainer"] {
+    position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0);
+}
+</style>"""
+
+
 # Streamlit's fast rerun starts the next run at once, while the stopped run is
 # still blocked on the stream, so take the partial reply it keeps in session state.
 def handle_stop():
@@ -175,10 +188,17 @@ if prompt := typed or clicked:
     with st.chat_message("assistant", avatar=BOT_AVATAR):
         message_placeholder = st.empty()
         status_placeholder = st.empty()
-        stop_placeholder = st.empty()
-        stop_placeholder.button(
-            "Stop response", key="stop_button", icon="⏹️", on_click=handle_stop
-        )
+        # Stop takes the send button's place in the chat input while the reply streams
+        # ponytail: st._bottom is private (the chat input's container); recheck on upgrade
+        stop_placeholder = st._bottom.empty()
+        with stop_placeholder.container(key="stop_area"):
+            st.markdown(STOP_BUTTON_CSS, unsafe_allow_html=True)
+            st.button(
+                "Stop response",
+                key="stop_button",
+                icon=":material/stop_circle:",
+                on_click=handle_stop,
+            )
         response_holder = [""]
         st.session_state.partial_reply = ""
 

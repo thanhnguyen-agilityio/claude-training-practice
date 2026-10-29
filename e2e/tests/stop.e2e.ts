@@ -13,8 +13,12 @@ test('stopping a reply keeps the chat usable', async ({ app, browser, screen }) 
   );
   await input.press('Enter');
 
+  // Stop takes the send arrow's place in the chat input while the reply streams.
   // Not Streamlit's own header "Stop", which shows while any script runs.
-  await screen.getByRole('button', /Stop response/).click();
+  const stop = screen.getByRole('button', /Stop response/);
+  await expect(stop).toBeVisible();
+  await expect(screen.getByTestId('stChatInputSubmitButton')).toBeHidden();
+  await stop.click();
   await expect(screen.getByTestId('stChatMessage').last()).toContainText('(stopped)', {
     timeout: REPLY_TIMEOUT,
   });

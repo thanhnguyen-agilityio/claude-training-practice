@@ -1,7 +1,6 @@
 import asyncio
 import json
 import threading
-from collections import defaultdict
 from typing import AsyncGenerator
 
 from agent.graph import init_graph
@@ -26,8 +25,8 @@ TOOL_STATUS = {
 TOOL_DONE_STATUS = "✓ Got the results, preparing your answer..."
 HEARTBEAT_SECONDS = 5
 STOPPED_NOTE = "_(stopped)_"
-# ponytail: one lock per thread id, never freed; evict old ids if thread count grows large
-_thread_locks: defaultdict[str, threading.Lock] = defaultdict(threading.Lock)
+# thread id -> (stop, done) events of the run streaming on it; removed when the run ends
+_runs: dict[str, tuple[threading.Event, threading.Event]] = {}
 
 
 def ndjson(obj) -> bytes:
@@ -42,17 +41,18 @@ def stopped_text(partial: str) -> str:
 def finish_stopped(graph, config, events, partial):
     """Close a stopped run and save its state so the thread accepts the next message."""
     events.close()
-    snapshot = graph.get_state(config)
-    if not snapshot.next:
-        return  # run already finished, nothing to fix
-    messages = snapshot.values.get("messages", [])
+    # Not snapshot.next: a closed stream leaves it empty even mid-run.
+    messages = graph.get_state(config).values.get("messages", [])
+    last = messages[-1] if messages else None
+    if not last or (isinstance(last, AIMessage) and not last.tool_calls):
+        return  # nothing saved yet, or the reply was already complete
     answered = {m.tool_call_id for m in messages if isinstance(m, ToolMessage)}
     cancelled = [
         ToolMessage(
             tool_call_id=call["id"],
             content="Cancelled: the user stopped the response.",
         )
-        for call in getattr(messages[-1], "tool_calls", None) or []
+        for call in getattr(last, "tool_calls", None) or []
         if call["id"] not in answered
     ]
     graph.update_state(
@@ -115,24 +115,39 @@ async def stream_agent_response(request: ChatRequest) -> AsyncGenerator[bytes, N
     # graph.stream is sync: pull each item in a thread so the event loop can flush
     # events (e.g. status) to the client while a tool or the LLM is still running.
     events = graph.stream({"messages": messages}, config, stream_mode="messages")
-    lock = _thread_locks[request.thread_id]
+    lock = threading.Lock()
 
     def step():
-        # The lock also makes a new request on this thread wait for a stopped run's cleanup.
+        # Locked so cleanup can't close the graph while a step is running.
         with lock:
             return next(events, None)
+
+    # A new message stops the run still streaming on this thread (after Stop its client
+    # may not have disconnected yet) and waits until that run's cleanup is saved.
+    stop, done = threading.Event(), threading.Event()
+    prior = _runs.get(request.thread_id)
+    _runs[request.thread_id] = (stop, done)
+    if prior:
+        prior[0].set()
+        await asyncio.to_thread(prior[1].wait)
 
     partial = ""
     finished = False
     try:
-        while True:
+        while not stop.is_set():
             pending = asyncio.ensure_future(asyncio.to_thread(step))
             # Heartbeat keeps the client's read timeout alive and lets it act on Stop
             # while a step is slow.
-            while not (await asyncio.wait({pending}, timeout=HEARTBEAT_SECONDS))[0]:
+            while (
+                not stop.is_set()
+                and not (await asyncio.wait({pending}, timeout=HEARTBEAT_SECONDS))[0]
+            ):
                 yield ndjson({"heartbeat": True})
+            if stop.is_set():
+                break
             event = pending.result()
             if event is None:
+                finished = True
                 break
             msg, metadata = event
             status = None
@@ -149,16 +164,29 @@ async def stream_agent_response(request: ChatRequest) -> AsyncGenerator[bytes, N
                 yield ndjson({"status": status})
             if metadata["langgraph_node"] == "assistant":
                 yield ndjson(msg.content)
-        finished = True
     finally:
-        if not finished:
-            # Client disconnected (Stop): the in-flight step finishes, then the graph
-            # closes and the partial answer is saved. Off-thread so the event loop is free.
+        # Only once cleanup is saved, so a newer message on this thread waits for it.
+        def release():
+            done.set()
+            if _runs.get(request.thread_id) == (stop, done):
+                del _runs[request.thread_id]
+
+        if finished:
+            release()
+        else:
+            # Stopped (client disconnected or a newer message): the in-flight step
+            # finishes, then the graph closes and the partial answer is saved.
+            # Off-thread so the event loop is free.
             def cleanup():
-                with lock:
-                    finish_stopped(graph, config, events, partial)
+                try:
+                    with lock:
+                        finish_stopped(graph, config, events, partial)
+                finally:
+                    release()
 
             threading.Thread(target=cleanup, daemon=True).start()
+    if not finished:
+        return
 
     # interrupt
     snapshot = graph.get_state(config)

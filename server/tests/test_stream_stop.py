@@ -1,10 +1,11 @@
 import asyncio
 import json
+import threading
 import time
 from types import SimpleNamespace
 from unittest.mock import MagicMock, patch
 
-from langchain_core.messages import AIMessage, AIMessageChunk, ToolMessage
+from langchain_core.messages import AIMessage, AIMessageChunk, HumanMessage, ToolMessage
 from routers import chat
 from schema.schema import ChatRequest
 
@@ -72,7 +73,13 @@ def test_stop_saves_partial_and_cancels_pending_tool_call():
 
     with (
         patch.object(chat, "init_graph", return_value=graph),
-        patch.object(chat, "threading", SimpleNamespace(Thread=SyncThread)),
+        patch.object(
+            chat,
+            "threading",
+            SimpleNamespace(
+                Thread=SyncThread, Lock=threading.Lock, Event=threading.Event
+            ),
+        ),
     ):
         asyncio.run(run())
 
@@ -86,6 +93,7 @@ def test_stop_saves_partial_and_cancels_pending_tool_call():
 
 def test_finish_stopped_noop_when_run_already_finished():
     graph = make_graph(x for x in [])
+    graph.get_state.return_value.values = {"messages": [AIMessage(content="Done")]}
     chat.finish_stopped(graph, {}, graph.stream.return_value, "x")
 
     graph.update_state.assert_not_called()
@@ -100,3 +108,80 @@ def test_full_stream_does_not_update_state():
         asyncio.run(run())
 
     graph.update_state.assert_not_called()
+
+
+def test_new_message_stops_previous_run_before_its_first_step():
+    order = []
+
+    def first():
+        try:
+            yield TEXT
+            time.sleep(0.05)
+            yield TEXT
+        finally:
+            order.append("first closed")
+
+    def second():
+        order.append("second step")
+        yield TEXT
+
+    graph1 = make_graph(first(), next_=("assistant",))
+    graph1.get_state.return_value.values = {"messages": [HumanMessage("hi")]}
+    graph1.update_state.side_effect = lambda *a, **k: order.append("first saved")
+    graph2 = make_graph(second())
+
+    async def drain(gen):
+        return [b async for b in gen]
+
+    async def run():
+        old = stream(None)
+        await old.__anext__()
+        # The old stream keeps being read (its client has not disconnected yet).
+        old_task = asyncio.ensure_future(drain(old))
+        await drain(stream(None))
+        await old_task
+
+    with (
+        patch.object(chat, "init_graph", side_effect=[graph1, graph2]),
+        patch.object(chat, "HEARTBEAT_SECONDS", 0.01),
+    ):
+        asyncio.run(run())
+
+    assert order == ["first closed", "first saved", "second step"]
+
+
+def test_new_message_waits_for_disconnected_run_cleanup():
+    order = []
+
+    def save(*a, **k):
+        time.sleep(0.05)
+        order.append("first saved")
+
+    def second():
+        order.append("second step")
+        yield TEXT
+
+    graph1 = make_graph((x for x in [TEXT, TEXT]), next_=("assistant",))
+    graph1.get_state.return_value.values = {"messages": [HumanMessage("hi")]}
+    graph1.update_state.side_effect = save
+    graph2 = make_graph(second())
+
+    async def run():
+        old = stream(None)
+        await old.__anext__()
+        await old.aclose()  # client disconnected; cleanup runs in the background
+        [b async for b in stream(None)]
+
+    with patch.object(chat, "init_graph", side_effect=[graph1, graph2]):
+        asyncio.run(run())
+
+    assert order == ["first saved", "second step"]
+
+
+def test_finish_stopped_saves_even_when_closed_stream_reports_no_next():
+    graph = make_graph((x for x in []), next_=())
+    graph.get_state.return_value.values = {"messages": [HumanMessage("hi")]}
+    chat.finish_stopped(graph, {}, graph.stream.return_value, "Part")
+
+    (config, update), _ = graph.update_state.call_args
+    assert update["messages"][-1].content == chat.stopped_text("Part")

@@ -15,11 +15,6 @@ from utils.constants import (
 )
 from utils.utils import convert_chat_message, render_message
 
-# Initialize event loop - use to stream response customize with human approval
-if "loop" not in st.session_state:
-    st.session_state.loop = asyncio.new_event_loop()
-    asyncio.set_event_loop(st.session_state.loop)
-
 
 # Buttons only record the choice; the slow call runs in the page body so a spinner can show.
 def handle_approve():
@@ -30,12 +25,19 @@ def handle_reject():
     st.session_state.pending_decision = "reject"
 
 
+# Streamlit's fast rerun starts the next run at once, while the stopped run is
+# still blocked on the stream, so take the partial reply it keeps in session state.
+def handle_stop():
+    st.session_state.stopped_reply = st.session_state.pop("partial_reply", "")
+
+
 async def process_response(response):
     async for content in response:
         if isinstance(content, str):
             if content:
                 status_placeholder.empty()
             response_holder[0] += content
+            st.session_state.partial_reply = response_holder[0]
             message_placeholder.markdown(response_holder[0] + "▌")
             continue
 
@@ -123,14 +125,17 @@ for msg in history.messages:
     render_message(msg)
 
 # A stopped reply shows until the server's saved copy (ends history with the assistant) loads
-reply = st.session_state.pop("stopped_reply", None)
-if reply is not None and history.messages and history.messages[-1].role == "user":
-    render_message(
-        ChatMessage(
-            role="assistant",
-            content=f"{reply}\n\n{STOPPED_NOTE}" if reply else STOPPED_NOTE,
+if "stopped_reply" in st.session_state:
+    if history.messages and history.messages[-1].role == "user":
+        reply = st.session_state.stopped_reply
+        render_message(
+            ChatMessage(
+                role="assistant",
+                content=f"{reply}\n\n{STOPPED_NOTE}" if reply else STOPPED_NOTE,
+            )
         )
-    )
+    else:
+        del st.session_state["stopped_reply"]
 
 typed = st.chat_input(placeholder="Give me categories list.")
 clicked = st.session_state.pop("quick_start_prompt", None)
@@ -171,17 +176,19 @@ if prompt := typed or clicked:
         message_placeholder = st.empty()
         status_placeholder = st.empty()
         stop_placeholder = st.empty()
-        # A click reruns the script, which interrupts the stream at the next render
-        stop_placeholder.button("Stop", key="stop_button", icon="⏹️")
+        stop_placeholder.button(
+            "Stop response", key="stop_button", icon="⏹️", on_click=handle_stop
+        )
         response_holder = [""]
+        st.session_state.partial_reply = ""
 
         response = chat_service.chat_stream(prompt)
-        # Left True when the run is interrupted (Stop click or new input)
-        stopped = True
+        # Own loop per reply: a stopped run may still be inside its loop when the next starts
+        loop = asyncio.new_event_loop()
         with st.spinner("Thinking..."):
             try:
-                st.session_state.loop.run_until_complete(process_response(response))
-                stopped = False
+                loop.run_until_complete(process_response(response))
+                st.session_state.pop("partial_reply", None)
 
                 # If not have human approval, stream response is simple
                 # st.write_stream(response)
@@ -193,15 +200,14 @@ if prompt := typed or clicked:
                 # else:
                 #     st.write_stream(response)
             except Exception:
-                stopped = False
+                st.session_state.pop("partial_reply", None)
                 status_placeholder.empty()  # st.stop() below skips `finally` output
                 logging.exception("Chat stream failed")
                 st.error(ERROR_GENERIC)
                 st.stop()
             finally:
                 # Close the HTTP stream so the server sees the disconnect
-                st.session_state.loop.run_until_complete(response.aclose())
+                loop.run_until_complete(response.aclose())
+                loop.close()
                 status_placeholder.empty()
                 stop_placeholder.empty()
-                if stopped:
-                    st.session_state.stopped_reply = response_holder[0]

@@ -63,7 +63,13 @@ def test_stopped_reply_hidden_once_server_saved_it():
     assert texts(at).count("Part\n\n_(stopped)_") == 1
 
 
-def test_interrupted_stream_keeps_partial_reply():
+def test_interrupted_stream_keeps_partial_reply_for_stop():
     at = make_app([], interrupted_stream, prompt="hello")
 
-    assert at.session_state["stopped_reply"] == "Part"
+    assert at.session_state["partial_reply"] == "Part"
+
+
+def test_finished_stream_clears_partial_reply():
+    at = make_app([], heartbeat_stream, prompt="hello")
+
+    assert "partial_reply" not in at.session_state

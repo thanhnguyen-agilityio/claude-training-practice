@@ -50,8 +50,9 @@ async def process_response(response):
             if content:
                 status_placeholder.empty()
             response_holder[0] += content
-            st.session_state.partial_reply = response_holder[0]
             message_placeholder.markdown(response_holder[0] + "▌")
+            # After the render: a stopped run raises there, so it can't overwrite this
+            st.session_state.partial_reply = response_holder[0]
             continue
 
         if "heartbeat" in content:

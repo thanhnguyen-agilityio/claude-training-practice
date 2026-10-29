@@ -66,5 +66,7 @@ def test_summarize_old_checkpoint_without_count(monkeypatch):
 
 def test_summarize_nothing_new_returns_only_window_start(monkeypatch):
     msgs = [HumanMessage(f"m{i}") for i in range(5)]
-    out = _summarize(monkeypatch, {"messages": msgs, "summary": "S1", "summarized_count": 4})
+    out = _summarize(
+        monkeypatch, {"messages": msgs, "summary": "S1", "summarized_count": 4}
+    )
     assert out == {"window_start": 4}

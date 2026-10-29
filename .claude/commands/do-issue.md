@@ -19,7 +19,7 @@ Work GitHub issue #$ARGUMENTS end to end. Stop only at the **GATE** or when a ru
 
 ## 3. Test
 - Run the full test suite with the Test command from CLAUDE.md. All must pass. Report the command and result.
-- If the change is user-visible, run the app (server + client) and reproduce the issue's scenario. Use Claude in Chrome if it is connected; otherwise give me the exact manual steps and wait for my result.
+- If the change is user-visible, add or extend a test in `e2e/tests/` for the changed UI path and run `make e2e`. Only if it can't run: run the app (server + client) and reproduce the scenario with Claude in Chrome if it is connected; otherwise give me the exact manual steps and wait for my result.
 - Screenshots: save them outside the repo (e.g. `/tmp`); they are attached in step 5.
 - Same failure after 3 fix attempts → stop and ask.
 

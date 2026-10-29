@@ -12,6 +12,22 @@ run_server:
 run_client:
 	cd client && uv run --env-file ../.env streamlit run app.py
 
+# E2E: start server and client, run e2e/ against them, stop both even on failure.
+# First run: cd e2e && npm ci && npx playwright install chromium
+.PHONY: e2e
+e2e:
+	@if lsof -ti tcp:8080 -ti tcp:8501 -sTCP:LISTEN >/dev/null; then echo "Port 8080 or 8501 in use: stop the app first"; exit 1; fi; \
+	set -m; \
+	$(MAKE) run_server > /tmp/e2e-server.log 2>&1 & server=$$!; \
+	$(MAKE) run_client > /tmp/e2e-client.log 2>&1 & client=$$!; \
+	set +m; \
+	trap 'kill -- -$$server -$$client 2>/dev/null; \
+		for i in $$(seq 10); do lsof -ti tcp:8080 -ti tcp:8501 -sTCP:LISTEN >/dev/null || break; sleep 1; done; \
+		kill -9 -- -$$server -$$client 2>/dev/null' EXIT; \
+	for i in $$(seq 90); do curl -sf http://localhost:8080/health >/dev/null && curl -sf http://localhost:8501 >/dev/null && up=1 && break; sleep 2; done; \
+	[ -n "$$up" ] || { echo "App did not start: see /tmp/e2e-server.log, /tmp/e2e-client.log"; exit 1; }; \
+	cd e2e && E2E_TELEMETRY_DISABLED=1 uv run --env-file ../.env npx e2e run
+
 # KNOWLEDGE BASE
 .PHONY: create_knowledge_base
 create_knowledge_base:

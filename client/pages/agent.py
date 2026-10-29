@@ -5,27 +5,8 @@ import streamlit as st
 from langchain_community.chat_message_histories import StreamlitChatMessageHistory
 from langchain_core.messages import ChatMessage
 from services.chat_service import ChatService
-from utils.constants import BOT_AVATAR, WELCOME_MESSAGE
+from utils.constants import BOT_AVATAR, QUICK_START, WELCOME_MESSAGE
 from utils.utils import convert_chat_message, render_message
-
-expander = st.expander("Quick Start:")
-expander.write(
-    """
-    💁‍♀️ Services:
-    - Give me list categories
-    - Do you offer free shipping?
-    - How can I maintain the shape of my clothing?
-
-    💁‍♀️ Products:
-    - Give me product "Velvet flared dress with puffy sleeves"
-    - Compare "Tapta Fitted Dress with Collared Neck" and "Eclipse Flared Lace Dress"
-
-    💁‍♀️ Create support ticket:
-    - I want to create a support ticket.
-
-    🎯 Tip: short and specific.
-    """
-)
 
 # Initialize event loop - use to stream response customize with human approval
 if "loop" not in st.session_state:
@@ -122,6 +103,20 @@ render_message(ChatMessage(role="assistant", content=st.session_state.welcome_me
 for msg in history.messages:
     render_message(msg)
 
+typed = st.chat_input(placeholder="Give me categories list.")
+clicked = st.session_state.pop("quick_start_prompt", None)
+
+# Suggestions only on an empty conversation; a click sends the query
+if not history.messages and not (typed or clicked):
+    for category, examples in QUICK_START.items():
+        st.caption(category)
+        for example in examples:
+            st.button(
+                example,
+                key=f"quick_start_{example}",
+                on_click=st.session_state.__setitem__,
+                args=("quick_start_prompt", example),
+            )
 
 # Send the clicked Yes/No to the server, then rerun so the history reload shows its reply
 if decision := st.session_state.pop("pending_decision", None):
@@ -138,7 +133,7 @@ if decision := st.session_state.pop("pending_decision", None):
         st.rerun()
 
 # Handle user interaction
-if prompt := st.chat_input(placeholder="Give me categories list."):
+if prompt := typed or clicked:
     chat_message = ChatMessage(role="user", content=prompt)
     render_message(chat_message)
     history.add_message(chat_message)

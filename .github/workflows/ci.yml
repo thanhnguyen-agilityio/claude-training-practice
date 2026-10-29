@@ -43,3 +43,6 @@ jobs:
       - name: Ruff
         if: ${{ !cancelled() }}
         run: uv run ruff check .
+      - name: Ruff format
+        if: ${{ !cancelled() }}
+        run: uv run ruff format --check .

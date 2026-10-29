@@ -54,14 +54,24 @@ def build_require_approval_message(tool_call_data: dict) -> dict:
     tool_call_data_str = ""
 
     if tool_name == "create_support_ticket":
-        tool_action_msg = "We are about to create a support ticket on your behalf"
+        tool_action_msg = (
+            "I can create a support ticket for you so our team can help resolve your issue. "
+            "I'm asking first because this sends the details below to our support team.\n\n"
+            "- **Yes**: I create the ticket and our team follows up with you.\n"
+            "- **No**: nothing is sent and no ticket is created. You can keep chatting with me."
+        )
     if tool_name == "search_google_shopping":
-        tool_action_msg = "We are about to expand search to Google Shopping"
+        tool_action_msg = (
+            "I couldn't find this product in our store. Would you like me to search Google Shopping "
+            "to find similar items from other retailers? I'm asking first because this looks outside our store.\n\n"
+            "- **Yes**: I search Google Shopping and show you options from other stores. It costs you nothing.\n"
+            "- **No**: I won't search outside our store."
+        )
 
     for arg_name, arg_value in tool_call_data["args"].items():
         tool_call_data_str += f"\n  - {arg_name.title()}: {arg_value}"
 
-    return "**Action Required: Please Confirm**\n\n {action}. Please review the details below and confirm:\n\n {details}".format(
+    return "**Your OK is needed**\n\n{action}\n\nDetails:\n{details}\n\nWould you like me to go ahead?".format(
         action=tool_action_msg, details=tool_call_data_str
     )
 

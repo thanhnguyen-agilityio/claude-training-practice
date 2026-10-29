@@ -3,7 +3,7 @@ import asyncio
 import streamlit as st
 from st_pages import add_page_title, get_nav_from_toml
 from utils.apis import health_check
-from utils.utils import get_thread_id, render_share_button
+from utils.utils import get_thread_id, render_new_chat_button, render_share_button
 
 # Initialize user_id and thread_id
 if "user_id" not in st.session_state:
@@ -31,6 +31,7 @@ with st.sidebar:
     st.divider()
 
     get_thread_id()
+    render_new_chat_button()
     render_share_button()
 
 nav = get_nav_from_toml(".streamlit/pages.toml")

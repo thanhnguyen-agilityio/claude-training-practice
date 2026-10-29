@@ -1,4 +1,5 @@
 from urllib.parse import quote
+from uuid import uuid4
 
 from langchain_core.messages import ChatMessage
 from streamlit import streamlit as st
@@ -17,6 +18,16 @@ def get_thread_id():
     elif "thread_id" not in st.session_state:
         st.session_state.thread_id = get_session_id()
     return st.session_state.thread_id
+
+
+def start_new_chat():
+    st.session_state.thread_id = uuid4().hex
+    st.session_state.pop(f"user_{st.session_state.user_id}_chat_messages", None)
+    st.query_params.pop("thread", None)
+
+
+def render_new_chat_button():
+    st.button("➕ New chat", on_click=start_new_chat, use_container_width=True)
 
 
 def render_share_button():

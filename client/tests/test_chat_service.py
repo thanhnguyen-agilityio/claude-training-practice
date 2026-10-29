@@ -6,7 +6,8 @@ def test_history_encodes_thread_id(monkeypatch):
     # thread_id now comes from the page URL, so it must not inject query params.
     sent = {}
 
-    def fake_get(url, **kwargs):
+    def fake_get(url, timeout=None, **kwargs):
+        sent["timeout"] = timeout
         sent["url"] = requests.Request("GET", url, **kwargs).prepare().url
 
         class Resp:
@@ -21,3 +22,5 @@ def test_history_encodes_thread_id(monkeypatch):
     ChatService(thread_id="a&user_id=x").chat_history()
 
     assert sent["url"].endswith("/history?thread_id=a%26user_id%3Dx")
+    # A hung /history must not block the page run (and the Yes/No call after it).
+    assert sent["timeout"] == 30

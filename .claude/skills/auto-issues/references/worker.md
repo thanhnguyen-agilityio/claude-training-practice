@@ -33,7 +33,7 @@ Your steps are 1–4 and 6; step 5 is review 2, run by the orchestrator. Reply o
 - All test commands from CLAUDE.md and the lint in `.claude/preflight.md` Notes must pass. Record commands and result lines.
 - Level tests: start nothing.
 - Level curl: start the server, run the requests that show the Expected behavior, keep each command, HTTP status, and trimmed response body.
-- Level browser: start server and client, reproduce the scenario in the browser named in `.claude/preflight.md` Notes. Take screenshots with `save_to_disk` at `scale: 0.5`, outside the repo, and record each file path right after saving; view one only to confirm the result.
+- Level browser: start server and client, reproduce the scenario in the browser named in `.claude/preflight.md` Notes. Take screenshots with `save_to_disk` at `scale: 0.5`, outside the repo, and record each file path right after saving; view one only to confirm the result. Take them after your last code commit; a later code change means retaking them (later test-only commits are fine).
 - Browser unavailable for a change that also touches `server/routers`: still do the curl level for that part.
 - Tick off every path from your plan's list with its check. Only a failed on-demand check, or code showing the path cannot be reached locally (cite file:line), justifies **unverified**; effort or a guess does not.
 - Stop what you started as `.claude/preflight.md` Notes say, also on failure. Cannot verify → mark **unverified**.
@@ -53,4 +53,4 @@ Your steps are 1–4 and 6; step 5 is review 2, run by the orchestrator. Reply o
   - CI check names and results;
   - review 1 and 2 verdicts and what was fixed;
   - verification: the level; for curl, each command, status, and trimmed body; for browser, steps and what you saw; or **unverified** and why.
-- Upload screenshots under `## Test evidence` by editing the PR on github.com in that browser; if that fails, list the recorded paths in a PR comment. When the PR is merged, closed, or left open, remove your worktree (`git worktree remove <scratch>/wt-<n>`).
+- Upload screenshots under `## Test evidence` by editing the PR on github.com in that browser. First read the `github.com` line in `<scratch>/preflight-checks.md`; if there is none, check the sign-in once and append `github.com: signed-in|signed-out <time>`. Signed out, or the upload fails: list the recorded paths in a PR comment. When the PR is merged, closed, or left open, remove your worktree (`git worktree remove <scratch>/wt-<n>`).

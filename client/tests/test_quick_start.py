@@ -42,11 +42,10 @@ def test_click_sends_example_as_query():
         sent.append(message)
         return fake_stream(self, message)
 
-    with (
-        patch.object(ChatService, "chat_history", return_value=[]),
-        patch.object(ChatService, "chat_stream", stream),
-    ):
-        at.button[0].click().run()
+    buttons = at.button
+    with patch.object(ChatService, "chat_history", return_value=[]):
+        with patch.object(ChatService, "chat_stream", stream):
+            buttons[0].click().run()
 
     assert sent == [FIRST]
     assert [m.markdown[0].value for m in at.chat_message][-2:] == [FIRST, "reply"]

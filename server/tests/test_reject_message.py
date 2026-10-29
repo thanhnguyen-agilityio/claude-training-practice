@@ -27,4 +27,5 @@ def test_reject_tells_model_action_was_not_performed(monkeypatch):
     assert isinstance(msg, ToolMessage)
     assert msg.tool_call_id == "call_1"
     assert "NOT performed" in msg.content
+    assert "because the user chose not to" in msg.content
     assert "ask what they would like to do next" in msg.content

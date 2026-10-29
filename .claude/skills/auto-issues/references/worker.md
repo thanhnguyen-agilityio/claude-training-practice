@@ -18,6 +18,7 @@ Your steps are 1–4 and 6; step 5 is review 2, run by the orchestrator. Reply o
 - Read the code the issue touches and trace the real flow. Mark each claim Known (read in code) or Assumed.
 - Decide open questions yourself when one option is clearly the smallest safe change that meets the Expected section. Record decisions and assumptions for the PR body.
 - Plan: files to change, tests to add, how to verify. List anything beyond Expected as a follow-up; do not build it.
+- List every user-facing path whose behavior the diff changes, including error and approval paths, each with its planned check (test, curl, or screenshot).
 - **Skip** when the ticket is wrong (contradicts code or docs, already behaves as expected, duplicate), the bug cannot be reproduced, or it needs a decision you cannot make (options that change what users see or can do in different ways and the issue does not pick one, a new dependency, more than ~5 files). Comment on the issue: which case, the evidence, the question for me, ending with `<!-- auto-issues:skipped -->`. No branch, no PR. Reply `skipped`.
 
 ## 2. Build
@@ -33,6 +34,7 @@ Your steps are 1–4 and 6; step 5 is review 2, run by the orchestrator. Reply o
 - Level curl: start the server, run the requests that show the Expected behavior, keep each command, HTTP status, and trimmed response body.
 - Level browser: start server and client, reproduce the scenario in the browser named in `.claude/preflight.md` Notes. Take screenshots with `save_to_disk` at `scale: 0.5`, outside the repo, and record each file path right after saving; view one only to confirm the result.
 - Browser unavailable for a change that also touches `server/routers`: still do the curl level for that part.
+- Tick off every path from your plan's list with its check. Only a failed on-demand check, or code showing the path cannot be reached locally (cite file:line), justifies **unverified**; effort or a guess does not.
 - Stop what you started as `.claude/preflight.md` Notes say, also on failure. Cannot verify → mark **unverified**.
 - Keep every failure's output: test name, assertion or error, traceback. A failure without its log does not count.
 - Same failure after 3 fix attempts → push, open a **draft** PR with a `## Failure log` section (command, failing tests, trimmed traceback). Reply `draft`.

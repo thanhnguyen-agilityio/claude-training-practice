@@ -5,11 +5,17 @@ from streamlit.testing.v1 import AppTest
 
 def app():
     import streamlit as st
-    from utils.utils import get_session_id, get_thread_id, render_share_button
+    from utils.utils import (
+        get_session_id,
+        get_thread_id,
+        render_new_chat_button,
+        render_share_button,
+    )
 
     st.write(get_thread_id())
     st.write(get_session_id())
     render_share_button()
+    render_new_chat_button()
 
 
 def thread_and_session(at):
@@ -60,3 +66,20 @@ def test_share_link_encodes_thread():
     at.button[0].click().run()
 
     assert at.code[0].value.endswith("/?thread=a%26b%20c")
+
+
+def test_new_chat_starts_fresh_thread():
+    at = AppTest.from_function(app)
+    at.query_params["thread"] = "abc"
+    at.session_state["user_id"] = "u1"
+    at.session_state["user_u1_chat_messages"] = ["old"]
+    at.run()
+
+    at.button[1].click().run()
+
+    thread = thread_and_session(at)[0]
+    assert thread not in ("abc", thread_and_session(at)[1])
+    assert "thread" not in at.query_params
+    assert "user_u1_chat_messages" not in at.session_state
+    at.button[1].click().run()
+    assert thread_and_session(at)[0] != thread

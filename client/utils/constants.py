@@ -25,3 +25,16 @@ BOT_AVATAR_CHOICE = [
 
 USER_AVATAR = random.choice(USER_AVATAR_CHOICE)
 BOT_AVATAR = random.choice(BOT_AVATAR_CHOICE)
+
+QUICK_START = {
+    "💁‍♀️ Services": [
+        "Give me list categories",
+        "Do you offer free shipping?",
+        "How can I maintain the shape of my clothing?",
+    ],
+    "💁‍♀️ Products": [
+        'Give me product "Velvet flared dress with puffy sleeves"',
+        'Compare "Tapta Fitted Dress with Collared Neck" and "Eclipse Flared Lace Dress"',
+    ],
+    "💁‍♀️ Support": ["I want to create a support ticket."],
+}

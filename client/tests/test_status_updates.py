@@ -41,3 +41,15 @@ def test_status_shown_while_waiting():
     at = run(status_then_fail)
 
     assert any(c.value == "Searching the product database..." for c in at.caption)
+
+
+def test_empty_chunk_keeps_status():
+    # Tool-call chunks stream an empty string right after the status.
+    async def status_empty_fail(self, message):
+        yield {"status": "Searching the product database..."}
+        yield ""
+        raise RuntimeError("boom")
+
+    at = run(status_empty_fail)
+
+    assert any(c.value == "Searching the product database..." for c in at.caption)

@@ -41,7 +41,8 @@ def handle_reject():
 async def process_response(response):
     async for content in response:
         if isinstance(content, str):
-            status_placeholder.empty()
+            if content:
+                status_placeholder.empty()
             response_holder[0] += content
             message_placeholder.markdown(response_holder[0] + "▌")
             continue

@@ -82,6 +82,8 @@ async def stream_agent_response(request: ChatRequest) -> AsyncGenerator[bytes, N
             for chunk in getattr(msg, "tool_call_chunks", None) or []:
                 if status := TOOL_STATUS.get(chunk["name"]):
                     yield json.dumps({"status": status}).encode("utf-8")
+                    # separate network chunks: client parses one JSON value per chunk
+                    await asyncio.sleep(0.05)
             yield json.dumps(msg.content).encode("utf-8")
             await asyncio.sleep(0.05)
 

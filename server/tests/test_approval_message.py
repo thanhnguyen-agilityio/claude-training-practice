@@ -20,6 +20,7 @@ def test_google_shopping_message_explains_why_cost_and_both_outcomes():
     )
     assert "couldn't find this product in our store" in msg
     assert "costs you nothing" in msg
+    assert "I won't search outside our store" in msg
     assert "**Yes**" in msg and "**No**" in msg
     assert "blue shirt" in msg
 

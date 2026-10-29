@@ -1,11 +1,12 @@
 import asyncio
+import logging
 import random
 
 import streamlit as st
 from langchain_community.chat_message_histories import StreamlitChatMessageHistory
 from langchain_core.messages import ChatMessage
 from services.chat_service import ChatService
-from utils.constants import BOT_AVATAR, QUICK_START, WELCOME_MESSAGE
+from utils.constants import BOT_AVATAR, ERROR_GENERIC, QUICK_START, WELCOME_MESSAGE
 from utils.utils import convert_chat_message, render_message
 
 # Initialize event loop - use to stream response customize with human approval
@@ -92,7 +93,7 @@ with st.spinner("Loading..."):
 
         history.messages = history_message_convert
     except Exception:
-        pass
+        logging.exception("Cannot load chat history")
 
 # Welcome message is client-only (never in server history): pick once, always show at top
 if "welcome_message" not in st.session_state:
@@ -157,6 +158,7 @@ if prompt := typed or clicked:
                 #     st.button('Approve', on_click=approve_action, args=[1])
                 # else:
                 #     st.write_stream(response)
-            except Exception as e:
-                st.error(e)
+            except Exception:
+                logging.exception("Chat stream failed")
+                st.error(ERROR_GENERIC)
                 st.stop()

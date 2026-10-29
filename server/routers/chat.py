@@ -131,7 +131,7 @@ async def reject_action(request: ToolCallApprovalRequest):
             "messages": [
                 ToolMessage(
                     tool_call_id=request.tool_call_id,
-                    content=f"Tool call denied by user. Reasoning: '{request.user_input}'. Continue assisting, accounting for the user's input.",
+                    content=f"Tool call denied by user. Reasoning: '{request.user_input}'. The action was NOT performed (e.g. no support ticket was created). Tell the user plainly that it was not done, then ask what they would like to do next.",
 
                 ),
             ]

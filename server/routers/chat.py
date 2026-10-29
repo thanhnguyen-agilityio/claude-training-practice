@@ -112,7 +112,7 @@ async def approve_action(request: ToolCallApprovalRequest):
     graph = init_graph(config=config)
 
     # Continue the graph
-    graph.invoke(None, config)
+    return graph.invoke(None, config)["messages"][-1].content
 
 @router.post("/reject")
 async def reject_action(request: ToolCallApprovalRequest):
@@ -126,7 +126,7 @@ async def reject_action(request: ToolCallApprovalRequest):
     graph = init_graph(config=config)
 
     # Continue graph with reject tool message
-    graph.invoke(
+    result = graph.invoke(
         {
             "messages": [
                 ToolMessage(
@@ -138,3 +138,4 @@ async def reject_action(request: ToolCallApprovalRequest):
         },
         config
     )
+    return result["messages"][-1].content

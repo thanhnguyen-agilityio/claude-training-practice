@@ -33,10 +33,12 @@ if "loop" not in st.session_state:
     asyncio.set_event_loop(st.session_state.loop)
 
 def handle_approve():
-    chat_service.approve_tool_call(st.session_state.tool_call_id)
+    with st.spinner("Creating your ticket..."):
+        chat_service.approve_tool_call(st.session_state.tool_call_id)
 
 def handle_reject():
-    chat_service.reject_tool_call(st.session_state.tool_call_id)
+    with st.spinner("Got it, finding another option..."):
+        chat_service.reject_tool_call(st.session_state.tool_call_id)
 
 async def process_response(response):
     async for content in response:

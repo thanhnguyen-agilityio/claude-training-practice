@@ -63,7 +63,9 @@ class ChatService:
         """Get chat history of a thread_id"""
         try:
             response = requests.get(
-                self.base_url + "/history", params={"thread_id": self.thread_id}
+                self.base_url + "/history",
+                params={"thread_id": self.thread_id},
+                timeout=30,
             )
         except Exception as e:
             raise Exception(

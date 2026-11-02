@@ -12,6 +12,8 @@ ERROR_REQUEST = (
     "If this keeps happening, please contact support at hi@ecommerce.com"
 )
 
+# Must match STOPPED_NOTE in server/routers/chat.py
+STOPPED_NOTE = "_(stopped)_"
 
 WELCOME_MESSAGE = [
     "How can I assist you today?",

@@ -6,13 +6,14 @@ import streamlit as st
 from langchain_community.chat_message_histories import StreamlitChatMessageHistory
 from langchain_core.messages import ChatMessage
 from services.chat_service import ChatService
-from utils.constants import BOT_AVATAR, ERROR_GENERIC, QUICK_START, WELCOME_MESSAGE
+from utils.constants import (
+    BOT_AVATAR,
+    ERROR_GENERIC,
+    QUICK_START,
+    STOPPED_NOTE,
+    WELCOME_MESSAGE,
+)
 from utils.utils import convert_chat_message, render_message
-
-# Initialize event loop - use to stream response customize with human approval
-if "loop" not in st.session_state:
-    st.session_state.loop = asyncio.new_event_loop()
-    asyncio.set_event_loop(st.session_state.loop)
 
 
 # Buttons only record the choice; the slow call runs in the page body so a spinner can show.
@@ -24,12 +25,38 @@ def handle_reject():
     st.session_state.pending_decision = "reject"
 
 
+# Puts the Stop button over the chat input's send arrow; label kept for screen readers
+STOP_BUTTON_CSS = """<style>
+[data-testid="stChatInputSubmitButton"] { visibility: hidden; }
+.st-key-stop_area { position: absolute; right: 0; bottom: 1rem; width: 40px; gap: 0; z-index: 1; }
+.st-key-stop_area button {
+    width: 40px; height: 40px; min-height: 0; padding: 0; border: none; background: transparent;
+}
+.st-key-stop_area [data-testid="stMarkdownContainer"] {
+    position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0);
+}
+</style>"""
+
+
+# Streamlit's fast rerun starts the next run at once, while the stopped run is
+# still blocked on the stream, so take the partial reply it keeps in session state.
+def handle_stop():
+    st.session_state.stopped_reply = st.session_state.pop("partial_reply", "")
+
+
 async def process_response(response):
     async for content in response:
         if isinstance(content, str):
             if content:
                 status_placeholder.empty()
             response_holder[0] += content
+            message_placeholder.markdown(response_holder[0] + "▌")
+            # After the render: a stopped run raises there, so it can't overwrite this
+            st.session_state.partial_reply = response_holder[0]
+            continue
+
+        if "heartbeat" in content:
+            # Any render lets Streamlit act on a Stop click while the server is busy.
             message_placeholder.markdown(response_holder[0] + "▌")
             continue
 
@@ -111,6 +138,19 @@ render_message(ChatMessage(role="assistant", content=st.session_state.welcome_me
 for msg in history.messages:
     render_message(msg)
 
+# A stopped reply shows until the server's saved copy (ends history with the assistant) loads
+if "stopped_reply" in st.session_state:
+    if history.messages and history.messages[-1].role == "user":
+        reply = st.session_state.stopped_reply
+        render_message(
+            ChatMessage(
+                role="assistant",
+                content=f"{reply}\n\n{STOPPED_NOTE}" if reply else STOPPED_NOTE,
+            )
+        )
+    else:
+        del st.session_state["stopped_reply"]
+
 typed = st.chat_input(placeholder="Give me categories list.")
 clicked = st.session_state.pop("quick_start_prompt", None)
 
@@ -149,13 +189,27 @@ if prompt := typed or clicked:
     with st.chat_message("assistant", avatar=BOT_AVATAR):
         message_placeholder = st.empty()
         status_placeholder = st.empty()
+        # Stop takes the send button's place in the chat input while the reply streams
+        # ponytail: st._bottom is private (the chat input's container); recheck on upgrade
+        stop_placeholder = st._bottom.empty()
+        with stop_placeholder.container(key="stop_area"):
+            st.markdown(STOP_BUTTON_CSS, unsafe_allow_html=True)
+            st.button(
+                "Stop response",
+                key="stop_button",
+                icon=":material/stop_circle:",
+                on_click=handle_stop,
+            )
         response_holder = [""]
+        st.session_state.partial_reply = ""
 
+        response = chat_service.chat_stream(prompt)
+        # Own loop per reply: a stopped run may still be inside its loop when the next starts
+        loop = asyncio.new_event_loop()
         with st.spinner("Thinking..."):
             try:
-                response = chat_service.chat_stream(prompt)
-
-                st.session_state.loop.run_until_complete(process_response(response))
+                loop.run_until_complete(process_response(response))
+                st.session_state.pop("partial_reply", None)
 
                 # If not have human approval, stream response is simple
                 # st.write_stream(response)
@@ -167,9 +221,14 @@ if prompt := typed or clicked:
                 # else:
                 #     st.write_stream(response)
             except Exception:
+                st.session_state.pop("partial_reply", None)
                 status_placeholder.empty()  # st.stop() below skips `finally` output
                 logging.exception("Chat stream failed")
                 st.error(ERROR_GENERIC)
                 st.stop()
             finally:
+                # Close the HTTP stream so the server sees the disconnect
+                loop.run_until_complete(response.aclose())
+                loop.close()
                 status_placeholder.empty()
+                stop_placeholder.empty()

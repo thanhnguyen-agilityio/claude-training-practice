@@ -1,33 +1,42 @@
 # Ecommerce Customer Support Agent
 
-LangGraph/LangServe customer-support agent (RAG + SQL + tools) with a Streamlit chat client.
+LangGraph agent (RAG + SQL + tools) served by FastAPI/LangServe, with a Streamlit chat client.
 
 ## Commands
-- Install: `uv sync` (copy `.env.example` to `.env` first)
-- Run: `make run_server` (port 8080) and `make run_client`
-- Test: `cd server && uv run --env-file ../.env --with pytest python -m pytest tests` / `cd client && uv run --env-file ../.env --with pytest python -m pytest tests` / `uv run --with pytest python -m pytest scripts/tests`
-- E2E (UI): `make e2e` starts server + client, runs `e2e/`, stops both. First run: `cd e2e && npm ci && npx playwright install chromium`; needs Node >=22.22.3 or >=24.8 and ports 8080/8501 free.
-- Lint/format: `uv run ruff check . && uv run ruff format .`
-- Knowledge base: `make create_knowledge_base`
-- Evals: `make langsmith_experiments`, `make promptfoo_eval_agent`
+- Install: `cp .env.example .env` (fill in keys), then `uv sync`
+- Run server (port 8080): `make run_server`
+- Run client (port 8501): `make run_client`
+- Test server: `cd server && uv run --env-file ../.env --with pytest python -m pytest tests`
+- Test client: `cd client && uv run --env-file ../.env --with pytest python -m pytest tests`
+- Test scripts: `uv run --with pytest python -m pytest scripts/tests`
+- Single test: `cd server && uv run --env-file ../.env --with pytest python -m pytest tests/test_recent_window.py::test_window_starts_on_human_message`
+- E2E (UI, calls OpenAI): `make e2e`; first run `cd e2e && npm ci && npx playwright install chromium`; ports 8080/8501 must be free
+- Lint/format: `uv run ruff check .` and `uv run ruff format .` (CI uses `ruff format --check .`)
+- Knowledge base (Chroma + SQLite in `server/db`): `make create_knowledge_base`
 
 ## Layout
-- `server/agent` — LangGraph graph, LLMs, prompts, RAG, tools
-- `server/routers` — FastAPI/LangServe routes (chat, history, health)
+- `server/agent` — LangGraph graph, LLMs, prompts (`.md` files), RAG, tools
+- `server/routers` — FastAPI routes: chat (streaming, stop, approval), history, health
+- `server/utils` — shared helpers; `constants.py` holds config and env defaults
+- `client` — Streamlit app: `app.py`, `pages/`, `services/`, `utils/`
 - `server/evals` — LangSmith and Promptfoo evaluations
-- `server/data` — product data and support documents
-- `client` — Streamlit app (`pages/`, `services/`, `utils/`)
-- `in` — input resources for AI (specs, references, sample data)
-- `out` — AI outputs (e.g. `out/run-reports/` from `/auto-issues`); not edited by hand
+- `server/tests`, `client/tests`, `scripts/tests` — pytest; `e2e/` — UI tests
 
 ## Conventions
-- Save cost. Opus advisor. Sonnet/Haiku code. Haiku mechanical tasks. Remember!
-- One ticket per branch; small commits; PR always, never push to main.
-- Every change ships with a test. Keep diffs minimal.
-- PR body: run `/pr` first and use its output. Never open a PR with a one-line body.
-- Python 3.11+, type hints, ruff style. Tests import relative to `server/` or `client/`, so run pytest from that dir.
+- Python 3.11+; ruff with default rules (no ruff config); isort profile black
+- Imports are relative to `server/` or `client/` (`from utils.utils import ...`), so run pytest and apps from that dir
+- Config: `os.getenv(NAME, default)` in `server/utils/constants.py`; `.env` is passed with `uv run --env-file`
+- Module-level constants are UPPER_SNAKE; private module state starts with `_`
+- Add type hints to new code (existing code is only partly typed)
+- Tests: plain pytest functions `test_<behavior>`, with `monkeypatch`/`unittest.mock`; Streamlit UI tests use `streamlit.testing.v1.AppTest`
+- Tests never call OpenAI (`server/tests/conftest.py` sets a placeholder key)
+- Every change ships with a test; one ticket per branch; PR into `main`
+- Always push to both remotes together: `git push origin <branch> && git push gitlab <branch>`
 
 ## Never
-- Commit or print secrets / `.env`.
-- Merge or claim "done" without running tests.
-- Add dependencies without asking.
+- Commit or print secrets / `.env`; don't run `make load_env` (it prints `OPENAI_API_KEY`)
+- Add dependencies without asking (root `pyproject.toml` + `uv.lock`)
+- Claim done without running the server, client and scripts tests plus ruff (what CI runs)
+- Push to `main`
+- Change `STOPPED_NOTE` on only one side (`server/routers/chat.py` and `client/utils/constants.py`)
+- Run `make clean_knowledge_base` or evals without asking: they wipe `server/db` or spend OpenAI credits

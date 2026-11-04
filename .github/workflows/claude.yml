@@ -1,5 +1,5 @@
 # Claude answers when someone with write access mentions @claude in an issue, PR comment, or review.
-# Needs the Claude GitHub App installed and the ANTHROPIC_API_KEY repo secret.
+# Needs the Claude GitHub App installed and the CLAUDE_CODE_OAUTH_TOKEN repo secret.
 name: Claude Code
 
 on:
@@ -33,6 +33,7 @@ jobs:
           fetch-depth: 1
       - uses: anthropics/claude-code-action@v1
         with:
-          anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+          # OAuth token from a Claude Pro/Max plan (`claude setup-token`); API-key usage of Claude Code is blocked for the org (see out/investigations/2026-11-04-claude-ci-billing-error.md).
+          claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
           # TEMPORARY: show Claude's real error in the (public) log; remove once the review works.
           show_full_output: true

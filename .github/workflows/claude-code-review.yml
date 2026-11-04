@@ -1,5 +1,5 @@
 # Claude reviews each PR and posts inline comments (or one summary comment when it finds nothing).
-# Skips drafts, closed PRs, and PRs it already commented on. Uses the ANTHROPIC_API_KEY repo secret.
+# Skips drafts, closed PRs, and PRs it already commented on. Uses the CLAUDE_CODE_OAUTH_TOKEN repo secret.
 name: Claude Code Review
 
 on:
@@ -25,7 +25,8 @@ jobs:
           fetch-depth: 1
       - uses: anthropics/claude-code-action@v1
         with:
-          anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+          # OAuth token from a Claude Pro/Max plan (`claude setup-token`); API-key usage of Claude Code is blocked for the org (see out/investigations/2026-11-04-claude-ci-billing-error.md).
+          claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
           # TEMPORARY: show Claude's real error in the (public) log; remove once the review works.
           show_full_output: true
           plugin_marketplaces: "https://github.com/anthropics/claude-plugins-official.git"

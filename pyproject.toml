@@ -24,7 +24,7 @@ dependencies = [
     "aiosqlite>=0.20.0",
     "httpx>=0.27.2",
     "rebuff>=0.0.5",
-    "onnxruntime==1.15.0"
+    "onnxruntime==1.23.2"
 ]
 
 [dependency-groups]

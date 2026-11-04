@@ -34,3 +34,5 @@ jobs:
       - uses: anthropics/claude-code-action@v1
         with:
           anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+          # TEMPORARY: show Claude's real error in the (public) log; remove once the review works.
+          show_full_output: true

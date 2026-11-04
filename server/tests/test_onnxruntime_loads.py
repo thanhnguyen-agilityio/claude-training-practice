@@ -13,6 +13,9 @@ def needs_exec_stack(so_path: Path) -> bool:
     """True if a 64-bit little-endian ELF file asks for an executable stack."""
     with open(so_path, "rb") as f:
         header = f.read(64)
+        assert header[:6] == b"\x7fELF\x02\x01", (
+            f"{so_path} is not a 64-bit little-endian ELF"
+        )
         phoff = struct.unpack_from("<Q", header, 0x20)[0]
         phentsize, phnum = struct.unpack_from("<HH", header, 0x36)
         f.seek(phoff)
@@ -21,7 +24,7 @@ def needs_exec_stack(so_path: Path) -> bool:
         p_type, p_flags = struct.unpack_from("<II", table, i * phentsize)
         if p_type == PT_GNU_STACK:
             return bool(p_flags & PF_X)
-    return False
+    return True  # no PT_GNU_STACK header: the loader defaults to an executable stack
 
 
 def test_onnxruntime_imports():

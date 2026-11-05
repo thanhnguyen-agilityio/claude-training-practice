@@ -12,6 +12,6 @@ Answer each item **yes / no** with evidence:
 7. The change was verified at the level `.claude/preflight.md` Verification levels requires for this diff (curl evidence for API changes, e2e for UI changes or browser when the `e2e` check failed, tests only otherwise), and nothing needed is **unverified**.
 8. No remaining risk to data or existing user flows.
 9. The change touches the security surface: SQL, auth, secrets, or user input reaching a query or shell. (yes → human gate; not a merge blocker by itself)
-10. A worker decision rated **med** in the issue's `<!-- auto-issues:decisions -->` comment changes what users see or can do, or a collaborator replied to that comment disagreeing with a pick. (yes → human gate; not a merge blocker by itself)
+10. A worker decision rated **med** in the issue's `<!-- auto-issues:worklog -->` comment changes what users see or can do, or a collaborator replied to that comment disagreeing with a pick. (yes → human gate; not a merge blocker by itself)
 
 Any **no** on 1–8 → verdict **not confident**, with reasons and what would make it mergeable. All **yes** on 1–8 → **confident**. Always report items 9 and 10.

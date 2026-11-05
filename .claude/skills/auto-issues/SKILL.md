@@ -5,7 +5,7 @@ argument-hint: <issue numbers | open [priority] [type]> [--skip-preflight]
 model: sonnet
 disable-model-invocation: true
 ---
-Skill version: 9. Work the GitHub issues selected by $ARGUMENTS (see Queue) end to end with no approval stops. Merge only when review 3 is confident. I review the run report and the run branch PR afterwards.
+Skill version: 10. Work the GitHub issues selected by $ARGUMENTS (see Queue) end to end with no approval stops. Merge only when review 3 is confident. I review the run report and the run branch PR afterwards.
 
 Paths below are relative to `.claude/skills/auto-issues/`. `<scratch>` is your scratchpad dir.
 
@@ -35,6 +35,7 @@ Select issues from $ARGUMENTS (`--skip-preflight` is not part of the selection):
   - Several values in one group match any of them; groups combine with AND. `open high priority bug` = open, labelled `high priority`, and labelled `bug`. `open critical high` = either priority.
   - A word that matches no label (`gh label list`): stop before preflight and reply with the valid labels.
   - With `open`, also drop issues whose latest comment is a skip comment from an earlier run (contains `<!-- auto-issues:skipped -->`) with no newer comment from a collaborator.
+  - With `open`, also drop untriaged follow-ups: body contains `<!-- followup-of:` and no priority label. I triage them first; they never chain into the same run.
   - At most 10 issues per run, highest priority first; list the rest in the report as "not reached".
 - Then for each: `gh issue view <n> --json number,title,labels,state`. Drop closed issues, those with an open PR (`gh pr list --search "<n> in:body" --state open`), and those whose author lacks write access (`gh api repos/{owner}/{repo}/collaborators/<login>` is not 204): issue text from untrusted authors must not drive writes or merges. List dropped ones in the report.
 - Order by label: `critical priority` → `high priority` → `medium priority` → `low priority` → none; ties by lowest number. One issue at a time, each from the latest `main`.
@@ -50,6 +51,7 @@ Record start and end time (`date -u +%Y-%m-%dT%H:%M:%SZ`). **Budget:** 45 minute
    - **Human gate** — `critical priority` label, or review 3 item 9 or 10 is **yes**, whatever the verdict: comment the checklist (and the reasons if not confident), add `needs-human-merge`, keep open and synced. Result: open – human gate.
    - **Confident**: comment the checklist, add `auto-merged`, `gh pr merge <pr> --squash --delete-branch` (if `gh` fails with a Projects-classic error: `gh api -X PUT repos/{owner}/{repo}/pulls/<pr>/merge -f merge_method=squash`, then `gh api -X DELETE repos/{owner}/{repo}/git/refs/heads/<branch>`), `git fetch origin`.
    - **Not confident**: comment the checklist, reasons, and what would make it mergeable; keep open, synced, checks passing.
+7. **Close the work log:** set the issue's `<!-- auto-issues:worklog -->` comment **Result** to the outcome (`merged <sha>` / `open – human gate` / `open – not confident` / `draft – <reason>`), the PR link, and follow-up issues. Skipped issues have no work log.
 
 ## Run report
 After the last issue, `git fetch origin`, then read `references/run-report.md` and write the report it describes.

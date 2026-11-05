@@ -5,16 +5,16 @@ argument-hint: <issue number> [--auto]
 Work a GitHub issue end to end. Arguments: `$ARGUMENTS`. `<n>` is the issue number (first word). **Auto mode** is on when the arguments contain `--auto`.
 
 - **Interactive** (default): stop at the **GATE** and when a rule below says to ask.
-- **Auto:** no GATE and no questions. Apply the suggested picks, post them on the issue, and keep going. Stop only on a hard stop from `.claude/decisions.md`. Running with `--auto` is my approval to post the decisions comment on the issue (one comment, nothing else outward-facing before the PR).
+- **Auto:** no GATE and no questions. Apply the suggested picks, post them on the issue, and keep going. Stop only on a hard stop from `.claude/decisions.md`. Running with `--auto` is my approval to post and edit the work log and to file up to 3 follow-up issues.
 
 ## 1. Plan (no code)
 - `gh issue view <n> --comments`, then run `/analyze-ticket` on the issue text.
 - Read the code the issue touches and trace the real flow before planning. Mark each claim Known (read in code) or Assumed.
 - Give every open question a suggested pick and confidence (`.claude/decisions.md`).
   - Interactive: use the `grilling` skill, leading each question with its suggested pick so I can confirm or override. Decide routine (high) ones yourself and say so.
-  - Auto: take every pick. A hard stop → comment the question on the issue (evidence, options, your suggested pick, ending with `<!-- do-issue:blocked -->`), reply with the link, and stop. Otherwise post the decisions comment (marker `do-issue:decisions`) before step 2.
+  - Auto: take every pick. A hard stop → comment the question on the issue (evidence, options, your suggested pick, ending with `<!-- do-issue:blocked -->`), reply with the link, and stop. Otherwise post the work log (`.claude/decisions.md`, marker `do-issue:worklog`) before step 2.
 - Output the plan, max 1 screen: smallest change that meets the issue's Expected section, files to change, tests to add, how to verify, decisions with confidence. List anything beyond that as follow-ups; do not build it.
-- **GATE** (interactive only): wait for my approval before writing code. Auto: continue.
+- **GATE** (interactive only): wait for my approval before writing code. On approval, post the work log (marker `do-issue:worklog`) with the settled picks. Auto: continue.
 
 ## 2. Build
 - `git switch main && git pull --ff-only`, then branch `<fix|feat>/issue-<n>-<short-slug>`.
@@ -34,8 +34,11 @@ Work a GitHub issue end to end. Arguments: `$ARGUMENTS`. `<n>` is the issue numb
 - Check the diff is small: if it touches more files than the plan listed, say why.
 
 ## 5. Ship
-- Push the branch. Run `/pr <n>` for the body (it must include `Closes #<n>`; in auto mode also a `## Decisions` section with the table and a link to the decisions comment), then `gh pr create`. Never open a PR with a one-line body.
+- Push the branch. Run `/pr <n>` for the body (it must include `Closes #<n>`; plus a `## Decisions` section with the table and a link to the work log), then `gh pr create`. Never open a PR with a one-line body.
 - Screenshots: `gh` cannot attach images, so with Claude in Chrome open the PR on github.com, edit the description, upload each screenshot, and save. If Chrome is not connected, list the paths and I will attach them.
+- Follow-ups: file each as an issue (`.claude/decisions.md` "Follow-ups"); interactive: list them and ask first; auto: up to 3. Add `Refs #<f>` to the PR body.
+- Decision that changes a convention or the architecture → add an ADR (`docs/adr/README.md`) in this PR.
+- Update the work log's **Result**: PR link and follow-up issues.
 - Reply with the PR link, anything left unverified, and (auto) every **med** decision I should double-check.
 
 ## Rules

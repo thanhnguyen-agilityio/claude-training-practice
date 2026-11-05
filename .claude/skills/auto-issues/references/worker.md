@@ -2,7 +2,7 @@
 
 You cannot start subagents: write code and run commands yourself. Read `in/auto-issues-lessons.md` and `.claude/preflight.md` Notes first. Work only in your own worktree `<scratch>/wt-<n>`; never switch branches or edit files in the main checkout.
 
-Your steps are 1–4 and 6; step 5 is review 2, run by the orchestrator. Reply only with: result (ready / skipped / draft), branch, PR or comment link, plan files, verification level, tests added, test commands with result lines, proof log path, unverified items, decisions comment link, one line per decision with its confidence, and up to 3 lessons (what slowed you down or what you had to guess).
+Your steps are 1–4 and 6; step 5 is review 2, run by the orchestrator. Reply only with: result (ready / skipped / draft), branch, PR or comment link, plan files, verification level, tests added, test commands with result lines, proof log path, unverified items, work log link, follow-up issue links, one line per decision with its confidence, and up to 3 lessons (what slowed you down or what you had to guess).
 
 ## Rules
 - Smallest change that meets the issue's Expected section. No unrelated refactors, new dependencies, or formatting churn in untouched code.
@@ -17,7 +17,7 @@ Your steps are 1–4 and 6; step 5 is review 2, run by the orchestrator. Reply o
 - Read the issue as `.claude/preflight.md` Notes say.
 - Read the code the issue touches and trace the real flow. Mark each claim Known (read in code) or Assumed.
 - Give every open question a suggested pick and confidence as `.claude/decisions.md` says, and take the pick unless it is a hard stop there. Record decisions, confidence, and assumptions for the PR body.
-- Before step 2, post the decisions comment from `.claude/decisions.md` (marker `auto-issues:decisions`) on the issue. Questions with no open choice need no comment.
+- Before step 2, post the work log from `.claude/decisions.md` (marker `auto-issues:worklog`) on the issue, with the plan and decisions.
 - Plan: files to change, tests to add, how to verify. List anything beyond Expected as a follow-up; do not build it.
 - List every user-facing path whose behavior the diff changes, including error and approval paths, each with its planned check (test, curl, or screenshot).
 - **Skip** when the ticket is wrong (contradicts code or docs, already behaves as expected, duplicate), the bug cannot be reproduced, or it hits a hard stop in `.claude/decisions.md`. Comment on the issue: which case, the evidence, the question with your suggested pick, ending with `<!-- auto-issues:skipped -->`. No branch, no PR. Reply `skipped`.
@@ -47,7 +47,9 @@ Your steps are 1–4 and 6; step 5 is review 2, run by the orchestrator. Reply o
 
 ## 6. Ship (only when told "do step 6")
 - Scope: the diff touches only planned files, or the PR body explains why.
-- Push. Run `/pr <n>` for the body: `Closes #<n>`, a `## Decisions` section (the table and a link to the decisions comment), assumptions, review 1 and 2 results, unverified items. `gh pr create`. Never a one-line body.
+- Push. Run `/pr <n>` for the body: `Closes #<n>`, a `## Decisions` section (the table and a link to the work log), assumptions, review 1 and 2 results, unverified items. `gh pr create`. Never a one-line body.
+- Follow-ups: file up to 3 as issues (`.claude/decisions.md` "Follow-ups") and add `Refs #<f>` to the PR body. A decision that changes a convention or the architecture → add an ADR (`docs/adr/README.md`) to the branch before the PR.
+- Set the work log's **Result** to the PR link and follow-up issues.
 - CI: `gh pr checks <pr> --watch`; none configured → rely on local tests. Failed → `gh run view <run-id> --log-failed | tail -n 50`, fix (max 3 attempts), else comment the failing log tail on the PR and reply `draft`.
 - Add or replace the `## Test evidence` section in the PR body, keeping the rest: read the body (`gh api repos/{owner}/{repo}/pulls/<pr> -q .body > <file>`), edit that file, write the whole body back (`gh api -X PATCH repos/{owner}/{repo}/pulls/<pr> -F body=@<file>`). Only results from commands you ran:
   - each test command on the final commit with its result line (e.g. `42 passed in 3.1s`), and the lint result;

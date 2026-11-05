@@ -33,7 +33,7 @@ def test_apostrophes_stored_verbatim(db_path):
         "name": "O'Brien",
         "email": "o'brien@x.com",
         "subject": "can't login",
-        "phone": "'555'",
+        "phone": "0912345678",
         "description": "it's 'broken'",
     }
     create_support_ticket.invoke(args)

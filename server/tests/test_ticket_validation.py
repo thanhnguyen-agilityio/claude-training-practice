@@ -25,7 +25,6 @@ def _rows(path):
         return conn.execute("SELECT email, phone FROM SupportTicket").fetchall()
 
 
-@pytest.mark.xfail(strict=True, reason="issue #55: no contact validation")
 def test_invalid_email_rejected_no_row(db_path):
     for email in ["lan@@gmail", "lan@gmail", "lan gmail.com", "@gmail.com"]:
         result = create_support_ticket.invoke({"email": email, "subject": "torn dress"})
@@ -34,7 +33,6 @@ def test_invalid_email_rejected_no_row(db_path):
     assert _rows(db_path) == []
 
 
-@pytest.mark.xfail(strict=True, reason="issue #55: no contact validation")
 def test_invalid_phone_rejected_no_row(db_path):
     for phone in ["12ab", "12345678", "1234567890123456", "++84912345678"]:
         result = create_support_ticket.invoke(

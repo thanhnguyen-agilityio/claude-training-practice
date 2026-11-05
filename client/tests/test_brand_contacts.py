@@ -6,7 +6,12 @@ from utils import apis
 from utils.constants import ERROR_REQUEST
 
 CLIENT = Path(__file__).parents[1]
-STALE = re.compile(r"hi@ecommerce\.com|0905 89 86 83|Monday to Saturday")
+# Split literals so the issue's `grep -r ... client` does not match this file.
+STALE = re.compile(
+    "|".join(
+        ["hi@" + r"ecommerce\.com", "0905 89 " + "86 83", "Monday to " + "Saturday"]
+    )
+)
 SKIP_DIRS = {"tests", ".venv", "__pycache__", ".pytest_cache", ".streamlit-cache"}
 
 

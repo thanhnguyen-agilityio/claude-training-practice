@@ -17,11 +17,13 @@ LangGraph agent (RAG + SQL + tools) served by FastAPI/LangServe, with a Streamli
 - Config and env defaults live in `server/utils/constants.py`
 - Tests never call OpenAI: mock with `monkeypatch`/`unittest.mock`; Streamlit UI via `AppTest`
 - Every change ships with a test; one ticket per branch
+- Every PR links its issue (`Closes #n`, or `Refs #n` for partial work). No issue yet → `gh issue create` before branching. A PreToolUse hook blocks `gh pr create` without one
 - Push to both remotes: `git push origin <branch> && git push gitlab <branch>`
 
 ## Never
 - Commit or print secrets / `.env`; don't run `make load_env` (prints `OPENAI_API_KEY`)
 - Add dependencies without asking
+- Open a PR without a linked issue
 - Claim done without running all three test suites and ruff
 - Change `STOPPED_NOTE` on one side only (`server/routers/chat.py` ↔ `client/utils/constants.py`)
 - Run `make clean_knowledge_base` or evals without asking (wipes `server/db` / costs money)

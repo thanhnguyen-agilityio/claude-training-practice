@@ -34,7 +34,13 @@ def test_invalid_email_rejected_no_row(db_path):
 
 
 def test_invalid_phone_rejected_no_row(db_path):
-    for phone in ["12ab", "12345678", "1234567890123456", "++84912345678"]:
+    for phone in [
+        "12ab",
+        "12345678",
+        "1234567890123456",
+        "++84912345678",
+        "٠٩١٢٣٤٥٦٧٨",
+    ]:
         result = create_support_ticket.invoke(
             {"email": "lan@gmail.com", "subject": "torn dress", "phone": phone}
         )

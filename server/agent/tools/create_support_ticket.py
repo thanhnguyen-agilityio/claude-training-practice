@@ -6,7 +6,7 @@ from langchain_core.tools import tool
 from utils.utils import get_path
 
 EMAIL_RE = re.compile(r"^[^@\s]+@[^@\s]+\.[^@\s]+$")
-PHONE_RE = re.compile(r"^\+?\d{9,15}$")
+PHONE_RE = re.compile(r"^\+?[0-9]{9,15}$")
 PHONE_SEPARATORS = re.compile(r"[\s\-.()]")
 # Shared with the graph guard (agent/graph.py): it detects rejected tickets by this prefix.
 TICKET_NOT_CREATED_PREFIX = "Support ticket NOT created:"

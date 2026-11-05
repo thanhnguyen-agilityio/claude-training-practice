@@ -5,7 +5,7 @@ argument-hint: <issue numbers | open [priority] [type]> [--skip-preflight]
 model: sonnet
 disable-model-invocation: true
 ---
-Skill version: 8. Work the GitHub issues selected by $ARGUMENTS (see Queue) end to end with no approval stops. Merge only when review 3 is confident. I review the run report and the run branch PR afterwards.
+Skill version: 9. Work the GitHub issues selected by $ARGUMENTS (see Queue) end to end with no approval stops. Merge only when review 3 is confident. I review the run report and the run branch PR afterwards.
 
 Paths below are relative to `.claude/skills/auto-issues/`. `<scratch>` is your scratchpad dir.
 
@@ -47,7 +47,7 @@ Record start and end time (`date -u +%Y-%m-%dT%H:%M:%SZ`). **Budget:** 45 minute
 4. **Sync** (worker): send "sync"; it runs `git fetch origin && git merge origin/main` on the branch and, if anything came in, reruns tests and pushes.
 5. **Review 3:** fresh `Agent` (`model: opus`) gets the issue number, PR number, and `references/review-3.md`; it reruns the checks itself and returns the checklist and a verdict.
 6. **Decide**, first match wins (add labels with `gh api -X POST repos/{owner}/{repo}/issues/<pr>/labels -f "labels[]=<name>"`):
-   - **Human gate** — `critical priority` label, or review 3 item 9 is **yes**, whatever the verdict: comment the checklist (and the reasons if not confident), add `needs-human-merge`, keep open and synced. Result: open – human gate.
+   - **Human gate** — `critical priority` label, or review 3 item 9 or 10 is **yes**, whatever the verdict: comment the checklist (and the reasons if not confident), add `needs-human-merge`, keep open and synced. Result: open – human gate.
    - **Confident**: comment the checklist, add `auto-merged`, `gh pr merge <pr> --squash --delete-branch` (if `gh` fails with a Projects-classic error: `gh api -X PUT repos/{owner}/{repo}/pulls/<pr>/merge -f merge_method=squash`, then `gh api -X DELETE repos/{owner}/{repo}/git/refs/heads/<branch>`), `git fetch origin`.
    - **Not confident**: comment the checklist, reasons, and what would make it mergeable; keep open, synced, checks passing.
 

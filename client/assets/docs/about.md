@@ -1,16 +1,17 @@
 > **Redefining Online Shopping with Style and Convenience**
 
-Welcome to our premier eCommerce platform, where fashion meets function, and style becomes effortless. Since our inception, we have been dedicated to providing customers with high-quality apparel and accessories that cater to diverse tastes and lifestyles.
+Welcome to IVY moda, where fashion meets function, and style becomes effortless. Since our inception, we have been dedicated to providing customers with high-quality apparel that caters to diverse tastes and lifestyles.
 
 ## Our Mission
 Our goal is to offer an exceptional shopping experience by curating a wide range of stylish, affordable, and high-quality fashion pieces. We believe that fashion is an expression of individuality, and we strive to help every customer find products that reflect their unique personality.
 
 ## What We Offer
-- **Office Wear:** Elegant and professional outfits tailored for the modern workplace, including blouses, dresses, and tailored suits.
-- **Casual Wear:** Comfortable and trendy everyday fashion, from T-shirts to stylish outerwear for all occasions.
-- **Evening & Special Occasion Wear:** Sophisticated designs perfect for events, celebrations, and formal gatherings.
-- **Accessories:** A selection of handbags, belts, and jewelry to complement any outfit and complete your look.
-- **Lingerie & Innerwear:** Designed for comfort and confidence, our intimate wear collection ensures a perfect fit for every customer.
+- **Dresses:** Elegant and everyday styles for women.
+- **Skirts:** Versatile cuts for work, casual and special occasions.
+- **Shirts & Tops:** Polished and relaxed options for women and men.
+- **T-shirts & Sweaters:** Comfortable, easy-to-wear staples for every day.
+- **Pants:** Tailored and casual fits for women and men.
+- **Coats & Jackets:** Smart outerwear for women and men in every season.
 
 ## Our Reach
 We proudly serve customers across the country with an expanding network of physical stores and a seamless online shopping experience. With convenient delivery options and a commitment to excellent customer service, we aim to make fashion accessible to everyone.

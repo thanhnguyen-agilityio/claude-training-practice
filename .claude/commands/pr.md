@@ -1,10 +1,12 @@
 ---
 description: Draft PR description from current branch diff
 ---
+No ticket in $ARGUMENTS or the branch name → stop and ask for one (or offer to create it with `gh issue create`): every PR links an issue.
+
 Read the log and diff of this branch against the default branch. Write a PR description that stands alone:
 
 - **What** changed
-- **Why** (link ticket: $ARGUMENTS)
+- **Why**, starting with `Closes #<n>` (or `Refs #<n>` for partial work) for ticket: $ARGUMENTS
 - **How tested** (commands run + results)
 - **Screenshots** (if UI; say if needed)
 - **Risks / follow-ups**

@@ -29,7 +29,8 @@ Work a GitHub issue end to end. Arguments: `$ARGUMENTS`. `<n>` is the issue numb
 - Same failure after 3 fix attempts → stop and ask (auto: open a draft PR with a `## Failure log` and stop).
 
 ## 4. Review
-- Run the `review-checklist` skill on `git diff main...HEAD`. Fix every item until the verdict is "merge", then rerun step 3.
+- Start a fresh `Agent` (`model: sonnet`) as the reviewer. Give it only the issue number, the branch name and "Read the issue with `gh issue view <n> --comments`, then run the `review-checklist` skill on `git diff main...HEAD`. Do not edit files. Reply with the findings and a verdict." Do not pass it the plan, decisions, or your reasoning: it checks the code against the ticket, not against our thinking.
+- Fix every finding yourself, rerun step 3, then send the reviewer "re-review" (`SendMessage`) until the verdict is "merge". A finding you disagree with: say why in the PR body instead of fixing it.
 - Check the diff is small: if it touches more files than the plan listed, say why.
 
 ## 5. Ship

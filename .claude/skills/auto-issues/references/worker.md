@@ -6,6 +6,7 @@ Your steps are 1–4 and 6; step 5 is review 2, run by the orchestrator. Reply o
 
 ## Rules
 - Smallest change that meets the issue's Expected section. No unrelated refactors, new dependencies, or formatting churn in untouched code.
+- **Scope change** after the plan (something the plan does not list): follow `.claude/decisions.md` "Scope change".
 - Never push to main, force-push, or use `--admin`. Never commit or print secrets or `.env`.
 - Keep output short: run tests quietly and pipe to `tail -n 30`; rerun only failing tests (`--lf`) while fixing; read only the failing part of a log.
 - **Budget:** before each fix attempt and each step, check the 45 minutes / $5 budget from your start time (`uv run python scripts/ai_usage.py --session <id> --since <start> --format json`). Over → push, open a draft PR with what is done and why it stopped, reply `draft` (reason: over budget).

@@ -8,13 +8,14 @@ Work a GitHub issue end to end. Arguments: `$ARGUMENTS`. `<n>` is the issue numb
 - **Auto:** no GATE and no questions. Apply the suggested picks, post them on the issue, and keep going. Stop only on a hard stop from `.claude/decisions.md`. Running with `--auto` is my approval to post and edit the work log and to file up to 3 follow-up issues.
 
 ## 1. Plan (no code)
+- Interactive: call `EnterPlanMode` first, so all of step 1 (`/analyze-ticket`, reading code, grilling) is read-only. Auto: no plan mode.
 - `gh issue view <n> --comments`, then run `/analyze-ticket` on the issue text.
 - Read the code the issue touches and trace the real flow before planning. Mark each claim Known (read in code) or Assumed.
 - Give every open question a suggested pick and confidence (`.claude/decisions.md`).
   - Interactive: use the `grilling` skill, leading each question with its suggested pick so I can confirm or override. Decide routine (high) ones yourself and say so.
   - Auto: take every pick. A hard stop → comment the question on the issue (evidence, options, your suggested pick, ending with `<!-- do-issue:blocked -->`), reply with the link, and stop. Otherwise post the work log (`.claude/decisions.md`, marker `do-issue:worklog`) before step 2.
 - Output the plan, max 1 screen: smallest change that meets the issue's Expected section, files to change, tests to add, how to verify, decisions with confidence. List anything beyond that as follow-ups; do not build it.
-- **GATE** (interactive only): wait for my approval before writing code. On approval, post the work log (marker `do-issue:worklog`) with the settled picks. Auto: continue.
+- **GATE** (interactive only): present the plan with `ExitPlanMode`; my approval of it is the GATE. Settle every question before that, so the presented plan is final. On approval, post the work log (marker `do-issue:worklog`) with the settled picks. Auto: continue.
 
 ## 2. Build
 - `git switch main && git pull --ff-only`, then branch `<fix|feat>/issue-<n>-<short-slug>`.
@@ -44,4 +45,8 @@ Work a GitHub issue end to end. Arguments: `$ARGUMENTS`. `<n>` is the issue numb
 ## Rules
 - Smallest change that meets the issue's expectation. No unrelated refactors, no new dependencies.
 - Interactive: ask me on scope, behavior, or trade-off decisions; decide routine ones yourself. Auto: follow `.claude/decisions.md`.
+- **Scope change**: after approval, the work needs something the approved plan does not list (a new file, a new behavior, a new mechanism such as a graph node, or a bypass such as `PRE_COMMIT_ALLOW_NO_CONFIG`).
+  - Interactive: stop, call `EnterPlanMode`, and present a revised plan with `ExitPlanMode`: what changed, why (evidence), the new files and tests. Continue only after approval.
+  - Auto: follow `.claude/decisions.md` "Scope change".
+  - Both: add it to the work log's Decisions and to the PR's `## Decisions` table.
 - Never push to main, force-push, or merge the PR (also in auto mode: the PR review is my gate).

@@ -1,4 +1,4 @@
-from agent.graph import route_after_sensitive_tools, ticket_rejected
+from agent.graph import init_graph, route_after_sensitive_tools, ticket_rejected
 from agent.tools.create_support_ticket import TICKET_NOT_CREATED_PREFIX
 from langchain_core.messages import AIMessage, ToolMessage
 
@@ -28,3 +28,10 @@ def test_rejected_node_replies_with_reason_only():
     assert "9 to 15 digits" in msg.content
     assert "created successfully" not in msg.content
     assert "Tell the user" not in msg.content
+
+
+def test_graph_wires_sensitive_tools_to_ticket_rejected_then_end():
+    graph = init_graph(streaming=False, config={"configurable": {"user_id": "u"}})
+    edges = {(e.source, e.target) for e in graph.get_graph().edges}
+    assert ("sensitive_tools", "ticket_rejected") in edges
+    assert ("ticket_rejected", "__end__") in edges

@@ -35,3 +35,15 @@ def test_graph_wires_sensitive_tools_to_ticket_rejected_then_end():
     edges = {(e.source, e.target) for e in graph.get_graph().edges}
     assert ("sensitive_tools", "ticket_rejected") in edges
     assert ("ticket_rejected", "__end__") in edges
+
+
+def test_rejection_found_among_all_tool_results_of_the_step():
+    state = {
+        "messages": [
+            ToolMessage(REJECTED, tool_call_id="a"),
+            ToolMessage("Some other tool result", tool_call_id="b"),
+        ]
+    }
+    assert route_after_sensitive_tools(state) == "ticket_rejected"
+    reply = ticket_rejected(state)["messages"]
+    assert "invalid phone '12ab'" in reply.content

@@ -96,19 +96,26 @@ def route_tools(state: State):
     return "safe_tools"
 
 
+def _rejected_ticket_message(state: State):
+    """The rejected ticket ToolMessage among the trailing tool results of this step."""
+    for message in reversed(state["messages"]):
+        if not isinstance(message, ToolMessage):
+            break
+        if str(message.content).startswith(TICKET_NOT_CREATED_PREFIX):
+            return message
+    return None
+
+
 def route_after_sensitive_tools(state: State):
     """A rejected ticket must not go back to the model: it may claim success."""
-    last = state["messages"][-1]
-    if isinstance(last, ToolMessage) and str(last.content).startswith(
-        TICKET_NOT_CREATED_PREFIX
-    ):
+    if _rejected_ticket_message(state) is not None:
         return "ticket_rejected"
     return "assistant"
 
 
 def ticket_rejected(state: State):
     """Fixed reply built from the tool's reason, then END."""
-    content = str(state["messages"][-1].content)
+    content = str(_rejected_ticket_message(state).content)
     reason = content.removeprefix(TICKET_NOT_CREATED_PREFIX).strip()
     reason = reason.split(" Tell the user")[0].strip()
     return {

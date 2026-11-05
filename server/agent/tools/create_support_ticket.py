@@ -8,6 +8,8 @@ from utils.utils import get_path
 EMAIL_RE = re.compile(r"^[^@\s]+@[^@\s]+\.[^@\s]+$")
 PHONE_RE = re.compile(r"^\+?\d{9,15}$")
 PHONE_SEPARATORS = re.compile(r"[\s\-.()]")
+# Shared with the graph guard (agent/graph.py): it detects rejected tickets by this prefix.
+TICKET_NOT_CREATED_PREFIX = "Support ticket NOT created:"
 
 
 @tool
@@ -22,12 +24,12 @@ def create_support_ticket(
     """
     if not EMAIL_RE.match(email.strip()):
         return (
-            f"Support ticket NOT created: invalid email '{email}'. "
+            f"{TICKET_NOT_CREATED_PREFIX} invalid email '{email}'. "
             "Tell the user the reason and ask them for a valid email address."
         )
     if phone.strip() and not PHONE_RE.match(PHONE_SEPARATORS.sub("", phone)):
         return (
-            f"Support ticket NOT created: invalid phone '{phone}'. "
+            f"{TICKET_NOT_CREATED_PREFIX} invalid phone '{phone}'. "
             "A phone number must be 9 to 15 digits, optionally starting with +. "
             "Tell the user the reason and ask them for a valid phone number."
         )

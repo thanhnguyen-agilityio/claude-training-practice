@@ -5,10 +5,10 @@ import { expect } from 'e2e';
 test('sidebar shows the IVY moda contacts', async ({ app, screen }) => {
   await app.open('/');
   const sidebar = screen.getByTestId('stSidebar');
-  await expect(sidebar).toContainText(
-    ['IVY moda', 'CSKH@ivy.com.vn', '0246 662 3434', 'Monday to Friday'],
-    { timeout: 30_000 },
-  );
+  // One assertion per string: an array would match one element per item.
+  for (const text of ['IVY moda', 'CSKH@ivy.com.vn', '0246 662 3434', 'Monday to Friday']) {
+    await expect(sidebar).toContainText(text, { timeout: 30_000 });
+  }
 });
 
 test('About Us is about IVY moda apparel only', async ({ app, screen }) => {

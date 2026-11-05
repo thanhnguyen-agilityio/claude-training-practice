@@ -1,4 +1,8 @@
+import sqlite3
+import sys
+
 from agent.graph import init_graph, route_after_sensitive_tools, ticket_rejected
+from agent.tools import create_support_ticket
 from agent.tools.create_support_ticket import TICKET_NOT_CREATED_PREFIX
 from langchain_core.messages import AIMessage, ToolMessage
 
@@ -47,3 +51,25 @@ def test_rejection_found_among_all_tool_results_of_the_step():
     assert route_after_sensitive_tools(state) == "ticket_rejected"
     reply = ticket_rejected(state)["messages"]
     assert "invalid phone '12ab'" in reply.content
+
+
+def test_real_tool_output_gives_exact_user_reply(tmp_path, monkeypatch):
+    path = str(tmp_path / "ecommerce_store.db")
+    with sqlite3.connect(path) as conn:
+        conn.execute(
+            "CREATE TABLE SupportTicket (id INTEGER PRIMARY KEY, name TEXT, email TEXT,"
+            " subject TEXT, phone TEXT, description TEXT, resolved BOOLEAN)"
+        )
+    monkeypatch.setattr(
+        sys.modules["agent.tools.create_support_ticket"], "get_path", lambda *_: path
+    )
+    output = create_support_ticket.invoke(
+        {"email": "lan@gmail.com", "subject": "torn dress", "phone": "12ab"}
+    )
+    state = {"messages": [ToolMessage(output, tool_call_id="c")]}
+    assert route_after_sensitive_tools(state) == "ticket_rejected"
+    assert ticket_rejected(state)["messages"].content == (
+        "Your support ticket was not created: invalid phone '12ab'. "
+        "A phone number must be 9 to 15 digits, optionally starting with +. "
+        "Please send the corrected details and I'll prepare the ticket again."
+    )

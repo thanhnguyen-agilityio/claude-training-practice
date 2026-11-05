@@ -4,7 +4,10 @@ import sqlite3
 import utils.constants as constants
 from agent.llms import init_chat_model, model_gpt_4o_mini
 from agent.prompts.prompt import get_chat_prompt, get_system_message
-from agent.tools.create_support_ticket import TICKET_NOT_CREATED_PREFIX
+from agent.tools.create_support_ticket import (
+    TICKET_NOT_CREATED_PREFIX,
+    TICKET_REASON_END,
+)
 from agent.tools import safe_tools, sensitive_tool_names, sensitive_tools, tools_mapping
 from langchain.callbacks.streaming_stdout import StreamingStdOutCallbackHandler
 from langchain_community.cache import SQLiteCache
@@ -117,7 +120,7 @@ def ticket_rejected(state: State):
     """Fixed reply built from the tool's reason, then END."""
     content = str(_rejected_ticket_message(state).content)
     reason = content.removeprefix(TICKET_NOT_CREATED_PREFIX).strip()
-    reason = reason.split(" Tell the user")[0].strip()
+    reason = reason.split(TICKET_REASON_END)[0].strip()
     return {
         "messages": AIMessage(
             f"Your support ticket was not created: {reason} "

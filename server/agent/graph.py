@@ -4,11 +4,15 @@ import sqlite3
 import utils.constants as constants
 from agent.llms import init_chat_model, model_gpt_4o_mini
 from agent.prompts.prompt import get_chat_prompt, get_system_message
+from agent.tools.create_support_ticket import (
+    TICKET_NOT_CREATED_PREFIX,
+    TICKET_REASON_END,
+)
 from agent.tools import safe_tools, sensitive_tool_names, sensitive_tools, tools_mapping
 from langchain.callbacks.streaming_stdout import StreamingStdOutCallbackHandler
 from langchain_community.cache import SQLiteCache
 from langchain_core.globals import set_llm_cache
-from langchain_core.messages import HumanMessage, trim_messages
+from langchain_core.messages import AIMessage, HumanMessage, ToolMessage, trim_messages
 from langchain_core.runnables import Runnable, RunnableConfig
 from langgraph.checkpoint.sqlite import SqliteSaver
 from langgraph.graph import END, START, MessagesState, StateGraph
@@ -95,6 +99,36 @@ def route_tools(state: State):
     return "safe_tools"
 
 
+def _rejected_ticket_message(state: State):
+    """The rejected ticket ToolMessage among the trailing tool results of this step."""
+    for message in reversed(state["messages"]):
+        if not isinstance(message, ToolMessage):
+            break
+        if str(message.content).startswith(TICKET_NOT_CREATED_PREFIX):
+            return message
+    return None
+
+
+def route_after_sensitive_tools(state: State):
+    """A rejected ticket must not go back to the model: it may claim success."""
+    if _rejected_ticket_message(state) is not None:
+        return "ticket_rejected"
+    return "assistant"
+
+
+def ticket_rejected(state: State):
+    """Fixed reply built from the tool's reason, then END."""
+    content = str(_rejected_ticket_message(state).content)
+    reason = content.removeprefix(TICKET_NOT_CREATED_PREFIX).strip()
+    reason = reason.split(TICKET_REASON_END)[0].strip()
+    return {
+        "messages": AIMessage(
+            f"Your support ticket was not created: {reason} "
+            "Please send the corrected details and I'll prepare the ticket again."
+        )
+    }
+
+
 def summarize_conversation(state: State):
     """
     Summarize messages older than the model window. Messages stay in state
@@ -166,6 +200,7 @@ def init_graph(
     builder.add_node("summarize_conversation", summarize_conversation)
     builder.add_node("safe_tools", node_safe_tools)
     builder.add_node("sensitive_tools", node_sensitive_tools)
+    builder.add_node("ticket_rejected", ticket_rejected)
 
     # - define edges
     builder.add_edge(START, "summarize_conversation")
@@ -174,7 +209,10 @@ def init_graph(
         "assistant", route_tools, ["safe_tools", "sensitive_tools", END]
     )
     builder.add_edge("safe_tools", "assistant")
-    builder.add_edge("sensitive_tools", "assistant")
+    builder.add_conditional_edges(
+        "sensitive_tools", route_after_sensitive_tools, ["assistant", "ticket_rejected"]
+    )
+    builder.add_edge("ticket_rejected", END)
     graph_agent = builder.compile(
         checkpointer=memory,
         store=store,

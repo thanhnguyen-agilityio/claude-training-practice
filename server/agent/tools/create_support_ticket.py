@@ -1,8 +1,17 @@
+import re
 import sqlite3
 from contextlib import closing
 
 from langchain_core.tools import tool
 from utils.utils import get_path
+
+EMAIL_RE = re.compile(r"^[^@\s]+@[^@\s]+\.[^@\s]+$")
+PHONE_RE = re.compile(r"^\+?[0-9]{9,15}$")
+PHONE_SEPARATORS = re.compile(r"[\s\-.()]")
+# Shared with the graph guard (agent/graph.py): it detects rejected tickets by this prefix.
+TICKET_NOT_CREATED_PREFIX = "Support ticket NOT created:"
+# Marks where the user-facing reason ends and the instruction to the model starts.
+TICKET_REASON_END = " Tell the user"
 
 
 @tool
@@ -10,8 +19,22 @@ def create_support_ticket(
     email: str, subject: str, name: str = "User", phone: str = "", description: str = ""
 ) -> str:
     """
-    Use this tool to help use create a customer support ticket
+    Use this tool to help use create a customer support ticket.
+    The email is validated. The phone is optional; if given it must be 9 to 15
+    digits with an optional leading +. If the result says the ticket was not
+    created, tell the user the reason and ask for the corrected value.
     """
+    if not EMAIL_RE.match(email.strip()):
+        return (
+            f"{TICKET_NOT_CREATED_PREFIX} invalid email '{email}'."
+            f"{TICKET_REASON_END} the reason and ask them for a valid email address."
+        )
+    if phone.strip() and not PHONE_RE.match(PHONE_SEPARATORS.sub("", phone)):
+        return (
+            f"{TICKET_NOT_CREATED_PREFIX} invalid phone '{phone}'. "
+            "A phone number must be 9 to 15 digits, optionally starting with +."
+            f"{TICKET_REASON_END} the reason and ask them for a valid phone number."
+        )
     db_path = get_path("ecommerce_store.db", "db")
 
     with closing(sqlite3.connect(db_path)) as conn, conn:  # conn: commit on exit

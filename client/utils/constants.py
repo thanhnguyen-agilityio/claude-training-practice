@@ -9,7 +9,7 @@ ERROR_CONNECTION = (
 )
 ERROR_REQUEST = (
     "We couldn't process your request. "
-    "If this keeps happening, please contact support at hi@ecommerce.com"
+    "If this keeps happening, please contact support at CSKH@ivy.com.vn or 0246 662 3434."
 )
 
 # Must match STOPPED_NOTE in server/routers/chat.py

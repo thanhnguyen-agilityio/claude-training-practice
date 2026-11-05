@@ -1,6 +1,6 @@
 > **Redefining Online Shopping with Style and Convenience**
 
-Welcome to IVY moda, where fashion meets function, and style becomes effortless. Since our inception, we have been dedicated to providing customers with high-quality apparel that cater to diverse tastes and lifestyles.
+Welcome to IVY moda, where fashion meets function, and style becomes effortless. Since our inception, we have been dedicated to providing customers with high-quality apparel that caters to diverse tastes and lifestyles.
 
 ## Our Mission
 Our goal is to offer an exceptional shopping experience by curating a wide range of stylish, affordable, and high-quality fashion pieces. We believe that fashion is an expression of individuality, and we strive to help every customer find products that reflect their unique personality.

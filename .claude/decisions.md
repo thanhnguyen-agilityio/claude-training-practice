@@ -17,6 +17,12 @@ Never auto-pick these; ask (interactive) or comment the question and stop (auto)
 - the ticket contradicts the code or docs, already behaves as expected, or is a duplicate;
 - a risk to data, auth, secrets, or user input reaching SQL or a shell, that the issue does not settle.
 
+## Scope change
+Auto mode (`/do-issue --auto`, the `auto-issues` worker): after the plan, the work needs something the plan does not list (a new file, a new behavior, a new mechanism such as a graph node, or a bypass such as `PRE_COMMIT_ALLOW_NO_CONFIG`).
+- Add it as a row in the work log's Decisions table (edit in place) and in the PR's `## Decisions` table: what changed and why (evidence).
+- Build it only if it is needed to meet the issue's Expected section; otherwise file it as a follow-up and don't build it.
+- If it hits a hard stop above, it is still a hard stop.
+
 ## Work log
 One comment per issue that keeps the analysis, plan and decisions after the session ends. Post it before any code (interactive: at the GATE; auto: before building). Edit it in place as things change (`gh api -X PATCH repos/{owner}/{repo}/issues/comments/<id> -f body=@<file>`); never post a second one. Find it again by its marker.
 
